@@ -1,0 +1,155 @@
+/* Coming Soon Page Specific Custom CSS */
+
+/* Subtle scale & fade in animation for features */
+.feature-card {
+    transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Custom progress animate */
+@keyframes progressShrinkGrow {
+    0% { width: 0%; }
+    100% { width: 88%; }
+}
+
+.animate-progress {
+    animation: progressShrinkGrow 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Minimalist SVG Illustration Animations - Style 2 (Plane) */
+@keyframes planeFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.animate-plane {
+    animation: planeFloat 4s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes windMove {
+    0% { stroke-dashoffset: 40; opacity: 0; }
+    30% { opacity: 0.4; }
+    70% { opacity: 0.4; }
+    100% { stroke-dashoffset: -40; opacity: 0; }
+}
+
+.animate-wind {
+    animation: windMove 3s linear infinite;
+}
+
+/* Minimalist SVG Illustration Animations - Style 1 (Charts & AI Node) */
+@keyframes barGrow1 {
+    0%, 100% { height: 20px; y: 100px; }
+    50% { height: 35px; y: 85px; }
+}
+
+@keyframes barGrow2 {
+    0%, 100% { height: 35px; y: 85px; }
+    50% { height: 50px; y: 70px; }
+}
+
+@keyframes barGrow3 {
+    0%, 100% { height: 50px; y: 70px; }
+    50% { height: 25px; y: 95px; }
+}
+
+.animate-bar-1 {
+    animation: barGrow1 3s ease-in-out infinite;
+}
+
+.animate-bar-2 {
+    animation: barGrow2 3.5s ease-in-out infinite;
+}
+
+.animate-bar-3 {
+    animation: barGrow3 4s ease-in-out infinite;
+}
+
+/* Vertical floating for elements in SVG */
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes floatMedium {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes floatFast {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.animate-float-slow {
+    animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-float-medium {
+    animation: floatMedium 4s ease-in-out infinite;
+}
+
+.animate-float-fast {
+    animation: floatFast 3s ease-in-out infinite;
+}
+
+/* Pulsing AI node */
+@keyframes pulseSlow {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+}
+
+.animate-pulse-slow {
+    animation: pulseSlow 2.5s ease-in-out infinite;
+    transform-origin: 155px 85px;
+}
+
+/* Floating Animations for Version 2 Dashboard Mockup */
+@keyframes mockupMainFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes mockupBadge1Float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-10px) translateX(2px); }
+}
+
+@keyframes mockupBadge2Float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-8px) translateX(-3px); }
+}
+
+@keyframes mockupBadge3Float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes chartDraw {
+    from { stroke-dashoffset: 300; }
+    to { stroke-dashoffset: 0; }
+}
+
+.animate-mockup-main {
+    animation: mockupMainFloat 8s ease-in-out infinite;
+}
+
+.animate-mockup-badge-1 {
+    animation: mockupBadge1Float 6s ease-in-out infinite;
+}
+
+.animate-mockup-badge-2 {
+    animation: mockupBadge2Float 7s ease-in-out infinite;
+}
+
+.animate-mockup-badge-3 {
+    animation: mockupBadge3Float 5s ease-in-out infinite;
+}
+
+.animate-chart-draw {
+    animation: chartDraw 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

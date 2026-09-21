@@ -1,0 +1,434 @@
+/* Calendar Page Specific Custom Styles */
+
+/* 1. FullCalendar Layout & Typography Customization */
+.fc {
+    font-family: inherit;
+}
+
+.fc .fc-scrollgrid,
+.fc .fc-list {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.dark .fc .fc-scrollgrid,
+.dark .fc .fc-list {
+    border-color: #2e2e2e !important;
+}
+
+/* Header & Title */
+.fc .fc-toolbar-title {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #0f172a;
+    transition: color 0.3s ease;
+}
+
+.dark .fc .fc-toolbar-title {
+    color: #ffffff;
+}
+
+/* Borders and Cells */
+.fc-theme-standard td, 
+.fc-theme-standard th {
+    border-color: #f1f5f9 !important;
+}
+
+.dark .fc-theme-standard td, 
+.dark .fc-theme-standard th {
+    border-color: #2e2e2e !important;
+}
+
+/* Day Cell Headers */
+.fc .fc-col-header-cell {
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0 !important;
+    vertical-align: middle;
+}
+
+.dark .fc .fc-col-header-cell {
+    background-color: #161616;
+    border-bottom: 1px solid #2e2e2e !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #475569;
+    padding: 12px 4px !important;
+    display: inline-block;
+    text-decoration: none !important;
+}
+
+.dark .fc .fc-col-header-cell-cushion {
+    color: #cbd5e1;
+}
+
+/* Day Cell Numbers */
+.fc .fc-daygrid-day-number {
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+    padding: 8px 10px !important;
+}
+
+.dark .fc .fc-daygrid-day-number {
+    color: #cbd5e1;
+}
+
+/* Highlight Today */
+.fc .fc-day-today {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 5%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--color-brand-500, #3b82f6) 30%, transparent) !important;
+}
+
+.dark .fc .fc-day-today {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 8%, transparent) !important;
+    border: 1px solid color-mix(in srgb, var(--color-brand-500, #3b82f6) 40%, transparent) !important;
+}
+
+/* Today Day Number (Month View) - Solid Primary Color Text & Bold */
+.fc .fc-day-today .fc-daygrid-day-number {
+    color: var(--color-brand-500, #3b82f6) !important;
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 8px 10px !important;
+    padding: 0 !important;
+}
+
+.dark .fc .fc-day-today .fc-daygrid-day-number {
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* Today Column Header (Week/Day Views) */
+.fc .fc-col-header-cell.fc-day-today {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 8%, transparent) !important;
+}
+
+.dark .fc .fc-col-header-cell.fc-day-today {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 12%, transparent) !important;
+}
+
+.fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+    color: var(--color-brand-500, #3b82f6) !important;
+}
+
+.dark .fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* Today list view day headers */
+.fc .fc-list-day.fc-day-today th {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 8%, transparent) !important;
+}
+
+.dark .fc .fc-list-day.fc-day-today th {
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 12%, transparent) !important;
+}
+
+.fc .fc-list-day.fc-day-today .fc-list-day-text,
+.fc .fc-list-day.fc-day-today .fc-list-day-side-text {
+    color: var(--color-brand-500, #3b82f6) !important;
+}
+
+.dark .fc .fc-list-day.fc-day-today .fc-list-day-text,
+.dark .fc .fc-list-day.fc-day-today .fc-list-day-side-text {
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* 2. Custom Buttons Override (No Shadows, Big Rounded) */
+.fc .fc-button {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    padding: 8px 14px !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+/* View Mode Buttons (Month, Week, Day, List) */
+.fc .fc-button-primary {
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #64748b !important;
+}
+
+.dark .fc .fc-button-primary {
+    background-color: #161616 !important;
+    border-color: #2e2e2e !important;
+    color: #94a3b8 !important;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #f1f5f9 !important;
+    color: var(--color-brand-500, #3b82f6) !important;
+}
+
+.dark .fc .fc-button-primary:hover {
+    background-color: #222222 !important;
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* Active State Button */
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--color-brand-500, #3b82f6) !important;
+    border-color: var(--color-brand-500, #3b82f6) !important;
+    color: #ffffff !important;
+}
+
+.dark .fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: var(--color-brand-500, #3b82f6) !important;
+    border-color: var(--color-brand-500, #3b82f6) !important;
+    color: #ffffff !important;
+}
+
+/* Prev / Next Buttons */
+.fc .fc-prev-button, 
+.fc .fc-next-button {
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #64748b !important;
+}
+
+.dark .fc .fc-prev-button, 
+.dark .fc .fc-next-button {
+    background-color: #161616 !important;
+    border-color: #2e2e2e !important;
+    color: #94a3b8 !important;
+}
+
+.fc .fc-button-group > .fc-button:first-child {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.fc .fc-button-group > .fc-button:last-child {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    margin-left: -1px !important;
+}
+
+/* 3. Event Styling Customization */
+.fc-v-event, .fc-h-event {
+    border: none !important;
+    padding: 2px 6px !important;
+    border-radius: 8px !important;
+    margin: 1px 2px !important;
+    box-shadow: none !important;
+}
+
+/* Align event items vertically in month/grid view */
+.fc-daygrid-event, .fc-h-event {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 22px !important;
+}
+
+.fc-daygrid-event .fc-event-main,
+.fc-h-event .fc-event-main {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.fc-daygrid-event .fc-event-main-frame,
+.fc-h-event .fc-event-main-frame {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.fc-event-title {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+.fc-event-time {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-right: 4px !important;
+}
+
+/* Pastel Palette & Soft Text Colors for Events -> Changed to Solid Styles */
+.bg-brand-500 {
+    background-color: var(--color-brand-500, #3b82f6) !important;
+    color: #ffffff !important;
+}
+
+.dark .bg-brand-500 {
+    background-color: var(--color-brand-500, #3b82f6) !important;
+    color: #ffffff !important;
+}
+
+.bg-emerald-500 {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+.dark .bg-emerald-500 {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+.bg-rose-500 {
+    background-color: #f43f5e !important;
+    color: #ffffff !important;
+}
+
+.dark .bg-rose-500 {
+    background-color: #f43f5e !important;
+    color: #ffffff !important;
+}
+
+.bg-amber-500 {
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+}
+
+.dark .bg-amber-500 {
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+}
+
+/* More/Hidden Events Indicator */
+.fc .fc-more-link {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--color-brand-500, #3b82f6) !important;
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 8%, transparent) !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+    margin-top: 2px !important;
+}
+.dark .fc .fc-more-link {
+    color: var(--color-brand-400, #60a5fa) !important;
+    background-color: color-mix(in srgb, var(--color-brand-500, #3b82f6) 12%, transparent) !important;
+}
+
+/* 4. Modal Specific Animations and Styles */
+#modal-event.show {
+    display: flex !important;
+}
+
+#modal-event.show #modal-backdrop {
+    opacity: 1;
+}
+
+#modal-event.show #modal-dialog {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Custom styles for full calendar list view */
+.fc .fc-list-day th {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 10px 14px !important;
+}
+
+.dark .fc .fc-list-day th {
+    background-color: #161616 !important;
+    border-bottom: 1px solid #2e2e2e !important;
+}
+
+.fc-list-day-text, .fc-list-day-side-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569 !important;
+}
+
+.dark .fc-list-day-text, .dark .fc-list-day-side-text {
+    color: #cbd5e1 !important;
+}
+
+.fc-list-event-title {
+    font-size: 12px !important;
+}
+
+.fc-list-event {
+    background-color: transparent !important;
+}
+
+/* 5. FullCalendar "+more" Popover Styling */
+.fc-popover {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+    z-index: 100 !important;
+}
+
+.dark .fc-popover {
+    background-color: #222222 !important;
+    border-color: #2e2e2e !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+.fc-popover-header {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 10px 14px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.dark .fc-popover-header {
+    background-color: #161616 !important;
+    border-bottom-color: #2e2e2e !important;
+}
+
+.fc-popover-title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+}
+
+.dark .fc-popover-title {
+    color: #ffffff !important;
+}
+
+.fc-popover-close {
+    opacity: 0.6 !important;
+    cursor: pointer !important;
+    color: #475569 !important;
+}
+
+.dark .fc-popover-close {
+    color: #cbd5e1 !important;
+}
+
+.fc-popover-close:hover {
+    opacity: 1 !important;
+}
+
+.fc-popover-body {
+    padding: 12px !important;
+    background-color: #ffffff !important;
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}
+
+.dark .fc-popover-body {
+    background-color: #222222 !important;
+}
+
+/* Ensure events inside popover match sizing & alignment */
+.fc-popover-body .fc-daygrid-event {
+    margin: 4px 0 !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+}

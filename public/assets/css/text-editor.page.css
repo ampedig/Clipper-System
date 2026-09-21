@@ -1,0 +1,261 @@
+/* --- QUILL EDITOR PRO CUSTOM STYLES --- */
+
+/* Editor Wrapper */
+.editor-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Toolbar Container */
+.ql-toolbar.ql-snow {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border: 2px solid #f1f5f9;
+  border-top-left-radius: 1.25rem;
+  border-top-right-radius: 1.25rem;
+  background-color: #ffffff;
+  padding: 16px 20px;
+  border-bottom: 2px solid #f1f5f9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Content Container */
+.ql-container.ql-snow {
+  border: 2px solid #f1f5f9;
+  border-top: none;
+  border-bottom-left-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+  background-color: #ffffff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 1rem;
+  min-height: 500px;
+}
+
+/* Editor Padding */
+.ql-editor {
+  padding: 32px;
+  color: #334155;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* Placeholder Style */
+.ql-editor.ql-blank::before {
+  color: #94a3b8;
+  font-style: normal;
+  font-weight: 400;
+  left: 32px;
+}
+
+/* --- Toolbar Buttons Styling --- */
+
+/* Default Button State */
+.ql-snow .ql-toolbar button {
+  width: 36px;
+  height: 36px;
+  border-radius: 0.75rem;
+  margin-right: 0;
+  transition: all 0.2s ease;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dropdowns (Pickers) */
+.ql-snow .ql-toolbar .ql-picker-label {
+  padding: 0 8px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 0.75rem;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+/* Icon SVG default color */
+.ql-snow .ql-toolbar button .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: #64748b;
+  stroke-width: 1.5;
+}
+
+.ql-snow .ql-toolbar button .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label .ql-fill {
+  fill: #64748b;
+}
+
+/* Hover State - Theme Blue Colors */
+.ql-snow .ql-toolbar button:hover,
+.ql-snow .ql-toolbar .ql-picker-label:hover {
+  background-color: #eff6ff;
+  color: #3b82f6;
+}
+
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke {
+  stroke: #3b82f6;
+}
+
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill {
+  fill: #3b82f6;
+}
+
+/* Active/Selected State */
+.ql-snow .ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
+}
+
+.ql-snow .ql-toolbar button.ql-active .ql-stroke {
+  stroke: #2563eb !important;
+}
+
+.ql-snow .ql-toolbar button.ql-active .ql-fill {
+  fill: #2563eb !important;
+}
+
+/* Separator Grouping */
+.ql-formats {
+  margin-right: 0 !important;
+  padding-right: 12px;
+  border-right: 2px solid #f1f5f9;
+  display: flex;
+  gap: 4px;
+}
+
+.ql-formats:last-child {
+  border-right: none;
+}
+
+/* Focus Ring Wrapper */
+.editor-wrapper:focus-within .ql-toolbar {
+  border-color: var(--color-brand-500, #3b82f6);
+  background-color: #fff;
+}
+
+.editor-wrapper:focus-within .ql-container {
+  border-color: var(--color-brand-500, #3b82f6);
+}
+
+/* --- DARK THEME OVERRIDES --- */
+.dark .ql-toolbar.ql-snow {
+  border-color: #2e2e2e;
+  background-color: #222222;
+  border-bottom-color: #2e2e2e;
+}
+
+.dark .ql-container.ql-snow {
+  border-color: #2e2e2e;
+  background-color: #222222;
+}
+
+.dark .ql-editor {
+  color: #e2e8f0;
+}
+
+.dark .ql-editor.ql-blank::before {
+  color: #64748b;
+}
+
+.dark .ql-snow .ql-toolbar button {
+  color: #f8fafc;
+}
+
+.dark .ql-snow .ql-toolbar .ql-picker-label {
+  color: #f8fafc;
+}
+
+.dark .ql-snow .ql-toolbar button .ql-stroke,
+.dark .ql-snow .ql-toolbar .ql-picker-label .ql-stroke {
+  stroke: #f8fafc;
+}
+
+.dark .ql-snow .ql-toolbar button .ql-fill,
+.dark .ql-snow .ql-toolbar .ql-picker-label .ql-fill {
+  fill: #f8fafc;
+}
+
+/* Hover State - Dark */
+.dark .ql-snow .ql-toolbar button:hover,
+.dark .ql-snow .ql-toolbar .ql-picker-label:hover {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--color-brand-400, #60a5fa);
+}
+
+.dark .ql-snow .ql-toolbar button:hover .ql-stroke,
+.dark .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke {
+  stroke: var(--color-brand-400, #60a5fa);
+}
+
+.dark .ql-snow .ql-toolbar button:hover .ql-fill,
+.dark .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill {
+  fill: var(--color-brand-400, #60a5fa);
+}
+
+/* Active State - Dark */
+.dark .ql-snow .ql-toolbar button.ql-active,
+.dark .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.dark .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: var(--color-brand-400, #60a5fa) !important;
+}
+
+.dark .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.dark .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke {
+  stroke: var(--color-brand-400, #60a5fa) !important;
+}
+
+.dark .ql-snow .ql-toolbar button.ql-active .ql-fill,
+.dark .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill {
+  fill: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* Picker options dropdown panels */
+.dark .ql-snow .ql-picker-options {
+  background-color: #222222;
+  border-color: #2e2e2e;
+}
+
+.dark .ql-snow .ql-picker-item {
+  color: #f8fafc;
+}
+
+.dark .ql-snow .ql-picker-item:hover {
+  color: var(--color-brand-400, #60a5fa);
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Separator Grouping - Dark */
+.dark .ql-formats {
+  border-right-color: #2e2e2e;
+}
+
+/* Focus Ring Wrapper - Dark */
+.dark .editor-wrapper:focus-within .ql-toolbar {
+  border-color: var(--color-brand-500, #3b82f6);
+  background-color: #222222;
+}
+
+.dark .editor-wrapper:focus-within .ql-container {
+  border-color: var(--color-brand-500, #3b82f6);
+}
+
+/* Link tooltip dark mode styling */
+.dark .ql-snow .ql-tooltip {
+  background-color: #222222;
+  border-color: #2e2e2e;
+  color: #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .ql-snow .ql-tooltip input[type=text] {
+  background-color: #161616;
+  border-color: #2e2e2e;
+  color: #e2e8f0;
+}

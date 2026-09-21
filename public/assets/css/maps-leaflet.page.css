@@ -1,0 +1,89 @@
+/* Leaflet Maps Page Specific Styles */
+
+.gmap-container {
+    height: 350px;
+    width: 100%;
+}
+
+.map-card {
+    transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Customizing default Leaflet elements to match Dashboard Design System */
+.leaflet-bar {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.dark .leaflet-bar {
+    border-color: #2e2e2e !important;
+}
+
+.leaflet-bar a {
+    background-color: #ffffff !important;
+    color: #64748b !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.leaflet-bar a:last-child {
+    border-bottom: none !important;
+}
+
+.dark .leaflet-bar a {
+    background-color: #222222 !important;
+    color: #94a3b8 !important;
+    border-bottom-color: #2e2e2e !important;
+}
+
+.leaflet-bar a:hover {
+    background-color: #f8fafc !important;
+    color: #3b82f6 !important;
+}
+
+.dark .leaflet-bar a:hover {
+    background-color: #1a1a1a !important;
+    color: #60a5fa !important;
+}
+
+/* Customizing Leaflet popups */
+.leaflet-popup-content-wrapper {
+    background-color: #ffffff !important;
+    color: #334155 !important;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+}
+
+.dark .leaflet-popup-content-wrapper {
+    background-color: #222222 !important;
+    color: #cbd5e1 !important;
+    border-color: #2e2e2e !important;
+}
+
+.leaflet-popup-tip {
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    border-left: 1px solid #e2e8f0 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.dark .leaflet-popup-tip {
+    background-color: #222222 !important;
+    border-color: #2e2e2e !important;
+}
+
+.leaflet-container {
+    background-color: #f8fafc !important;
+}
+
+.dark .leaflet-container {
+    background-color: #161616 !important;
+}
+
+/* Fix z-index for Leaflet controls under dropdowns */
+.leaflet-top, .leaflet-bottom {
+    z-index: 10 !important;
+}

@@ -1,0 +1,272 @@
+/* ============================================================
+   SWEETALERT2 PRO CUSTOM STYLES
+   Tailored to fit the dashboard's modern startup design language.
+   Flat borders, no shadows, smooth transitions, large roundings.
+   ============================================================ */
+
+/* ── Popup Base Card ── */
+.swal2-popup {
+    font-family: "Work Sans", sans-serif !important;
+    border-radius: 1rem !important; /* rounded-2xl */
+    padding: 2.25rem 2rem !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important; /* No shadow as per rules */
+}
+
+/* ── Typography ── */
+.swal2-title {
+    font-size: 1.35rem !important;
+    font-weight: 600 !important; /* font-semibold */
+    color: #0f172a !important; /* slate-900 */
+    padding-top: 0.5rem !important;
+}
+
+.swal2-html-container {
+    font-size: 0.875rem !important; /* text-sm */
+    line-height: 1.625 !important;
+    color: #475569 !important; /* slate-600 */
+    margin: 0.75rem 0 0 0 !important;
+}
+
+/* ── Semantic Icons (Customized modern designs) ── */
+.swal2-icon {
+    border-width: 2px !important;
+    margin: 0.5rem auto 1.25rem auto !important;
+}
+
+/* Success Icon */
+.swal2-icon.swal2-success {
+    border-color: #10b981 !important; /* emerald-500 */
+    color: #10b981 !important;
+}
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #10b981 !important;
+}
+.swal2-icon.swal2-success .swal2-success-ring {
+    border: 4px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Error Icon */
+.swal2-icon.swal2-error {
+    border-color: #f43f5e !important; /* rose-500 */
+    color: #f43f5e !important;
+}
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+    background-color: #f43f5e !important;
+}
+
+/* Warning Icon */
+.swal2-icon.swal2-warning {
+    border-color: #f59e0b !important; /* amber-500 */
+    color: #f59e0b !important;
+}
+.swal2-icon.swal2-warning .swal2-icon-content {
+    color: #f59e0b !important;
+}
+
+/* Info & Question Icons (Styled with Dashboard Primary Brand Color) */
+.swal2-icon.swal2-info {
+    border-color: var(--color-brand-500, #3b82f6) !important;
+    color: var(--color-brand-500, #3b82f6) !important;
+}
+.swal2-icon.swal2-info .swal2-icon-content {
+    color: var(--color-brand-500, #3b82f6) !important;
+}
+
+.swal2-icon.swal2-question {
+    border-color: var(--color-brand-400, #60a5fa) !important;
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+.swal2-icon.swal2-question .swal2-icon-content {
+    color: var(--color-brand-400, #60a5fa) !important;
+}
+
+/* ── Buttons Layout ── */
+.swal2-actions {
+    margin-top: 1.75rem !important;
+    gap: 0.75rem !important;
+}
+
+/* Confirm Button (Uses Dashboard Brand / Primary Color) */
+.swal2-styled.swal2-confirm {
+    background-color: var(--color-brand-500, #3b82f6) !important;
+    color: #ffffff !important;
+    border-radius: 0.5rem !important; /* rounded-lg (8px) */
+    padding: 0.625rem 1.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: 1px solid transparent !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+.swal2-styled.swal2-confirm:hover {
+    background-color: var(--color-brand-600, #2563eb) !important;
+}
+.swal2-styled.swal2-confirm:focus {
+    box-shadow: 0 0 0 2px var(--color-brand-100, #dbeafe) !important;
+}
+
+/* Cancel Button (Clean Muted Gray Outline) */
+.swal2-styled.swal2-cancel {
+    background-color: #f8fafc !important; /* slate-50 */
+    color: #475569 !important; /* slate-600 */
+    border-radius: 0.5rem !important; /* rounded-lg (8px) */
+    padding: 0.625rem 1.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: 1px solid #e2e8f0 !important; /* slate-200 */
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+.swal2-styled.swal2-cancel:hover {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+}
+.swal2-styled.swal2-cancel:focus {
+    box-shadow: 0 0 0 2px #f1f5f9 !important;
+}
+
+/* Deny Button (Styled like Cancel, slightly different shade if needed) */
+.swal2-styled.swal2-deny {
+    background-color: transparent !important;
+    color: #f43f5e !important;
+    border-radius: 0.5rem !important; /* rounded-lg (8px) */
+    padding: 0.625rem 1.75rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    border: 1px solid #fecdd3 !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+.swal2-styled.swal2-deny:hover {
+    background-color: #fff1f2 !important;
+}
+
+/* ── Form Inputs Inside Tooltips/Prompts ── */
+.swal2-input, .swal2-textarea, .swal2-select {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important; /* rounded-xl */
+    font-size: 0.875rem !important;
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    padding: 0.75rem 1rem !important;
+    height: auto !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s ease, background-color 0.2s ease !important;
+    margin: 1.25rem 0 0 0 !important;
+    max-width: 100% !important;
+}
+.swal2-textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 120px !important;
+    resize: vertical !important;
+}
+.swal2-input:focus, .swal2-textarea:focus, .swal2-select:focus {
+    border-color: var(--color-brand-500, #3b82f6) !important;
+    background-color: #ffffff !important;
+}
+
+/* ── Dark Mode Style Swaps ── */
+.dark .swal2-popup {
+    background-color: #222222 !important;
+    border-color: #2e2e2e !important;
+    color: #cbd5e1 !important;
+}
+
+.dark .swal2-title {
+    color: #ffffff !important;
+}
+
+.dark .swal2-html-container {
+    color: #94a3b8 !important;
+}
+
+.dark .swal2-styled.swal2-cancel {
+    background-color: #2d2d2d !important;
+    color: #cbd5e1 !important;
+    border-color: #3e3e3e !important;
+}
+.dark .swal2-styled.swal2-cancel:hover {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+}
+.dark .swal2-styled.swal2-cancel:focus {
+    box-shadow: 0 0 0 2px #333333 !important;
+}
+
+.dark .swal2-styled.swal2-deny {
+    border-color: #4c0519 !important;
+    color: #fb7185 !important;
+}
+.dark .swal2-styled.swal2-deny:hover {
+    background-color: rgba(244, 63, 94, 0.1) !important;
+}
+
+.dark .swal2-input, .dark .swal2-textarea, .dark .swal2-select {
+    background-color: #161616 !important;
+    border-color: #2e2e2e !important;
+    color: #e2e8f0 !important;
+}
+.dark .swal2-input:focus, .dark .swal2-textarea:focus, .dark .swal2-select:focus {
+    border-color: var(--color-brand-400, #60a5fa) !important;
+    background-color: #1f1f1f !important;
+}
+
+/* ── Toasts Styling ── */
+.swal2-popup.swal2-toast {
+    padding: 1.2rem !important;
+    border-radius: 0.5rem !important; /* rounded-lg (8px) */
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important; /* Minimalist soft shadow for toasts to make them distinct on overlap */
+    align-items: center !important;
+    align-content: center !important;
+    grid-template-rows: 1fr max-content !important; /* Forces Title to center against the icon when description is absent */
+}
+
+/* Reset icon margin inside Toast that was broken by global .swal2-icon rule */
+.swal2-popup.swal2-toast .swal2-icon {
+    margin: 0 0.875rem 0 0 !important;
+    min-width: 2em !important;
+    align-self: center !important;
+}
+
+.dark .swal2-popup.swal2-toast {
+    background-color: #222222 !important;
+    border-color: #2e2e2e !important;
+    color: #cbd5e1 !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+    align-self: center !important;
+}
+
+.dark .swal2-popup.swal2-toast .swal2-title {
+    color: #ffffff !important;
+}
+
+.swal2-popup.swal2-toast .swal2-html-container {
+    font-size: 0.75rem !important;
+    color: #475569 !important;
+    margin: 0.25rem 0 0 0 !important;
+    line-height: 1.4 !important;
+    align-self: center !important;
+}
+
+.dark .swal2-popup.swal2-toast .swal2-html-container {
+    color: #94a3b8 !important;
+}
+
+.swal2-popup.swal2-toast .swal2-timer-progress-bar {
+    background: var(--color-brand-500, #3b82f6) !important;
+}

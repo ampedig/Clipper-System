@@ -1,0 +1,27 @@
+/* Modal Transition Styles */
+.modal {
+    transition: visibility 0.25s, opacity 0.25s ease;
+}
+
+/* Backdrop Animation */
+.modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.modal.open .modal-backdrop {
+    opacity: 1;
+}
+
+/* Content Animation */
+.modal-content {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    /* Easing yang lebih smooth */
+}
+
+.modal.open .modal-content {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}

@@ -1,0 +1,36 @@
+/* Pricing Page Custom Styles */
+.pricing-gradient-text {
+    background: linear-gradient(135deg, var(--color-brand-500, #3b82f6) 0%, var(--color-brand-600, #2563eb) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pricing-card-hover:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-brand-500, #3b82f6);
+}
+
+.pricing-badge-dot {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.pricing-badge-dot::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: var(--color-brand-500, #3b82f6);
+}
+
+.faq-answer-transition {
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
+}

@@ -1,0 +1,26 @@
+/* Google Maps Page Specific CSS */
+
+.gmap-container {
+    height: 400px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+/* Custom Styled Map Card Hover transitions */
+.map-card {
+    transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Map placeholder state before API loads */
+.gmap-placeholder {
+    height: 400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+}
+
+.dark .gmap-placeholder {
+    background-color: #1a1a1a;
+}

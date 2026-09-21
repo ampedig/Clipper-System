@@ -1,0 +1,20 @@
+/* Custom Active State for Profile Settings Navigation */
+.settings-nav-btn {
+    transition: all 0.2s;
+}
+
+.settings-nav-btn.active {
+    color: var(--color-brand-600);
+    /* brand-600 */
+    font-weight: 600;
+}
+
+.settings-nav-btn.active i {
+    color: var(--color-brand-600);
+    /* Ensure icon also gets the color */
+}
+
+.dark .settings-nav-btn.active,
+.dark .settings-nav-btn.active i {
+    color: var(--color-brand-400) !important;
+}
