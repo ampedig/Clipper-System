@@ -51,7 +51,7 @@
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Clipper</span>
             </a>
 
-            <a href="administrator.html" class="sb-item t-sidebar">
+            <a href="{{ route('administrators.index') }}" class="sb-item t-sidebar {{ request()->routeIs('administrators.index') ? 'active' : '' }}">
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Administrator</span>
             </a>
 

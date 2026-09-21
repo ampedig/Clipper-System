@@ -146,3 +146,4 @@
 <link rel="stylesheet" href="{{ asset('assets/css/sweetalert-custom.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/flatpickr-custom.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/libs/fontawesome/css/all.css') }}">
+@stack('styles')

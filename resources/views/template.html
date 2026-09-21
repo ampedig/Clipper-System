@@ -3,14 +3,16 @@
 
 <head>
     @@include('../partials/head.html', {
-    "title": "Dashboard - AMPEDIG Admin",
-    "description": "Dashboard Admin page"
+    "title": "Data Administrator - Masum.xyz",
+    "description": "Halaman Data Administrator"
     })
+    <link rel="stylesheet" href="assets/libs/select2/css/select2.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
 </head>
 
 <body class="bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 font-sans antialiased transition-colors duration-300">
 
-    <!-- Main Wrapper -->
     <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
 
         @@include('../partials/sidebar.html')
@@ -23,160 +25,208 @@
 
             @@include('../partials/navbar.html')
 
-            <!-- Scrollable Content -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
                 <div class="flex-1 p-4 md:p-6">
-                    <div class="max-w-screen-2xl mx-auto space-y-8">
-                        
-                        <!-- Bento Box Stats Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <!-- Card 1: Revenue -->
-                            <div class="group relative h-32 p-6 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl flex items-center justify-between hover:border-brand-500/50 transition-colors duration-300">
-                                <div class="space-y-1">
-                                    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Pendapatan</span>
-                                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white leading-tight">Rp 14.250.000</h3>
-                                </div>
-                                <div class="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-950/30 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-brand-600 dark:group-hover:bg-brand-500 group-hover:text-white dark:group-hover:text-white">
-                                    <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
-                                </div>
-                            </div>
-                            <!-- Card 2: Transactions -->
-                            <div class="group relative h-32 p-6 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl flex items-center justify-start gap-4 hover:border-brand-500/50 transition-colors duration-300">
-                                <div class="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-500 group-hover:text-white dark:group-hover:text-white">
-                                    <i class="fa-solid fa-receipt text-2xl"></i>
-                                </div>
-                                <div class="space-y-1 text-left">
-                                    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Transaksi</span>
-                                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white leading-tight">1,420</h3>
-                                </div>
-                            </div>
-                            <!-- Card 3: Conversion Rate -->
-                            <div class="group relative h-32 p-6 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden flex items-center justify-between hover:border-brand-500/50 transition-colors duration-300">
-                                <span class="absolute top-0 right-0 text-[10px] font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/20 px-3 py-1 rounded-bl-2xl transition-all duration-300 group-hover:bg-rose-600 dark:group-hover:bg-rose-500 group-hover:text-white dark:group-hover:text-white">Bulan Ini</span>
-                                <div class="space-y-1">
-                                    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Rasio Konversi</span>
-                                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white leading-tight">64.8%</h3>
-                                </div>
-                                <div class="w-14 h-14 rounded-2xl bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-rose-600 dark:group-hover:bg-rose-500 group-hover:text-white dark:group-hover:text-white">
-                                    <i class="fa-solid fa-percent text-2xl"></i>
-                                </div>
-                            </div>
-                            <!-- Card 4: Active Users -->
-                            <div class="group relative h-32 p-6 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl flex items-center justify-between hover:border-brand-500/50 transition-colors duration-300">
-                                <div class="space-y-1">
-                                    <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Pengguna Aktif</span>
-                                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-white leading-tight">843</h3>
-                                </div>
-                                <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-amber-600 dark:group-hover:bg-amber-500 group-hover:text-white dark:group-hover:text-white">
-                                    <i class="fa-solid fa-users text-2xl"></i>
-                                </div>
-                            </div>
+                    <div class="max-w-screen-2xl mx-auto">
+
+                        <!-- Page Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                Data Administrator
+                            </h2>
+                            <!-- Breadcrumb -->
+                            @@include('../partials/breadcrumb.html', {
+                                "crumb1_label": "Dashboard",
+                                "crumb1_url":   "index.html",
+                                "crumb2_label": "Data Administrator",
+                                "crumb2_url":   "",
+                                "crumb3_label": "",
+                                "crumb3_url":   ""
+                            })
                         </div>
 
-                        <!-- Charts Layout Grid -->
-                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                            
-                            <!-- Revenue Trend Area Chart (ApexCharts) -->
-                            <div class="lg:col-span-3 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 flex flex-col justify-between">
-                                <div class="flex justify-between items-center mb-6">
-                                    <div>
-                                        <h3 class="font-semibold text-slate-900 dark:text-white text-base">Analisis Pendapatan</h3>
-                                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Statistik pendapatan dan pengeluaran</p>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <button class="px-3 py-1.5 text-xs font-semibold text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/30 rounded-xl transition-colors hover:bg-brand-100 dark:hover:bg-brand-900/40">
-                                            7 Hari
-                                        </button>
-                                        <button class="px-3 py-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-[#2a2a2a] rounded-xl transition-colors">
-                                            30 Hari
-                                        </button>
-                                    </div>
+                        <!-- Table Container -->
+                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors duration-300">
+                            <!-- Header Table -->
+                            <div
+                                class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Show</span>
+                                    <select class="select2-show-entries w-24">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
                                 </div>
-                                <div id="revenueChart" class="w-full"></div>
+
+                                <a class="btn btn-primary" href="create-administrator.html">
+                                    <i class="fa-solid fa-plus"></i> Tambah
+                                </a>
                             </div>
 
-                            <!-- Device Breakdown Pie Chart (ECharts) -->
-                            <div class="lg:col-span-2 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 flex flex-col justify-between">
-                                <div>
-                                    <h3 class="font-semibold text-slate-900 dark:text-white text-base">Sesi Perangkat</h3>
-                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Distribusi pengunjung berdasarkan perangkat</p>
-                                </div>
-                                <div id="userChart" class="w-full h-[300px]"></div>
-                            </div>
-
-                        </div>
-
-                        <!-- Data Table Section -->
-                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden">
-                            <div class="px-6 py-5 border-b border-slate-100 dark:border-[#2e2e2e] flex justify-between items-center bg-white dark:bg-[#222222]">
-                                <div>
-                                    <h3 class="font-semibold text-slate-900 dark:text-white text-base">Transaksi Terbaru</h3>
-                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Daftar transaksi masuk yang berhasil diverifikasi</p>
-                                </div>
-                                <a href="transaksi.html" class="btn btn-outline-primary btn-sm rounded-xl">Lihat Semua</a>
-                            </div>
+                            <!-- Main Table -->
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left">
-                                    <thead class="bg-slate-50 dark:bg-[#1a1a1a] border-b border-slate-100 dark:border-[#2e2e2e]">
+                                <table class="w-full text-left border-collapse">
+                                    <thead
+                                        class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
                                         <tr>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">ID Order</th>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Layanan / Produk</th>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pelanggan</th>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total</th>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Status</th>
-                                            <th class="px-6 py-4 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                #</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Nama</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Whatsapp</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Email</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Status</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Aksi
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
                                         <!-- Row 1 -->
-                                        <tr class="hover:bg-slate-50/50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                                #TRX-001
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">1</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Ahmad Fauzi
                                             </td>
-                                            <td class="px-6 py-4">
-                                                <span class="font-semibold text-slate-800 dark:text-slate-200 block">Token PLN 50k</span>
-                                                <span class="text-xs text-slate-400 dark:text-slate-500">PPOB</span>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0812-3456-7890</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">ahmad.fauzi@example.com</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
                                             </td>
-                                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">Budi Santoso</td>
-                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Rp 52.500</td>
-                                            <td class="px-6 py-4">
-                                                <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400">
-                                                    Sukses
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-right">
-                                                <div class="flex items-center justify-end gap-2">
-                                                    <button class="btn btn-soft-primary dark:bg-brand-950/30 dark:text-brand-400 btn-icon btn-sm" title="Edit">
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                     </button>
-                                                    <button class="btn btn-soft-danger dark:bg-rose-950/30 dark:text-rose-400 btn-icon btn-sm" title="Hapus">
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Ahmad Fauzi')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                         </tr>
+
                                         <!-- Row 2 -->
-                                        <tr class="hover:bg-slate-50/50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-4 font-mono text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                                #TRX-002
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">2</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Dina Mariana
                                             </td>
-                                            <td class="px-6 py-4">
-                                                <span class="font-semibold text-slate-800 dark:text-slate-200 block">MLBB 86 Diamonds</span>
-                                                <span class="text-xs text-slate-400 dark:text-slate-500">Games</span>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0857-1231-1231</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">dina.mariana@example.com</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
                                             </td>
-                                            <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">Siti Aminah</td>
-                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Rp 20.000</td>
-                                            <td class="px-6 py-4">
-                                                <span class="inline-flex items-center px-2.5 py-1 rounded-xl text-xs font-semibold bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400">
-                                                    Pending
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-right">
-                                                <div class="flex items-center justify-end gap-2">
-                                                    <button class="btn btn-soft-primary dark:bg-brand-950/30 dark:text-brand-400 btn-icon btn-sm" title="Edit">
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                     </button>
-                                                    <button class="btn btn-soft-danger dark:bg-rose-950/30 dark:text-rose-400 btn-icon btn-sm" title="Hapus">
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Dina Mariana')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 3 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">3</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Reza Pahlevi
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-8765-4321</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">reza.pahlevi@example.com</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Reza Pahlevi')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 4 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">4</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Bima Sena
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-2233-4455</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">bima.sena@example.com</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer">
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Bima Sena')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 5 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">5</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Sinta Lestari
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0821-5555-6666</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">sinta.lestari@example.com</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Sinta Lestari')">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </div>
@@ -184,6 +234,43 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <!-- Pagination Rapi Presisi -->
+                            <div
+                                class="p-5 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Menampilkan <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">1-10</span> dari <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">88</span> data</span>
+
+                                <nav aria-label="Page navigation">
+                                    <ul class="inline-flex items-center -space-x-px">
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 ml-0 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-l-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-white bg-brand-500 border border-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:border-brand-600 font-semibold z-10 transition">1</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">2</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">3</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-r-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
 
@@ -195,10 +282,32 @@
         </div>
     </div>
 
+
+
     @@include('../partials/vendor-scripts.html')
-    <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/libs/echarts/echarts.min.js"></script>
-    <script src="assets/js/dashboard.page.js"></script>
+
+
+    <!-- SweetAlert2 JS -->
+    <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script>
+        function confirmDelete(button, name) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Data administrator ${name} akan dihapus secara permanen!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Logic Backend Delete Route
+                    // window.location.href = '/delete/' + id;
+                    console.log('Delete confirmed for:', name);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
