@@ -15,7 +15,7 @@
 
             <p class="sb-title t-sidebar-title">Main Menu</p>
 
-            <a href="index.html" class="sb-item t-sidebar">
+            <a href="{{ route('dashboard') }}" class="sb-item t-sidebar {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fa-solid fa-gauge-high sb-icon"></i>
                 <span>Dashboard</span>
             </a>
