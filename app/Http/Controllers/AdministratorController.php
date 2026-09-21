@@ -80,4 +80,23 @@ class AdministratorController extends Controller
 
         return redirect()->route('administrators.index')->with('success', 'Akun administrator berhasil dihapus.');
     }
+    public function toggleStatus(Request $request, string $id)
+    {
+        $administrator = User::where('role', 'admin')->findOrFail($id);
+
+        if (auth()->id() == $id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak dapat menonaktifkan akun Anda sendiri.'
+            ], 403);
+        }
+
+        $administrator->is_active = $request->boolean('is_active');
+        $administrator->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status administrator berhasil ' . ($administrator->is_active ? 'diaktifkan.' : 'dinonaktifkan.')
+        ]);
+    }
 }

@@ -1,5 +1,5 @@
 ---
-description: Jadi ini project Web Clipper dibuat dengan laravel 13
+trigger: always_on
 ---
 
 Web clipper ini dibuat dengan laravel, Yaitu web Laravel 13

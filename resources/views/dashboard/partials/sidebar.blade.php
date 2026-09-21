@@ -41,7 +41,7 @@
                 <i class="fa-solid fa-money-bill-transfer sb-icon"></i> <span>Withdraw</span>
             </a>
 
-            <a href="withdraw-channel.html" class="sb-item t-sidebar">
+            <a href="{{ route('withdraw-channels.index') }}" class="sb-item t-sidebar {{ request()->routeIs('withdraw-channels.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-network-wired sb-icon"></i> <span>Metode WD</span>
             </a>
 

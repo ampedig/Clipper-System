@@ -1,5 +1,8 @@
 @extends('dashboard.layouts.app')
 
+@section('title', 'Metode Penarikan (WD)')
+@section('description', 'Pengaturan rekening dan e-wallet untuk penarikan komisi')
+
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/libs/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}">
@@ -7,28 +10,29 @@
 
 @section('content')
     <div class="flex-1 p-4 md:p-6">
-        <div class="max-w-screen-2xl mx-auto">
+        <div class="max-w-screen-2xl mx-auto space-y-6">
 
             <!-- Page Header -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
-                    Data Administrator
+                    Metode WD
                 </h2>
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
                     'crumb1_url' => route('dashboard'),
-                    'crumb2_label' => 'Administrator',
+                    'crumb2_label' => 'Komisi',
                     'crumb2_url' => '',
-                    'crumb3_label' => '',
+                    'crumb3_label' => 'Metode WD',
                     'crumb3_url' => '',
                 ])
             </div>
 
-            <!-- Table Container -->
+            <!-- Table Container Card -->
             <div
                 class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors duration-300">
-                <!-- Header Table -->
+
+                <!-- Header Table Controls -->
                 <div
                     class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-2">
@@ -41,14 +45,14 @@
                         </select>
                     </div>
 
-                    <a class="btn btn-primary" href="{{ route('administrators.create') }}">
+                    <a class="btn btn-primary" href="{{ route('withdraw-channels.create') }}">
                         <i class="fa-solid fa-plus"></i> Tambah
                     </a>
                 </div>
 
-                <!-- Main Table -->
+                <!-- Main Data Table -->
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+                    <table id="channelTable" class="w-full text-left border-collapse">
                         <thead
                             class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
                             <tr>
@@ -60,10 +64,10 @@
                                     Nama</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                    Whatsapp</th>
+                                    Code</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                    Email</th>
+                                    Fee</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
                                     Status</th>
@@ -73,54 +77,68 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
-                            @forelse($administrators as $index => $admin)
+
+                            @forelse($withdrawChannels as $channel)
                                 <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                    <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                        {{ $administrators->firstItem() + $index }}</td>
-                                    <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                        {{ $admin->name }}</td>
-                                    <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">
-                                        {{ $admin->whatsapp ?? '-' }}</td>
-                                    <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">{{ $admin->email }}
+                                    <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                        {{ $loop->iteration + $withdrawChannels->firstItem() - 1 }}</td>
+                                    <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                        <span>{{ $channel->name }}</span>
                                     </td>
-                                    <td class="px-6 py-3 text-center td-nowrap">
+                                    <td class="px-6 py-4 td-nowrap">
+                                        <span
+                                            class="px-2.5 py-1 bg-slate-100 dark:bg-[#161616] text-slate-600 dark:text-slate-400 rounded-lg text-xs font-semibold tracking-wider border border-slate-200 dark:border-[#333]">
+                                            {{ $channel->code }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-400 td-nowrap">
+                                        {{ $channel->fee > 0 ? 'Rp ' . number_format($channel->fee, 0, ',', '.') : 'Gratis' }}
+                                    </td>
+                                    <td class="px-6 py-4 td-nowrap">
                                         <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer"
-                                                {{ $admin->is_active ? 'checked' : '' }} 
-                                                onchange="toggleAdminStatus(this, '{{ route('administrators.status', $admin->id) }}')">
+                                            <input type="checkbox" class="sr-only peer status-toggle"
+                                                {{ $channel->is_active ? 'checked' : '' }}
+                                                onchange="toggleChannelStatus(this, '{{ route('withdraw-channels.status', $channel->id) }}')">
                                             <div
-                                                class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500">
+                                                class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500">
                                             </div>
                                         </label>
                                     </td>
-                                    <td class="px-6 py-3 text-center td-nowrap">
+                                    <td class="px-6 py-4 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
-                                            <a href="{{ route('administrators.edit', $admin->id) }}"
-                                                class="btn btn-primary btn-icon" title="Edit">
-                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            <a href="{{ route('withdraw-channels.edit', $channel->id) }}"
+                                                class="btn btn-secondary btn-icon" title="Edit Data">
+                                                <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
-                                            <button class="btn btn-danger btn-icon" title="Hapus"
-                                                onclick="confirmDelete('{{ addslashes($admin->name) }}', '{{ route('administrators.destroy', $admin->id) }}')">
-                                                <i class="fa-solid fa-trash-can"></i>
+                                            <button type="button" class="btn btn-danger btn-icon btn-delete"
+                                                title="Hapus Data"
+                                                onclick="confirmDelete('{{ $channel->name }}', '{{ route('withdraw-channels.destroy', $channel->id) }}')">
+                                                <i class="fa-regular fa-trash-can"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-slate-500 dark:text-slate-400">
-                                        Belum ada data administrator.
+                                    <td colspan="6" class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                                        <div class="flex flex-col items-center justify-center space-y-2">
+                                            <i
+                                                class="fa-regular fa-folder-open text-3xl mb-2 text-slate-300 dark:text-slate-600"></i>
+                                            <p class="text-sm font-medium">Belum ada data metode penarikan</p>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
+
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination Rapi Presisi -->
                 <div class="p-5 border-t border-slate-100 dark:border-[#2e2e2e]">
-                    {{ $administrators->links('dashboard.components.pagination') }}
+                    {{ $withdrawChannels->links('dashboard.components.pagination') }}
                 </div>
+
             </div>
 
         </div>
@@ -131,36 +149,55 @@
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script>
-        @if (session('success'))
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: 'Berhasil..!',
-                text: "{{ session('success') }}",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            });
-        @endif
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            @endif
 
-        @if (session('error'))
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'error',
-                title: 'Gagal!',
-                text: "{{ session('error') }}",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            });
-        @endif
+            @if (session('error'))
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: "{{ session('error') }}",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            @endif
+
+            // if select2 is available
+            if (typeof $ !== 'undefined' && $.fn.select2) {
+                $('.select2-show-entries').select2({
+                    minimumResultsForSearch: Infinity
+                }).on('change', function() {
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('per_page', $(this).val());
+                    window.location.href = url.href;
+                });
+            } else {
+                document.querySelector('.select2-show-entries').addEventListener('change', function() {
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('per_page', this.value);
+                    window.location.href = url.href;
+                });
+            }
+        });
 
         function confirmDelete(name, deleteUrl) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: `Data administrator ${name} akan dihapus secara permanen!`,
+                text: `Data metode penarikan ${name} akan dihapus secara permanen!`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, Hapus!',
@@ -172,18 +209,18 @@
                     form.action = deleteUrl;
                     form.method = 'POST';
                     form.innerHTML = `
-                        @csrf
-                        @method('DELETE')
-                    `;
+                    @csrf
+                    @method('DELETE')
+                `;
                     document.body.appendChild(form);
                     form.submit();
                 }
             });
         }
 
-        async function toggleAdminStatus(checkbox, url) {
+        async function toggleChannelStatus(checkbox, url) {
             const isActive = checkbox.checked;
-            
+
             try {
                 const response = await fetch(url, {
                     method: 'PATCH',
@@ -191,7 +228,9 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({ is_active: isActive })
+                    body: JSON.stringify({
+                        is_active: isActive
+                    })
                 });
 
                 const data = await response.json();
@@ -233,23 +272,6 @@
                     timerProgressBar: true
                 });
             }
-        }
-
-        // if select2 is available
-        if (typeof $ !== 'undefined' && $.fn.select2) {
-            $('.select2-show-entries').select2({
-                minimumResultsForSearch: Infinity
-            }).on('change', function() {
-                let url = new URL(window.location.href);
-                url.searchParams.set('per_page', $(this).val());
-                window.location.href = url.href;
-            });
-        } else {
-            document.querySelector('.select2-show-entries').addEventListener('change', function() {
-                let url = new URL(window.location.href);
-                url.searchParams.set('per_page', this.value);
-                window.location.href = url.href;
-            });
         }
     </script>
 @endpush
