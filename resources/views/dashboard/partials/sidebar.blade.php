@@ -15,7 +15,8 @@
 
             <p class="sb-title t-sidebar-title">Main Menu</p>
 
-            <a href="{{ route('dashboard') }}" class="sb-item t-sidebar {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fa-solid fa-gauge-high sb-icon"></i>
                 <span>Dashboard</span>
             </a>
@@ -51,7 +52,8 @@
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Clipper</span>
             </a>
 
-            <a href="{{ route('administrators.index') }}" class="sb-item t-sidebar {{ request()->routeIs('administrators.index') ? 'active' : '' }}">
+            <a href="{{ route('administrators.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('administrators.index') ? 'active' : '' }}">
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Administrator</span>
             </a>
 
@@ -117,10 +119,6 @@
                     </div>
                 </div>
             </div>
-
-            <p class="sb-title sb-title--spaced t-sidebar-title">System</p>
-
-
 
         </nav>
 

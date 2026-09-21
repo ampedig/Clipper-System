@@ -41,7 +41,7 @@
                         </select>
                     </div>
 
-                    <a class="btn btn-primary" href="#">
+                    <a class="btn btn-primary" href="{{ route('administrators.create') }}">
                         <i class="fa-solid fa-plus"></i> Tambah
                     </a>
                 </div>
@@ -94,11 +94,12 @@
                                     </td>
                                     <td class="px-6 py-3 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
-                                            <button class="btn btn-primary btn-icon" title="Edit">
+                                            <a href="{{ route('administrators.edit', $admin->id) }}"
+                                                class="btn btn-primary btn-icon" title="Edit">
                                                 <i class="fa-solid fa-pen-to-square"></i>
-                                            </button>
+                                            </a>
                                             <button class="btn btn-danger btn-icon" title="Hapus"
-                                                onclick="confirmDelete(this, '{{ addslashes($admin->name) }}')">
+                                                onclick="confirmDelete('{{ addslashes($admin->name) }}', '{{ route('administrators.destroy', $admin->id) }}')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                         </div>
@@ -129,7 +130,33 @@
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script>
-        function confirmDelete(button, name) {
+        @if (session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Berhasil..!',
+                text: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        @endif
+
+        function confirmDelete(name, deleteUrl) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
                 text: `Data administrator ${name} akan dihapus secara permanen!`,
@@ -140,9 +167,15 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Logic Backend Delete Route
-                    // window.location.href = '/delete/' + id;
-                    console.log('Delete confirmed for:', name);
+                    let form = document.createElement('form');
+                    form.action = deleteUrl;
+                    form.method = 'POST';
+                    form.innerHTML = `
+                        @csrf
+                        @method('DELETE')
+                    `;
+                    document.body.appendChild(form);
+                    form.submit();
                 }
             });
         }

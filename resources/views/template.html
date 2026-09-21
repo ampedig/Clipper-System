@@ -3,11 +3,10 @@
 
 <head>
     @@include('../partials/head.html', {
-    "title": "Data Administrator - Masum.xyz",
-    "description": "Halaman Data Administrator"
+    "title": "Tambah Administrator - Masum.xyz",
+    "description": "Form Tambah Akun Administrator Baru"
     })
     <link rel="stylesheet" href="assets/libs/select2/css/select2.min.css">
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
 </head>
 
@@ -25,254 +24,159 @@
 
             @@include('../partials/navbar.html')
 
+            <!-- Scrollable Content Area -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
+
+                <!-- Content Wrapper -->
                 <div class="flex-1 p-4 md:p-6">
-                    <div class="max-w-screen-2xl mx-auto">
+                    <div class="max-w-screen-2xl mx-auto space-y-6">
 
                         <!-- Page Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                            <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
-                                Data Administrator
-                            </h2>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                    Tambah Administrator Baru
+                                </h2>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Lengkapi informasi profil, hak akses peran, dan kredensial akun.</p>
+                            </div>
                             <!-- Breadcrumb -->
                             @@include('../partials/breadcrumb.html', {
                                 "crumb1_label": "Dashboard",
                                 "crumb1_url":   "index.html",
-                                "crumb2_label": "Data Administrator",
-                                "crumb2_url":   "",
-                                "crumb3_label": "",
+                                "crumb2_label": "Administrator",
+                                "crumb2_url":   "administrator.html",
+                                "crumb3_label": "Tambah",
                                 "crumb3_url":   ""
                             })
                         </div>
 
-                        <!-- Table Container -->
-                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors duration-300">
-                            <!-- Header Table -->
-                            <div
-                                class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Show</span>
-                                    <select class="select2-show-entries w-24">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
+                        <!-- Form Card Utama -->
+                        <form id="createAdminForm" action="javascript:void(0)" method="POST">
+                            <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
+
+                                <!-- Header Form -->
+                                <div class="pb-4 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">Form Akun Administrator</h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Isi data di bawah untuk menambahkan akses pengguna ke sistem dashboard.</p>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-medium">* Kolom wajib diisi</span>
                                 </div>
 
-                                <a class="btn btn-primary" href="create-administrator.html">
-                                    <i class="fa-solid fa-plus"></i> Tambah
-                                </a>
+                                <!-- Informasi Profil & Kontak -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Nama Lengkap -->
+                                    <div class="md:col-span-2">
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Nama Lengkap <span class="text-rose-500">*</span></label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-regular fa-user text-xs"></i>
+                                            </div>
+                                            <input type="text" id="adminNameInput" placeholder="Contoh: Sarah Azhari"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-medium text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Whatsapp -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">No. WhatsApp <span class="text-rose-500">*</span></label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-brands fa-whatsapp text-xs"></i>
+                                            </div>
+                                            <input type="tel" id="adminWhatsappInput" placeholder="0812-3456-7890"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Alamat Email <span class="text-rose-500">*</span></label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-regular fa-envelope text-xs"></i>
+                                            </div>
+                                            <input type="email" id="adminEmailInput" placeholder="sarah@example.com"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Role & Akses -->
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Role / Hak Akses <span class="text-rose-500">*</span></label>
+                                    <select class="select2-role w-full" required>
+                                        <option></option>
+                                        <option value="admin">Administrator (Akses Penuh)</option>
+                                        <option value="clipper">Clipper (Operator Web Clipper)</option>
+                                    </select>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1.5">Tentukan tingkat kewenangan hak akses akun dalam mengelola data.</p>
+                                </div>
+
+                                <!-- Kredensial Password -->
+                                <div class="p-5 bg-slate-50 dark:bg-[#161616] rounded-2xl border border-slate-100 dark:border-[#2e2e2e] space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                                            <i class="fa-solid fa-lock text-brand-600 dark:text-brand-400"></i> Kredensial Kata Sandi <span class="text-rose-500">*</span>
+                                        </label>
+                                        <button type="button" id="btnGeneratePassword" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                                            <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> Acak Password
+                                        </button>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Password</label>
+                                            <div class="relative">
+                                                <input type="password" id="adminPasswordInput" placeholder="Minimal 8 karakter..."
+                                                    class="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors text-slate-800 dark:text-slate-200" required>
+                                                <button type="button" id="togglePasswordVisibility" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors" title="Lihat password">
+                                                    <i class="fa-regular fa-eye text-xs" id="passwordEyeIcon"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Konfirmasi Password</label>
+                                            <div class="relative">
+                                                <input type="password" id="adminPasswordConfirmInput" placeholder="Ulangi password..."
+                                                    class="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors text-slate-800 dark:text-slate-200" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500">Gunakan minimal 8 karakter dengan perpaduan huruf, angka, atau simbol.</p>
+                                </div>
+
+                                <!-- Status Akun (Boolean Toggle) -->
+                                <div class="p-4 border border-slate-100 dark:border-[#2e2e2e] rounded-2xl bg-slate-50 dark:bg-[#161616] flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div id="statusIcon" class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm transition-colors duration-200">
+                                            <i class="fa-solid fa-user-check"></i>
+                                        </div>
+                                        <div>
+                                            <p id="statusTitle" class="text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors">Status Akun Aktif</p>
+                                            <p id="statusDesc" class="text-xs text-slate-400 dark:text-slate-500 transition-colors">Administrator dapat langsung login dan menggunakan sistem dashboard.</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="toggleStatusAdmin" class="sr-only peer" checked>
+                                        <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500">
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <!-- Tombol Aksi -->
+                                <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                                    <a href="administrator.html" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
+                                        Batal
+                                    </a>
+                                    <button type="submit" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-floppy-disk"></i> Simpan Administrator
+                                    </button>
+                                </div>
+
                             </div>
-
-                            <!-- Main Table -->
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead
-                                        class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
-                                        <tr>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                #</th>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                Nama</th>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                Whatsapp</th>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                Email</th>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                Status</th>
-                                            <th
-                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
-                                                Aksi
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
-                                        <!-- Row 1 -->
-                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">1</td>
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                                Ahmad Fauzi
-                                            </td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0812-3456-7890</td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">ahmad.fauzi@example.com</td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" class="sr-only peer" checked>
-                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
-                                                </label>
-                                            </td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button class="btn btn-primary btn-icon" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-icon"
-                                                        title="Hapus"
-                                                        onclick="confirmDelete(this, 'Ahmad Fauzi')">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 2 -->
-                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">2</td>
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                                Dina Mariana
-                                            </td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0857-1231-1231</td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">dina.mariana@example.com</td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" class="sr-only peer" checked>
-                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
-                                                </label>
-                                            </td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button class="btn btn-primary btn-icon" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-icon"
-                                                        title="Hapus"
-                                                        onclick="confirmDelete(this, 'Dina Mariana')">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 3 -->
-                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">3</td>
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                                Reza Pahlevi
-                                            </td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-8765-4321</td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">reza.pahlevi@example.com</td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" class="sr-only peer" checked>
-                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
-                                                </label>
-                                            </td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button class="btn btn-primary btn-icon" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-icon"
-                                                        title="Hapus"
-                                                        onclick="confirmDelete(this, 'Reza Pahlevi')">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 4 -->
-                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">4</td>
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                                Bima Sena
-                                            </td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-2233-4455</td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">bima.sena@example.com</td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" class="sr-only peer">
-                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
-                                                </label>
-                                            </td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button class="btn btn-primary btn-icon" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-icon"
-                                                        title="Hapus"
-                                                        onclick="confirmDelete(this, 'Bima Sena')">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 5 -->
-                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">5</td>
-                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
-                                                Sinta Lestari
-                                            </td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0821-5555-6666</td>
-                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">sinta.lestari@example.com</td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <label class="relative inline-flex items-center cursor-pointer">
-                                                    <input type="checkbox" class="sr-only peer" checked>
-                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
-                                                </label>
-                                            </td>
-                                            <td class="px-6 py-3 text-center td-nowrap">
-                                                <div class="flex items-center justify-center gap-2">
-                                                    <button class="btn btn-primary btn-icon" title="Edit">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-icon"
-                                                        title="Hapus"
-                                                        onclick="confirmDelete(this, 'Sinta Lestari')">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Pagination Rapi Presisi -->
-                            <div
-                                class="p-5 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Menampilkan <span
-                                        class="font-semibold text-slate-700 dark:text-slate-300">1-10</span> dari <span
-                                        class="font-semibold text-slate-700 dark:text-slate-300">88</span> data</span>
-
-                                <nav aria-label="Page navigation">
-                                    <ul class="inline-flex items-center -space-x-px">
-                                        <li>
-                                            <a href="#"
-                                                class="flex items-center justify-center w-9 h-9 ml-0 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-l-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
-                                                <i class="fa-solid fa-chevron-left text-[10px]"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="flex items-center justify-center w-9 h-9 leading-tight text-white bg-brand-500 border border-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:border-brand-600 font-semibold z-10 transition">1</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">2</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">3</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-r-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
-                                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                        </form>
 
                     </div>
                 </div>
@@ -282,31 +186,122 @@
         </div>
     </div>
 
-
-
     @@include('../partials/vendor-scripts.html')
-
-
-    <!-- SweetAlert2 JS -->
+    <script src="assets/libs/select2/js/select2.min.js"></script>
     <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
     <script>
-        function confirmDelete(button, name) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: `Data administrator ${name} akan dihapus secara permanen!`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Logic Backend Delete Route
-                    // window.location.href = '/delete/' + id;
-                    console.log('Delete confirmed for:', name);
-                }
-            });
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof $ !== "undefined" && $.fn.select2) {
+                $(".select2-role").select2({
+                    placeholder: "Pilih Hak Akses / Role",
+                    width: "100%",
+                    minimumResultsForSearch: 8
+                });
+            }
+
+            const togglePasswordBtn = document.getElementById("togglePasswordVisibility");
+            const passwordInput = document.getElementById("adminPasswordInput");
+            const eyeIcon = document.getElementById("passwordEyeIcon");
+
+            if (togglePasswordBtn && passwordInput && eyeIcon) {
+                togglePasswordBtn.addEventListener("click", () => {
+                    const isPassword = passwordInput.getAttribute("type") === "password";
+                    passwordInput.setAttribute("type", isPassword ? "text" : "password");
+                    eyeIcon.className = isPassword ? "fa-regular fa-eye-slash text-xs" : "fa-regular fa-eye text-xs";
+                });
+            }
+
+            const btnGenerate = document.getElementById("btnGeneratePassword");
+            const confirmPasswordInput = document.getElementById("adminPasswordConfirmInput");
+
+            if (btnGenerate && passwordInput && confirmPasswordInput) {
+                btnGenerate.addEventListener("click", () => {
+                    const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%";
+                    let generated = "";
+                    for (let i = 0; i < 10; i++) {
+                        generated += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    passwordInput.value = generated;
+                    confirmPasswordInput.value = generated;
+                    passwordInput.setAttribute("type", "text");
+                    if (eyeIcon) eyeIcon.className = "fa-regular fa-eye-slash text-xs";
+                });
+            }
+
+            const toggleStatus = document.getElementById("toggleStatusAdmin");
+            const statusTitle = document.getElementById("statusTitle");
+            const statusDesc = document.getElementById("statusDesc");
+            const statusIcon = document.getElementById("statusIcon");
+
+            if (toggleStatus) {
+                toggleStatus.addEventListener("change", function () {
+                    if (this.checked) {
+                        statusTitle.textContent = "Status Akun Aktif";
+                        statusDesc.textContent = "Administrator dapat langsung login dan menggunakan sistem dashboard.";
+                        statusIcon.className = "w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm transition-colors duration-200";
+                    } else {
+                        statusTitle.textContent = "Status Akun Nonaktif";
+                        statusDesc.textContent = "Akun ditangguhkan sementara dan tidak dapat mengakses dashboard.";
+                        statusIcon.className = "w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center text-sm transition-colors duration-200";
+                    }
+                });
+            }
+
+            const form = document.getElementById("createAdminForm");
+            const nameInput = document.getElementById("adminNameInput");
+
+            if (form) {
+                form.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    const pwd = passwordInput ? passwordInput.value : "";
+                    const confirmPwd = confirmPasswordInput ? confirmPasswordInput.value : "";
+
+                    if (pwd !== confirmPwd) {
+                        if (typeof Swal !== "undefined") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Password Tidak Cocok",
+                                text: "Pastikan kolom password dan konfirmasi password sama persis.",
+                                confirmButtonColor: "#4f46e5"
+                            });
+                        } else {
+                            alert("Password dan konfirmasi password tidak cocok.");
+                        }
+                        return;
+                    }
+
+                    const adminName = nameInput && nameInput.value.trim() ? nameInput.value.trim() : "Administrator Baru";
+
+                    if (typeof Swal !== "undefined") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Administrator Berhasil Ditambahkan!",
+                            html: `Akun administrator <strong>${adminName}</strong> berhasil dibuat.`,
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="fa-solid fa-list mr-1.5"></i> Lihat Data Administrator',
+                            cancelButtonText: '<i class="fa-solid fa-plus mr-1.5"></i> Tambah Administrator Lain',
+                            buttonsStyling: false,
+                            customClass: {
+                                popup: "rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]",
+                                confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm ml-2",
+                                cancelButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "administrator.html";
+                            } else {
+                                form.reset();
+                                if ($ && $.fn.select2) {
+                                    $(".select2-role").val("").trigger("change");
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     </script>
 </body>
 
