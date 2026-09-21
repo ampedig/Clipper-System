@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('name', 150);
+            $table->string('whatsapp', 50)->nullable();
+            $table->string('email', 150)->unique();
+            $table->string('password', 255);
+            $table->enum('role', ['admin', 'clipper'])->default('clipper');
+            $table->unsignedBigInteger('balance')->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->foreignId('withdraw_channel_id')->nullable()->constrained('withdraw_channels')->nullOnDelete();
+            $table->string('account_name', 255)->nullable();
+            $table->string('account_number', 255)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
