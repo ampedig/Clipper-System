@@ -3,149 +3,327 @@
 
 <head>
     @@include('../partials/head.html', {
-    "title": "Login - Masum.xyz",
-    "description": "Masuk ke Dashboard AMPEDIG"
+    "title": "Tambah Campaign Clipper - Masum.xyz",
+    "description": "Form Pembuatan Campaign Baru untuk Web Clipper"
     })
+    <!-- Quill Text Editor CSS -->
+    <link rel="stylesheet" href="assets/libs/quill/quill.snow.css">
+    <link rel="stylesheet" href="assets/css/text-editor.page.css">
+    <!-- Select2 & Flatpickr & SweetAlert2 CSS -->
+    <link rel="stylesheet" href="assets/libs/select2/css/select2.min.css">
+    <link rel="stylesheet" href="assets/libs/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
 </head>
 
-<body class="bg-slate-50 dark:bg-[#161616] font-sans antialiased text-slate-600 dark:text-slate-300 transition-colors duration-300">
-    <div class="h-screen w-full flex overflow-hidden">
-        <div class="hidden lg:flex lg:w-1/2 bg-brand-600 p-12 flex-col justify-between relative overflow-hidden">
-            <div
-                class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
-            </div>
-            <div
-                class="absolute bottom-0 left-0 w-80 h-80 bg-white opacity-10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl">
-            </div>
-            <!-- Logo -->
-            <div class="relative z-10 flex items-center gap-3 font-semibold text-2xl text-white tracking-tight">
-                <div class="flex items-center justify-center w-10 h-10 text-brand-600">
-                    <img src="../assets/images/logo.png" alt="AMPEDIG Logo"
-                        class="h-10 w-auto rounded-xl">
-                </div>
-                <span>AMPEDIG</span>
-            </div>
+<body class="bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 font-sans antialiased transition-colors duration-300">
 
-            <!-- Main Content -->
-            <div class="relative z-10 max-w-xl">
-                <h2 class="text-5xl font-semibold mb-6 leading-tight text-white">Kelola Bisnis Digital Anda Lebih
-                    Mudah.</h2>
-                <p class="text-brand-100 text-lg leading-relaxed">Platform all-in-one untuk manajemen
-                    agency dan transaksi PPOB yang efisien dan modern.</p>
-            </div>
-            <div class="relative z-10 text-brand-200 text-sm font-medium">
-                &copy; <script>
-                    document.write(new Date().getFullYear());
-                </script>
-                Masum.xyz. All rights reserved.
-            </div>
-        </div>
+    <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
 
-        <div class="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white dark:bg-[#161616] p-6 overflow-y-auto transition-colors duration-300">
-            <div class="w-full max-w-md ">
-                <div class="lg:hidden flex justify-center mb-8">
-                    <div class="flex items-center gap-2 font-semibold text-2xl text-slate-900 dark:text-white">
-                        <div class="flex items-center justify-center w-10 h-10 text-white">
-                            <img src="../assets/images/logo.png" alt="AMPEDIG Logo"
-                                class="h-10 w-auto rounded-xl">
-                        </div>
-                        <span>AMPEDIG</span>
-                    </div>
-                </div>
+        @@include('../partials/sidebar.html')
 
-                <!-- Header Form -->
-                <div class="text-center lg:text-left mb-10">
-                    <h1 class="text-3xl font-semibold text-slate-900 dark:text-white mb-3 tracking-tight">Selamat Datang</h1>
-                    <p class="text-slate-500 dark:text-slate-400 text-lg">Masukan kredensial akun anda untuk melanjutkan.</p>
-                </div>
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/20 z-40 hidden lg:hidden"></div>
 
-                <!-- Form Start -->
-                <form action="index.html" class="space-y-6">
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
 
-                    <!-- Email -->
-                    <div class="space-y-2">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300" for="email">Email Address</label>
-                        <div class="relative group">
-                            <div
-                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-600 dark:group-focus-within:text-brand-400">
-                                <i class="fa-regular fa-envelope text-slate-400 dark:text-slate-500"></i>
+            @@include('../partials/navbar.html')
+
+            <!-- Scrollable Content Area -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
+
+                <!-- Content Wrapper -->
+                <div class="flex-1 p-4 md:p-6">
+                    <div class="max-w-screen-2xl mx-auto space-y-6">
+
+                        <!-- Page Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                    Tambah Campaign Baru
+                                </h2>
                             </div>
-                            <input type="email" id="email" placeholder="nama@perusahaan.com"
-                                class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-[#1c1c1c] focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 dark:focus:border-brand-500 transition-all duration-200">
+                            <!-- Breadcrumb -->
+                            @@include('../partials/breadcrumb.html', {
+                                "crumb1_label": "Dashboard",
+                                "crumb1_url":   "index.html",
+                                "crumb2_label": "List Clip",
+                                "crumb2_url":   "clipp-campaign.html",
+                                "crumb3_label": "Tambah",
+                                "crumb3_url":   ""
+                            })
                         </div>
-                    </div>
 
-                    <!-- Password -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center">
-                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300" for="password">Password</label>
-                            <a href="forgot-password.html"
-                                class="text-sm font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 transition-colors">Lupa
-                                Password?</a>
-                        </div>
-                        <div class="relative group">
-                            <div
-                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-600 dark:group-focus-within:text-brand-400">
-                                <i class="fa-solid fa-lock text-slate-400 dark:text-slate-500"></i>
+                        <!-- Form Card Utama -->
+                        <form id="createCampaignForm" action="javascript:void(0)" method="POST">
+                            <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
+
+                                <!-- Sub-Header Form: Informasi Utama -->
+                                <div class="pb-4 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">
+                                            Informasi Campaign & Materi
+                                        </h3>
+                                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                                            Tentukan judul, link acuan aset, dan deskripsi tujuan promosi.
+                                        </p>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-medium">* Kolom wajib diisi</span>
+                                </div>
+
+                                <!-- Field: Judul Campaign & Link Acuan -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- Judul Campaign -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Judul Campaign <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-heading text-xs"></i>
+                                            </div>
+                                            <input type="text" id="campaignTitleInput" placeholder="Contoh: Review Aplikasi Web Clipper AI"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-medium text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Link Acuan / Sumber Materi -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Link Acuan / Sumber Materi
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-link text-xs"></i>
+                                            </div>
+                                            <input type="url" id="campaignLinkInput" placeholder="https://drive.google.com/... atau link materi"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Field: Deskripsi (Textarea) -->
+                                <div>
+                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                        Deskripsi Singkat
+                                    </label>
+                                    <textarea id="campaignDescInput" rows="3" placeholder="Tuliskan ringkasan singkat mengenai tujuan campaign dan konteks konten..."
+                                        class="w-full px-4 py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200 leading-relaxed resize-none"></textarea>
+                                </div>
+
+                                <!-- Field: Brief Konten (Quill Rich Text Editor) -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                            Brief & Ketentuan Konten <span class="text-rose-500">*</span>
+                                        </label>
+                                        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">WYSIWYG Rich Editor</span>
+                                    </div>
+
+                                    <!-- Wrapper class for focus & theme styling -->
+                                    <div class="editor-wrapper">
+                                        <div id="briefEditor">
+                                            <h3>Panduan Konten & Ketentuan Video</h3>
+                                            <p>Mohon ikuti arahan di bawah ini untuk memastikan hasil potongan video memenuhi standar komisi:</p>
+                                            <ul>
+                                                <li><strong>Hook 3 Detik Pertama:</strong> Sajikan potongan dialog paling menarik agar penonton tidak scroll lewat.</li>
+                                                <li><strong>Pesan Kunci:</strong> Sorot kemudahan penggunaan fitur unggulan dengan teks penjelasan (caption) yang terbaca jelas.</li>
+                                                <li><strong>Format Aspek Rasio:</strong> 9:16 (Vertical Video) beresolusi minimal 1080p.</li>
+                                                <li><strong>Hashtag Wajib:</strong> Cantumkan <code>#WebClipper #AITools #ShortsViral</code> pada caption postingan.</li>
+                                                <li><strong>Larangan:</strong> Tidak diperbolehkan menyisipkan watermark akun kompetitor.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
+                                        Gunakan toolbar di atas untuk mengatur heading, format tebal/miring, daftar poin/list, serta link referensi.
+                                    </p>
+                                </div>
+
+                                <!-- Sub-Header Form: Skema Komisi & Target Kuota -->
+                                <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
+                                    <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">
+                                        Skema Komisi & Kuota
+                                    </h3>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                                        Atur besaran insentif per view dan alokasi batas kuota submission clipp.
+                                    </p>
+                                </div>
+
+                                <!-- Grid 4 Kolom: Komisi, Pencairan Penonton, Maks Views, Batas Clipp -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <!-- Jumlah Komisi -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Jumlah Komisi <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-coins text-xs"></i>
+                                            </div>
+                                            <input type="text" id="komisiInput" placeholder="Contoh: Rp 5.000"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-semibold text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Nilai komisi per kelipatan target penonton.</p>
+                                    </div>
+
+                                    <!-- Pencairan Penonton -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Pencairan Penonton <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-regular fa-eye text-xs"></i>
+                                            </div>
+                                            <input type="number" id="penontonInput" placeholder="Contoh: 1000 atau 5000" min="1" step="1"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-medium text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Minimal target view penonton.</p>
+                                    </div>
+
+                                    <!-- Maks Views -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Maks Views <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-arrow-up-right-dots text-xs"></i>
+                                            </div>
+                                            <input type="number" id="maksViewsInput" placeholder="Contoh: 50000" min="1" step="1"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-medium text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Maksimal view yang dihitung komisi.</p>
+                                    </div>
+
+                                    <!-- Batas Clipp -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Batas Clipp (Kuota) <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i class="fa-solid fa-film text-xs"></i>
+                                            </div>
+                                            <input type="number" id="batasInput" placeholder="Contoh: 100" min="1"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 font-semibold text-slate-800 dark:text-slate-200" required>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Maksimal jumlah video clip yang diterima.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Sub-Header Form: Jadwal Periode & Status -->
+                                <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">
+                                                Periode & Status Pelaksanaan
+                                            </h3>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                                                Tentukan rentang tanggal berlangsungnya campaign serta status operasional saat ini.
+                                            </p>
+                                        </div>
+                                        <!-- Quick Preset Durasi -->
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1">Preset:</span>
+                                            <button type="button" data-days="7" class="btn-preset-days px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-[#2e2e2e] bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                                                +7 Hari
+                                            </button>
+                                            <button type="button" data-days="14" class="btn-preset-days px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-[#2e2e2e] bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                                                +14 Hari
+                                            </button>
+                                            <button type="button" data-days="30" class="btn-preset-days px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-[#2e2e2e] bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                                                +30 Hari
+                                            </button>
+                                            <button type="button" data-days="60" class="btn-preset-days px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-[#2e2e2e] bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 hover:border-brand-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                                                +60 Hari
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Grid 3 Kolom: Dimulai Pada, Diakhiri Pada, Status -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    <!-- Dimulai Pada -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Dimulai Pada <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 z-10">
+                                                <i class="fa-regular fa-calendar text-xs"></i>
+                                            </div>
+                                            <input type="text" id="startDateInput" placeholder="Pilih tanggal mulai"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200 font-medium cursor-pointer" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Diakhiri Pada -->
+                                    <div>
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Diakhiri Pada <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 z-10">
+                                                <i class="fa-regular fa-calendar-check text-xs"></i>
+                                            </div>
+                                            <input type="text" id="endDateInput" placeholder="Pilih tanggal selesai"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder-slate-400 text-slate-800 dark:text-slate-200 font-medium cursor-pointer" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Status Campaign -->
+                                    <div class="sm:col-span-2 md:col-span-1">
+                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                                            Status Campaign <span class="text-rose-500">*</span>
+                                        </label>
+                                        <select id="statusSelect" class="select2-status w-full" required>
+                                            <option value="Aktif" selected>Aktif</option>
+                                            <option value="Segera">Segera (Upcoming)</option>
+                                            <option value="Nonaktif">Nonaktif (Jeda)</option>
+                                            <option value="Selesai">Selesai (Ditutup)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Duration Summary Banner -->
+                                <div id="durationSummaryBox" class="hidden p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 transition-all duration-200">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-calendar-days text-brand-500"></i>
+                                        <span id="durationSummaryText">Durasi campaign: <strong>14 Hari</strong></span>
+                                    </div>
+                                    <span class="text-[11px] font-medium text-slate-400 dark:text-slate-500">Periode aktif clipper</span>
+                                </div>
+
+                                <!-- Tombol Aksi Bawah -->
+                                <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                                    <a href="clipp-campaign.html" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
+                                        Batal
+                                    </a>
+                                    <button type="submit" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-floppy-disk"></i> Simpan Campaign
+                                    </button>
+                                </div>
+
                             </div>
-                            <input type="password" id="password" placeholder="••••••••"
-                                class="w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-[#1c1c1c] focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 dark:focus:border-brand-500 transition-all duration-200">
+                        </form>
 
-                            <!-- Toggle Password Visibility -->
-                            <button type="button" onclick="togglePassword()"
-                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors cursor-pointer focus:outline-none">
-                                <i class="fa-regular fa-eye" id="toggleIcon"></i>
-                            </button>
-                        </div>
                     </div>
+                </div>
 
-                    <!-- Actions -->
-                    <div class="space-y-6">
-                        <div class="flex items-center">
-                            <label class="inline-flex items-center cursor-pointer group">
-                                <input type="checkbox"
-                                    class="w-5 h-5 text-brand-600 border-slate-300 dark:border-[#2e2e2e] dark:bg-[#222222] rounded focus:ring-brand-500 dark:focus:ring-brand-500/50 transition-colors cursor-pointer">
-                                <span
-                                    class="ml-3 text-sm text-slate-600 dark:text-slate-400 font-medium group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Ingat
-                                    saya</span>
-                            </label>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full btn btn-primary py-3.5 rounded-xl text-base shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-0.5 transition-all duration-300">
-                            Masuk ke Dashboard <i class="fa-solid fa-arrow-right ml-2 opacity-80"></i>
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Register Link -->
-                <p class="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
-                    Belum memiliki akun? <a href="register.html"
-                        class="font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 hover:underline transition-colors">Daftar
-                        Akun Baru</a>
-                </p>
-            </div>
+                @@include('../partials/footer.html')
+            </main>
         </div>
     </div>
 
     @@include('../partials/vendor-scripts.html')
-    <!-- Script for Password Toggle -->
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggleIcon');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-    </script>
+    <!-- Plugins Scripts -->
+    <script src="assets/libs/quill/quill.js"></script>
+    <script src="assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="assets/libs/flatpickr/l10n/id.js"></script>
+    <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Dedicated Page Script -->
+    <script src="assets/js/clipp-campaign-create.page.js"></script>
 </body>
 
 </html>

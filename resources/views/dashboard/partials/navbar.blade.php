@@ -37,10 +37,11 @@
             <button @click="open = !open"
                 class="flex items-center gap-2 sm:gap-3 hover:bg-slate-50 dark:hover:bg-[#2e2e2e] p-1 sm:p-1.5 sm:pr-2 rounded-2xl transition-colors focus:outline-none cursor-pointer">
                 <div class="text-right hidden md:block">
-                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Moh Ma'sum</p>
-                    <p class="text-xs font-medium text-brand-600 dark:text-brand-400">Admin</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ auth()->user()->name ?? 'Pengguna' }}</p>
+                    <p class="text-xs font-medium text-brand-600 dark:text-brand-400">{{ ucfirst(auth()->user()->role ?? 'Admin') }}</p>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=Moh+Masum&background=3b82f6&color=fff&bold=true"
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=3b82f6&color=fff&bold=true"
+                    alt="{{ auth()->user()->name ?? 'User' }}"
                     class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-[#2e2e2e] hover:opacity-90 transition">
             </button>
 
@@ -55,8 +56,8 @@
                 style="display: none;">
 
                 <div class="px-3 py-2 border-b border-slate-100 dark:border-[#2e2e2e] mb-1">
-                    <p class="text-xs font-semibold text-slate-800 dark:text-white">Moh Ma'sum</p>
-                    <p class="text-[11px] font-medium text-brand-600 dark:text-brand-400">Admin</p>
+                    <p class="text-xs font-semibold text-slate-800 dark:text-white truncate">{{ auth()->user()->name ?? 'Pengguna' }}</p>
+                    <p class="text-[11px] font-medium text-brand-600 dark:text-brand-400">{{ ucfirst(auth()->user()->role ?? 'Admin') }}</p>
                 </div>
 
                 <!-- Theme Settings Trigger Button -->
@@ -66,7 +67,7 @@
                     <span>Pengaturan Tema</span>
                 </button>
 
-                <a href="profil.html"
+                <a href="{{ route('profile.edit') }}"
                     class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#2e2e2e] transition-colors">
                     <i class="fa-regular fa-user w-4 text-center text-slate-400 dark:text-slate-500"></i>
                     <span>Profil</span>

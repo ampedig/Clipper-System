@@ -23,7 +23,7 @@
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Clip</p>
 
-            <a href="clipp-campaign.html" class="sb-item t-sidebar">
+            <a href="{{ route('clip-campaigns.index') }}" class="sb-item t-sidebar {{ request()->routeIs('clip-campaigns.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-video sb-icon"></i> <span>List Clip</span>
             </a>
 

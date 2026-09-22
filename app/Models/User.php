@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -63,5 +64,13 @@ class User extends Authenticatable
     public function withdrawChannel(): BelongsTo
     {
         return $this->belongsTo(WithdrawChannel::class, 'withdraw_channel_id');
+    }
+
+    /**
+     * Mendapatkan daftar kampanye clip yang dibuat oleh user ini.
+     */
+    public function campaignsCreated(): HasMany
+    {
+        return $this->hasMany(ClipCampaign::class, 'created_by');
     }
 }
