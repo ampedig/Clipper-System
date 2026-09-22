@@ -38,7 +38,7 @@
                 class="flex items-center gap-2 sm:gap-3 hover:bg-slate-50 dark:hover:bg-[#2e2e2e] p-1 sm:p-1.5 sm:pr-2 rounded-2xl transition-colors focus:outline-none cursor-pointer">
                 <div class="text-right hidden md:block">
                     <p class="text-sm font-semibold text-slate-900 dark:text-white">Moh Ma'sum</p>
-                    <p class="text-xs font-medium text-brand-600 dark:text-brand-400">Super Admin</p>
+                    <p class="text-xs font-medium text-brand-600 dark:text-brand-400">Admin</p>
                 </div>
                 <img src="https://ui-avatars.com/api/?name=Moh+Masum&background=3b82f6&color=fff&bold=true"
                     class="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-[#2e2e2e] hover:opacity-90 transition">
@@ -56,7 +56,7 @@
 
                 <div class="px-3 py-2 border-b border-slate-100 dark:border-[#2e2e2e] mb-1">
                     <p class="text-xs font-semibold text-slate-800 dark:text-white">Moh Ma'sum</p>
-                    <p class="text-[11px] font-medium text-brand-600 dark:text-brand-400">Super Admin</p>
+                    <p class="text-[11px] font-medium text-brand-600 dark:text-brand-400">Admin</p>
                 </div>
 
                 <!-- Theme Settings Trigger Button -->
@@ -77,11 +77,14 @@
                     <span>Settings</span>
                 </a>
                 <hr class="border-slate-100 dark:border-[#2e2e2e] my-1">
-                <a href="#"
-                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors">
-                    <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i>
-                    <span>Logout</span>
-                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
+                        class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors">
+                        <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i>
+                        <span>Logout</span>
+                    </a>
+                </form>
             </div>
         </div>
     </div>

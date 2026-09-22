@@ -1,47 +1,322 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'AMPEDIG') }} - Login</title>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Core Theme Initialization (Immediate to prevent FOUC) -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            const barColor = localStorage.getItem('bar-color') || 'default';
+            const colorMap = {
+                'midnight': '#1e293b',
+                'indigo': '#1e1b4b',
+                'plum': '#231034',
+                'burgundy': '#3c1220',
+                'emerald': '#092c1e',
+                'espresso': '#251814',
+                'charcoal': '#2d3748'
+            };
+            if (barColor !== 'default' && colorMap[barColor]) {
+                document.documentElement.style.setProperty('--sidebar-bg', colorMap[barColor]);
+                document.documentElement.style.setProperty('--sidebar-border', 'rgba(255, 255, 255, 0.08)');
+            }
+
+            const primary = localStorage.getItem('primary-color') || 'default';
+            const primaryColorMap = {
+                'indigo': {
+                    '50': '#e0e7ff',
+                    '100': '#c7d2fe',
+                    '200': '#a5b4fc',
+                    '300': '#818cf8',
+                    '400': '#6366f1',
+                    '500': '#4f46e5',
+                    '600': '#4338ca',
+                    '700': '#3730a3',
+                    '800': '#312e81',
+                    '900': '#1e1b4b'
+                },
+                'purple': {
+                    '50': '#f5f3ff',
+                    '100': '#ede9fe',
+                    '200': '#ddd6fe',
+                    '300': '#c4b5fd',
+                    '400': '#a78bfa',
+                    '500': '#8b5cf6',
+                    '600': '#7c3aed',
+                    '700': '#6d28d9',
+                    '800': '#5b21b6',
+                    '900': '#4c1d95'
+                },
+                'rose': {
+                    '50': '#fff1f2',
+                    '100': '#ffe4e6',
+                    '200': '#fecdd3',
+                    '300': '#fda4af',
+                    '400': '#fb7185',
+                    '500': '#f43f5e',
+                    '600': '#e11d48',
+                    '700': '#be123c',
+                    '800': '#9f1239',
+                    '900': '#881337'
+                },
+                'cyan': {
+                    '50': '#ecfeff',
+                    '100': '#cffafe',
+                    '200': '#a5f3fc',
+                    '300': '#67e8f9',
+                    '400': '#22d3ee',
+                    '500': '#06b6d4',
+                    '600': '#0891b2',
+                    '700': '#0e7490',
+                    '800': '#155e75',
+                    '900': '#164e63'
+                },
+                'emerald': {
+                    '50': '#ecfdf5',
+                    '100': '#d1fae5',
+                    '200': '#a7f3d0',
+                    '300': '#6ee7b7',
+                    '400': '#34d399',
+                    '500': '#10b981',
+                    '600': '#059669',
+                    '700': '#047857',
+                    '800': '#065f46',
+                    '900': '#064e3b'
+                },
+                'amber': {
+                    '50': '#fffbeb',
+                    '100': '#fef3c7',
+                    '200': '#fde68a',
+                    '300': '#fcd34d',
+                    '400': '#fbbf24',
+                    '500': '#f59e0b',
+                    '600': '#d97706',
+                    '700': '#b45309',
+                    '800': '#92400e',
+                    '900': '#78350f'
+                },
+                'orange': {
+                    '50': '#fff7ed',
+                    '100': '#ffedd5',
+                    '200': '#fed7aa',
+                    '300': '#fdba74',
+                    '400': '#fb923c',
+                    '500': '#f97316',
+                    '600': '#ea580c',
+                    '700': '#c2410c',
+                    '800': '#9a3412',
+                    '900': '#7c2d12'
+                }
+            };
+            if (primary !== 'default' && primaryColorMap[primary]) {
+                const shades = primaryColorMap[primary];
+                for (const shade in shades) {
+                    document.documentElement.style.setProperty(`--color-brand-${shade}`, shades[shade]);
+                }
+            }
+        })();
+    </script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Meta SEO & CDN -->
+    <meta name="description" content="Masuk ke Dashboard AMPEDIG">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon-16x16.png') }}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/form-plugins.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/sweetalert-custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/flatpickr-custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/libs/fontawesome/css/all.css') }}">
+</head>
+
+<body
+    class="bg-slate-50 dark:bg-[#161616] font-sans antialiased text-slate-600 dark:text-slate-300 transition-colors duration-300">
+    <div class="h-screen w-full flex overflow-hidden">
+        <div class="hidden lg:flex lg:w-1/2 bg-brand-600 p-12 flex-col justify-between relative overflow-hidden">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-80 h-80 bg-white opacity-10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl">
+            </div>
+            <!-- Logo -->
+            <div class="relative z-10 flex items-center gap-3 font-semibold text-2xl text-white tracking-tight">
+                <div class="flex items-center justify-center w-10 h-10 text-brand-600">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="AMPEDIG Logo" class="h-10 w-auto rounded-xl">
+                </div>
+                <span>AMPEDIG</span>
+            </div>
+
+            <!-- Main Content -->
+            <div class="relative z-10 max-w-xl">
+                <h2 class="text-5xl font-semibold mb-6 leading-tight text-white">Kelola Bisnis Digital Anda Lebih
+                    Mudah.</h2>
+                <p class="text-brand-100 text-lg leading-relaxed">Platform all-in-one untuk manajemen
+                    agency dan transaksi PPOB yang efisien dan modern.</p>
+            </div>
+            <div class="relative z-10 text-brand-200 text-sm font-medium">
+                &copy;
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                Masum.xyz. All rights reserved.
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <div
+            class="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white dark:bg-[#161616] p-6 overflow-y-auto transition-colors duration-300">
+            <div class="w-full max-w-md ">
+                <div class="lg:hidden flex justify-center mb-8">
+                    <div class="flex items-center gap-2 font-semibold text-2xl text-slate-900 dark:text-white">
+                        <div class="flex items-center justify-center w-10 h-10 text-white">
+                            <img src="{{ asset('assets/images/logo.png') }}" alt="AMPEDIG Logo"
+                                class="h-10 w-auto rounded-xl">
+                        </div>
+                        <span>AMPEDIG</span>
+                    </div>
+                </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+                <!-- Header Form -->
+                <div class="text-center lg:text-left mb-10">
+                    <h1 class="text-3xl font-semibold text-slate-900 dark:text-white mb-3 tracking-tight">Selamat Datang
+                    </h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-lg">Masukan kredensial akun anda untuk
+                        melanjutkan.</p>
+                </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                <!-- Session Status -->
+                <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                <!-- Form Start -->
+                <form method="POST" action="{{ route('login') }}" class="space-y-6">
+                    @csrf
+
+                    <!-- Email -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                            for="email">Email Address</label>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-600 dark:group-focus-within:text-brand-400">
+                                <i class="fa-regular fa-envelope text-slate-400 dark:text-slate-500"></i>
+                            </div>
+                            <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                placeholder="nama@perusahaan.com" required autofocus autocomplete="username"
+                                class="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-[#1c1c1c] focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 dark:focus:border-brand-500 transition-all duration-200">
+                        </div>
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+
+                    <!-- Password -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300"
+                                for="password">Password</label>
+                            @if (Route::has('password.request'))
+                                <a href="{{ route('password.request') }}"
+                                    class="text-sm font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 transition-colors">Lupa
+                                    Password?</a>
+                            @endif
+                        </div>
+                        <div class="relative group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-600 dark:group-focus-within:text-brand-400">
+                                <i class="fa-solid fa-lock text-slate-400 dark:text-slate-500"></i>
+                            </div>
+                            <input type="password" id="password" name="password" placeholder="••••••••" required
+                                autocomplete="current-password"
+                                class="w-full pl-11 pr-12 py-3.5 bg-slate-50 dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-[#1c1c1c] focus:ring-4 focus:ring-brand-500/10 focus:border-brand-500 dark:focus:border-brand-500 transition-all duration-200">
+
+                            <!-- Toggle Password Visibility -->
+                            <button type="button" onclick="togglePassword()"
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors cursor-pointer focus:outline-none">
+                                <i class="fa-regular fa-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <label for="remember_me" class="inline-flex items-center cursor-pointer group">
+                                <input type="checkbox" id="remember_me" name="remember"
+                                    class="w-5 h-5 text-brand-600 border-slate-300 dark:border-[#2e2e2e] dark:bg-[#222222] rounded focus:ring-brand-500 dark:focus:ring-brand-500/50 transition-colors cursor-pointer">
+                                <span
+                                    class="ml-3 text-sm text-slate-600 dark:text-slate-400 font-medium group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Ingat
+                                    saya</span>
+                            </label>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full btn btn-primary py-3.5 rounded-xl text-base shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:-translate-y-0.5 transition-all duration-300">
+                            Masuk ke Dashboard <i class="fa-solid fa-arrow-right ml-2 opacity-80"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Register Link -->
+                @if (Route::has('register'))
+                    <p class="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                        Belum memiliki akun? <a href="{{ route('register') }}"
+                            class="font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 hover:underline transition-colors">Daftar
+                            Akun Baru</a>
+                    </p>
+                @endif
+            </div>
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+    <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    <!-- Theme Script -->
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
+
+    <!-- Main App Script -->
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <!-- Script for Password Toggle -->
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>
