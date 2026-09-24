@@ -8,7 +8,7 @@
         <div class="flex items-center gap-3">
             <div>
                 <p
-                    class="text-[11px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 uppercase tracking-widest mb-0.5">
+                    class="text-[11px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-800 uppercase tracking-widest mb-0.5">
                     Clipper Studio</p>
                 <h1 class="text-lg font-bold text-slate-900 leading-tight">Halo, Masum 👋</h1>
             </div>
