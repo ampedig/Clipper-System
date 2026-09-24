@@ -83,7 +83,7 @@
                 </a>
 
                 <!-- Ubah Password -->
-                <a href="#"
+                <a href="{{ route('app.password.edit') }}"
                     class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
                     <div class="flex items-center gap-3.5">
                         <div
@@ -91,7 +91,7 @@
                             <i class="fa-solid fa-lock"></i>
                         </div>
                         <div>
-                            <p class="text-xs font-bold text-slate-800">Kata Sandi & Keamanan</p>
+                            <p class="text-xs font-bold text-slate-800">Kata Sandi</p>
                             <p class="text-[10px] font-medium text-slate-400 mt-0.5">Ubah password akun secara berkala
                             </p>
                         </div>
@@ -241,3 +241,32 @@
         });
     </script>
 @endif
+
+@if (session('status') === 'password-updated')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    html: `
+                        <div class="flex flex-col items-center text-center pt-2">
+                            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Kata Sandi Diperbarui!</h3>
+                            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+                                Kata sandi baru berhasil disimpan. Silakan gunakan kata sandi baru untuk masuk berikutnya.
+                            </p>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    timer: 2000,
+                    backdrop: 'rgba(15, 23, 42, 0.65)',
+                    customClass: {
+                        popup: 'custom-swal-popup !rounded-[2.25rem]'
+                    }
+                });
+            }
+        });
+    </script>
+@endif
+

@@ -8,11 +8,12 @@
     <header
         class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
         <div class="flex items-center gap-3">
-            <a href="{{ route('app.profile') }}"
-                class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0"
+            <button type="button"
+                onclick="window.history.length > 1 ? window.history.back() : window.location.href = '{{ route('app.profile') }}'"
+                class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0 cursor-pointer"
                 aria-label="Kembali">
                 <i class="fa-solid fa-arrow-left text-sm"></i>
-            </a>
+            </button>
             <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Edit Profil</h1>
         </div>
     </header>

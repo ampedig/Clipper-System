@@ -1,0 +1,302 @@
+@include('app.partials.head', [
+    'title' => 'Kata Sandi',
+])
+
+<div class="min-h-[100dvh] bg-slate-50 relative pb-32">
+
+    <!-- Top App Bar (Modern Glassmorphic) -->
+    <header
+        class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
+        <div class="flex items-center gap-3">
+            <button type="button"
+                onclick="window.history.length > 1 ? window.history.back() : window.location.href = '{{ route('app.profile') }}'"
+                class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0 cursor-pointer"
+                aria-label="Kembali">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+            </button>
+            <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Kata Sandi</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Form -->
+    <main class="p-4 space-y-4">
+
+        <!-- Security Info Banner Card -->
+        <div class="bg-indigo-50/70 border border-indigo-100/80 rounded-2xl p-4 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shrink-0">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold text-slate-800 mb-0.5">Keamanan Akun</h4>
+                <p class="text-[11px] text-slate-500 font-medium leading-relaxed">Gunakan kombinasi minimal 6 karakter
+                    dengan campuran huruf dan angka agar akun tetap aman.</p>
+            </div>
+        </div>
+
+        <form id="passwordForm" action="{{ route('app.password.update') }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <!-- Password Form Panel -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-5">
+
+                <!-- Field 1: Kata Sandi Saat Ini -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="current_password"
+                            class="block text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            Kata Sandi Saat Ini
+                        </label>
+                        <button type="button" id="btn-forgot"
+                            class="text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer">
+                            Lupa Kata Sandi?
+                        </button>
+                    </div>
+                    <div
+                        class="relative flex items-center rounded-xl bg-slate-50/80 border @error('current_password') border-rose-400 @else border-slate-200 @enderror focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
+                        <input type="password" id="current_password" name="current_password"
+                            placeholder="Masukkan kata sandi saat ini"
+                            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" />
+                        <button type="button"
+                            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                            data-target="current_password" aria-label="Lihat kata sandi">
+                            <i class="fa-regular fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                    <div id="current-error"
+                        class="@error('current_password') flex @else hidden @enderror mt-1.5 items-center gap-1.5 text-xs font-semibold text-rose-500">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ $errors->first('current_password') ?? 'Kata sandi saat ini wajib diisi' }}</span>
+                    </div>
+                </div>
+
+                <!-- Field 2: Kata Sandi Baru -->
+                <div>
+                    <label for="new_password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                        Kata Sandi Baru
+                    </label>
+                    <div
+                        class="relative flex items-center rounded-xl bg-slate-50/80 border @error('password') border-rose-400 @else border-slate-200 @enderror focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
+                        <input type="password" id="new_password" name="password" placeholder="Minimal 6 karakter"
+                            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" />
+                        <button type="button"
+                            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                            data-target="new_password" aria-label="Lihat kata sandi">
+                            <i class="fa-regular fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1.5">Kata sandi baru minimal 6 karakter.</p>
+                    <div id="new-error"
+                        class="@error('password') flex @else hidden @enderror mt-1.5 items-center gap-1.5 text-xs font-semibold text-rose-500">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ $errors->first('password') ?? 'Kata sandi baru minimal 6 karakter' }}</span>
+                    </div>
+                </div>
+
+                <!-- Field 3: Konfirmasi Kata Sandi -->
+                <div>
+                    <label for="confirm_password"
+                        class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                        Konfirmasi Kata Sandi
+                    </label>
+                    <div
+                        class="relative flex items-center rounded-xl bg-slate-50/80 border border-slate-200 focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
+                        <input type="password" id="confirm_password" name="password_confirmation"
+                            placeholder="Ulangi kata sandi baru"
+                            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" />
+                        <button type="button"
+                            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                            data-target="confirm_password" aria-label="Lihat kata sandi">
+                            <i class="fa-regular fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                    <div id="confirm-error"
+                        class="hidden mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Konfirmasi kata sandi tidak cocok</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Fixed Save Button (Floating) -->
+            <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-4 pb-6 pt-2 z-40 pb-safe">
+                <button type="button" id="btn-save-password"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+                    <i class="fa-solid fa-key text-xs"></i>
+                    <span>Simpan Kata Sandi</span>
+                </button>
+            </div>
+        </form>
+
+    </main>
+
+</div>
+
+@include('app.partials.vendor-script')
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Toggle show/hide password visibility
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = btn.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Handler Lupa Kata Sandi
+        const btnForgot = document.getElementById('btn-forgot');
+        btnForgot.addEventListener('click', () => {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    html: `
+                        <div class="flex flex-col items-center text-center pt-2">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Lupa Kata Sandi?</h3>
+                            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+                                Tautan reset kata sandi dapat dikirimkan ke email terdaftar Anda atau hubungi Customer Service.
+                            </p>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Kirim Email Reset',
+                    cancelButtonText: 'Tutup',
+                    buttonsStyling: false,
+                    backdrop: 'rgba(15, 23, 42, 0.65)',
+                    customClass: {
+                        popup: 'custom-swal-popup !rounded-[2.25rem]',
+                        actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
+                        confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+                        cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            html: `
+                                <div class="flex flex-col items-center text-center pt-2">
+                                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
+                                        <i class="fa-solid fa-envelope-circle-check"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Email Terkirim!</h3>
+                                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+                                        Silakan periksa kotak masuk email Anda untuk instruksi pengaturan ulang kata sandi.
+                                    </p>
+                                </div>
+                            `,
+                            showConfirmButton: false,
+                            timer: 1600,
+                            backdrop: 'rgba(15, 23, 42, 0.65)',
+                            customClass: {
+                                popup: 'custom-swal-popup !rounded-[2.25rem]'
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        // Handler Simpan Kata Sandi
+        const form = document.getElementById('passwordForm');
+        const btnSave = document.getElementById('btn-save-password');
+        const currentPass = document.getElementById('current_password');
+        const newPass = document.getElementById('new_password');
+        const confirmPass = document.getElementById('confirm_password');
+
+        const currentError = document.getElementById('current-error');
+        const newError = document.getElementById('new-error');
+        const confirmError = document.getElementById('confirm-error');
+
+        btnSave.addEventListener('click', () => {
+            const curVal = currentPass.value.trim();
+            const newVal = newPass.value.trim();
+            const confVal = confirmPass.value.trim();
+            let isValid = true;
+
+            // Validasi Kata Sandi Saat Ini
+            if (!curVal) {
+                currentError.classList.remove('hidden');
+                currentError.classList.add('flex');
+                currentPass.parentElement.classList.add('border-rose-400');
+                isValid = false;
+            } else {
+                currentError.classList.add('hidden');
+                currentError.classList.remove('flex');
+                currentPass.parentElement.classList.remove('border-rose-400');
+            }
+
+            // Validasi Kata Sandi Baru
+            if (newVal.length < 6) {
+                newError.classList.remove('hidden');
+                newError.classList.add('flex');
+                newPass.parentElement.classList.add('border-rose-400');
+                isValid = false;
+            } else {
+                newError.classList.add('hidden');
+                newError.classList.remove('flex');
+                newPass.parentElement.classList.remove('border-rose-400');
+            }
+
+            // Validasi Konfirmasi Kata Sandi
+            if (!confVal || confVal !== newVal) {
+                confirmError.classList.remove('hidden');
+                confirmError.classList.add('flex');
+                confirmPass.parentElement.classList.add('border-rose-400');
+                isValid = false;
+            } else {
+                confirmError.classList.add('hidden');
+                confirmError.classList.remove('flex');
+                confirmPass.parentElement.classList.remove('border-rose-400');
+            }
+
+            if (!isValid) return;
+
+            // SweetAlert Konfirmasi
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    html: `
+                        <div class="flex flex-col items-center text-center pt-2">
+                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Ubah Sandi</h3>
+                            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+                                Apakah Anda yakin ingin memperbarui kata sandi akun Anda?
+                            </p>
+                        </div>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Simpan',
+                    cancelButtonText: 'Batal',
+                    buttonsStyling: false,
+                    backdrop: 'rgba(15, 23, 42, 0.65)',
+                    customClass: {
+                        popup: 'custom-swal-popup !rounded-[2.25rem]',
+                        actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
+                        confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+                        cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            } else {
+                form.submit();
+            }
+        });
+    });
+</script>
