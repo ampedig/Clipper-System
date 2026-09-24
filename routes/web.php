@@ -4,12 +4,15 @@ use App\Http\Controllers\Admin\AdministratorController;
 use App\Http\Controllers\Admin\ClipCampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\WithdrawChannelController;
+use App\Http\Controllers\App\HomeController;
+use App\Http\Controllers\App\ProfileController as AppProfileController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\App\HomeController;
-
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
+Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');
+Route::get('/akun/edit', [AppProfileController::class, 'edit'])->middleware('auth')->name('app.profile.edit');
+Route::put('/akun/edit', [AppProfileController::class, 'update'])->middleware('auth')->name('app.profile.update');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {

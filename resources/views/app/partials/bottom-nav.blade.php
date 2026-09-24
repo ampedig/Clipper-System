@@ -51,15 +51,15 @@
                 class="text-[10px] tracking-wide mt-0.5 {{ isset($active) && $active === 'saldo' ? 'font-bold' : 'font-medium' }}">Saldo</span>
         </a>
 
-        <!-- 5. Profil (Data akun & pengaturan) -->
-        <a href="#"
-            class="group flex flex-col items-center justify-center w-[20%] transition-all duration-300 {{ isset($active) && $active === 'profil' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600' }}">
+        <!-- 5. Akun (Data akun & pengaturan) -->
+        <a href="{{ route('app.profile') }}"
+            class="group flex flex-col items-center justify-center w-[20%] transition-all duration-300 {{ isset($active) && $active === 'akun' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600' }}">
             <div class="relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300">
                 <i
-                    class="fa-solid fa-circle-user text-[22px] transition-transform duration-300 {{ isset($active) && $active === 'profil' ? 'scale-110' : '' }}"></i>
+                    class="fa-solid fa-circle-user text-[22px] transition-transform duration-300 {{ isset($active) && $active === 'akun' ? 'scale-110' : '' }}"></i>
             </div>
             <span
-                class="text-[10px] tracking-wide mt-0.5 {{ isset($active) && $active === 'profil' ? 'font-bold' : 'font-medium' }}">Profil</span>
+                class="text-[10px] tracking-wide mt-0.5 {{ isset($active) && $active === 'akun' ? 'font-bold' : 'font-medium' }}">Akun</span>
         </a>
     </div>
 </nav>
