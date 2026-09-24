@@ -5,7 +5,7 @@
     <div class="flex items-center justify-between h-20 px-6 border-b border-[#2e2e2e] logo-wrapper">
         <div class="flex items-center gap-3 font-semibold text-lg tracking-tight text-white overflow-hidden logo-group">
             <img src="{{ asset('assets/images/logo.png') }}" alt="AMPEDIG Logo" class="w-10 h-10 rounded-lg shrink-0">
-            <span class="logo-text whitespace-nowrap">AMPEDIG</span>
+            <span class="logo-text whitespace-nowrap">AZCLIP</span>
         </div>
     </div>
 
@@ -23,7 +23,8 @@
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Clip</p>
 
-            <a href="{{ route('admin.clip-campaigns.index') }}" class="sb-item t-sidebar {{ request()->routeIs('admin.clip-campaigns.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.clip-campaigns.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.clip-campaigns.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-video sb-icon"></i> <span>List Clip</span>
             </a>
 
@@ -41,7 +42,8 @@
                 <i class="fa-solid fa-money-bill-transfer sb-icon"></i> <span>Withdraw</span>
             </a>
 
-            <a href="{{ route('admin.withdraw-channels.index') }}" class="sb-item t-sidebar {{ request()->routeIs('admin.withdraw-channels.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.withdraw-channels.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.withdraw-channels.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-network-wired sb-icon"></i> <span>Metode WD</span>
             </a>
 
