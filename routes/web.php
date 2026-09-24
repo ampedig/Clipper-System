@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdministratorController;
 use App\Http\Controllers\Admin\ClipCampaignController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\WithdrawChannelController;
+use App\Http\Controllers\App\CampaignController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\PasswordController as AppPasswordController;
 use App\Http\Controllers\App\ProfileController as AppProfileController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
+Route::get('/campaign', [CampaignController::class, 'index'])->name('app.campaigns');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
 Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');

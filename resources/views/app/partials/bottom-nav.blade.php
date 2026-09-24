@@ -24,7 +24,7 @@
         </a>
 
         <!-- 3. Campaign (Floating Highlight Menu) -->
-        <a href="#"
+        <a href="{{ route('app.campaigns') }}"
             class="group flex flex-col items-center justify-center w-[20%] relative transition-all duration-300">
             <!-- Invisible placeholder matching other icons to align text perfectly -->
             <div class="w-10 h-10"></div>

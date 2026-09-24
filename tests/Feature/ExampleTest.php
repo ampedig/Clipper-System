@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\ClipCampaign;
 use App\Models\User;
 use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -161,5 +162,37 @@ class ExampleTest extends TestCase
             'account_number' => '1234567890',
             'account_name' => 'Budi Santoso',
         ]);
+    }
+
+    public function test_the_campaign_page_returns_successful_response_with_active_campaigns(): void
+    {
+        ClipCampaign::factory()->active()->create([
+            'title' => 'Kampanye Video Edukasi',
+            'commission_amount' => 15000,
+            'view_threshold' => 1000,
+        ]);
+
+        $response = $this->get('/campaign');
+
+        $response->assertStatus(200);
+        $response->assertSee('Kampanye Video Edukasi');
+        $response->assertSee('Rp15.000');
+        $response->assertSee('1K views');
+    }
+
+    public function test_inactive_campaigns_are_not_displayed_on_campaign_page(): void
+    {
+        ClipCampaign::factory()->inactive()->create([
+            'title' => 'Kampanye Tidak Aktif',
+        ]);
+        ClipCampaign::factory()->completed()->create([
+            'title' => 'Kampanye Sudah Selesai',
+        ]);
+
+        $response = $this->get('/campaign');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Kampanye Tidak Aktif');
+        $response->assertDontSee('Kampanye Sudah Selesai');
     }
 }
