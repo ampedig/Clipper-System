@@ -17,7 +17,7 @@
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
-                    'crumb1_url' => route('dashboard'),
+                    'crumb1_url' => route('admin.dashboard'),
                     'crumb2_label' => 'Administrator',
                     'crumb2_url' => '',
                     'crumb3_label' => '',
@@ -41,7 +41,7 @@
                         </select>
                     </div>
 
-                    <a class="btn btn-primary" href="{{ route('administrators.create') }}">
+                    <a class="btn btn-primary" href="{{ route('admin.administrators.create') }}">
                         <i class="fa-solid fa-plus"></i> Tambah
                     </a>
                 </div>
@@ -87,7 +87,7 @@
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input type="checkbox" class="sr-only peer"
                                                 {{ $admin->is_active ? 'checked' : '' }} 
-                                                onchange="toggleAdminStatus(this, '{{ route('administrators.status', $admin->id) }}')">
+                                                onchange="toggleAdminStatus(this, '{{ route('admin.administrators.status', $admin->id) }}')">
                                             <div
                                                 class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500">
                                             </div>
@@ -95,12 +95,12 @@
                                     </td>
                                     <td class="px-6 py-3 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
-                                            <a href="{{ route('administrators.edit', $admin->id) }}"
+                                            <a href="{{ route('admin.administrators.edit', $admin->id) }}"
                                                 class="btn btn-primary btn-icon" title="Edit">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                             <button class="btn btn-danger btn-icon" title="Hapus"
-                                                onclick="confirmDelete('{{ addslashes($admin->name) }}', '{{ route('administrators.destroy', $admin->id) }}')">
+                                                onclick="confirmDelete('{{ addslashes($admin->name) }}', '{{ route('admin.administrators.destroy', $admin->id) }}')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                         </div>

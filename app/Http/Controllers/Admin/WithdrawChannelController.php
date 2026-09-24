@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\WithdrawChannel;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,7 @@ class WithdrawChannelController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $withdrawChannels = WithdrawChannel::paginate($perPage);
+
         return view('dashboard.withdraw_channels.index', compact('withdrawChannels'));
     }
 
@@ -34,8 +36,9 @@ class WithdrawChannelController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        return redirect()->route('withdraw-channels.index')->with('success', 'Metode penarikan berhasil ditambahkan.');
+        return redirect()->route('admin.withdraw-channels.index')->with('success', 'Metode penarikan berhasil ditambahkan.');
     }
+
     public function edit(WithdrawChannel $withdraw_channel)
     {
         return view('dashboard.withdraw_channels.edit', compact('withdraw_channel'));
@@ -45,7 +48,7 @@ class WithdrawChannelController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255', 'unique:withdraw_channels,code,' . $withdraw_channel->id],
+            'code' => ['required', 'string', 'max:255', 'unique:withdraw_channels,code,'.$withdraw_channel->id],
             'fee' => ['required', 'integer', 'min:0'],
         ]);
 
@@ -56,25 +59,26 @@ class WithdrawChannelController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        return redirect()->route('withdraw-channels.index')->with('success', 'Metode penarikan berhasil diperbarui.');
+        return redirect()->route('admin.withdraw-channels.index')->with('success', 'Metode penarikan berhasil diperbarui.');
     }
 
     public function destroy(WithdrawChannel $withdraw_channel)
     {
         $withdraw_channel->delete();
-        return redirect()->route('withdraw-channels.index')->with('success', 'Metode penarikan berhasil dihapus.');
+
+        return redirect()->route('admin.withdraw-channels.index')->with('success', 'Metode penarikan berhasil dihapus.');
     }
 
     public function toggleStatus(Request $request, string $id)
     {
         $channel = WithdrawChannel::findOrFail($id);
-        
+
         $channel->is_active = $request->boolean('is_active');
         $channel->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Metode penarikan berhasil ' . ($channel->is_active ? 'diaktifkan.' : 'dinonaktifkan.')
+            'message' => 'Metode penarikan berhasil '.($channel->is_active ? 'diaktifkan.' : 'dinonaktifkan.'),
         ]);
     }
 }

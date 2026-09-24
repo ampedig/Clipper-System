@@ -15,16 +15,16 @@
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
-                    'crumb1_url' => route('dashboard'),
+                    'crumb1_url' => route('admin.dashboard'),
                     'crumb2_label' => 'Komisi',
                     'crumb2_url' => '',
                     'crumb3_label' => 'Metode WD',
-                    'crumb3_url' => route('withdraw-channels.index'),
+                    'crumb3_url' => route('admin.withdraw-channels.index'),
                 ])
             </div>
 
             <!-- Form Card Utama -->
-            <form id="editChannelForm" action="{{ route('withdraw-channels.update', $withdraw_channel->id) }}" method="POST">
+            <form id="editChannelForm" action="{{ route('admin.withdraw-channels.update', $withdraw_channel->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
@@ -109,7 +109,7 @@
 
                     <!-- Form Action Buttons -->
                     <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:items-center justify-end gap-3">
-                        <a href="{{ route('withdraw-channels.index') }}" class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold text-center">
+                        <a href="{{ route('admin.withdraw-channels.index') }}" class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold text-center">
                             Batal
                         </a>
                         <button type="submit" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">

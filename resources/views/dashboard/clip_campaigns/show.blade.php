@@ -212,9 +212,9 @@
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
-                    'crumb1_url' => route('dashboard'),
+                    'crumb1_url' => route('admin.dashboard'),
                     'crumb2_label' => 'List Clip',
-                    'crumb2_url' => route('clip-campaigns.index'),
+                    'crumb2_url' => route('admin.clip-campaigns.index'),
                     'crumb3_label' => 'Detail',
                     'crumb3_url' => '',
                 ])
@@ -241,7 +241,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2.5 shrink-0">
-                        <a href="{{ route('clip-campaigns.edit', $clip_campaign) }}" class="btn btn-primary rounded-xl px-4 py-2.5 text-xs font-semibold flex items-center gap-2">
+                        <a href="{{ route('admin.clip-campaigns.edit', $clip_campaign) }}" class="btn btn-primary rounded-xl px-4 py-2.5 text-xs font-semibold flex items-center gap-2">
                             <i class="fa-solid fa-pen-to-square"></i>
                             <span>Edit Campaign</span>
                         </a>
@@ -620,10 +620,10 @@
                     </button>
                 </div>
                 <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <a href="{{ route('clip-campaigns.index') }}" class="w-full sm:w-auto btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
+                    <a href="{{ route('admin.clip-campaigns.index') }}" class="w-full sm:w-auto btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
                         Kembali
                     </a>
-                    <a href="{{ route('clip-campaigns.edit', $clip_campaign) }}" class="w-full sm:w-auto btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">
+                    <a href="{{ route('admin.clip-campaigns.edit', $clip_campaign) }}" class="w-full sm:w-auto btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <span>Edit Campaign</span>
                     </a>

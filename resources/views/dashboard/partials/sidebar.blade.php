@@ -15,15 +15,15 @@
 
             <p class="sb-title t-sidebar-title">Main Menu</p>
 
-            <a href="{{ route('dashboard') }}"
-                class="sb-item t-sidebar {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="fa-solid fa-gauge-high sb-icon"></i>
                 <span>Dashboard</span>
             </a>
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Clip</p>
 
-            <a href="{{ route('clip-campaigns.index') }}" class="sb-item t-sidebar {{ request()->routeIs('clip-campaigns.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.clip-campaigns.index') }}" class="sb-item t-sidebar {{ request()->routeIs('admin.clip-campaigns.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-video sb-icon"></i> <span>List Clip</span>
             </a>
 
@@ -41,7 +41,7 @@
                 <i class="fa-solid fa-money-bill-transfer sb-icon"></i> <span>Withdraw</span>
             </a>
 
-            <a href="{{ route('withdraw-channels.index') }}" class="sb-item t-sidebar {{ request()->routeIs('withdraw-channels.*') ? 'active' : '' }}">
+            <a href="{{ route('admin.withdraw-channels.index') }}" class="sb-item t-sidebar {{ request()->routeIs('admin.withdraw-channels.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-network-wired sb-icon"></i> <span>Metode WD</span>
             </a>
 
@@ -52,8 +52,8 @@
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Clipper</span>
             </a>
 
-            <a href="{{ route('administrators.index') }}"
-                class="sb-item t-sidebar {{ request()->routeIs('administrators.index') ? 'active' : '' }}">
+            <a href="{{ route('admin.administrators.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.administrators.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-user-cog sb-icon"></i> <span>Administrator</span>
             </a>
 

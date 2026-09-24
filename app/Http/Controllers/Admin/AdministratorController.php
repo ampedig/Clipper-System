@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
 class AdministratorController extends Controller
@@ -12,6 +12,7 @@ class AdministratorController extends Controller
     public function index()
     {
         $administrators = User::where('role', 'admin')->paginate(10);
+
         return view('dashboard.administrators.index', compact('administrators'));
     }
 
@@ -34,12 +35,13 @@ class AdministratorController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('administrators.index')->with('success', 'Akun administrator berhasil ditambahkan.');
+        return redirect()->route('admin.administrators.index')->with('success', 'Akun administrator berhasil ditambahkan.');
     }
 
     public function edit(string $id)
     {
         $administrator = User::where('role', 'admin')->findOrFail($id);
+
         return view('dashboard.administrators.edit', compact('administrator'));
     }
 
@@ -50,36 +52,37 @@ class AdministratorController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'whatsapp' => ['required', 'string', 'max:20'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,' . $id],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$id],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $administrator->name = $validated['name'];
         $administrator->whatsapp = $validated['whatsapp'];
         $administrator->email = $validated['email'];
-        
-        if (!empty($validated['password'])) {
+
+        if (! empty($validated['password'])) {
             $administrator->password = $validated['password'];
         }
 
         $administrator->is_active = $request->has('is_active');
         $administrator->save();
 
-        return redirect()->route('administrators.index')->with('success', 'Akun administrator berhasil diperbarui.');
+        return redirect()->route('admin.administrators.index')->with('success', 'Akun administrator berhasil diperbarui.');
     }
 
     public function destroy(string $id)
     {
         $administrator = User::where('role', 'admin')->findOrFail($id);
-        
+
         if (auth()->id() == $id) {
-            return redirect()->route('administrators.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+            return redirect()->route('admin.administrators.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
         $administrator->delete();
 
-        return redirect()->route('administrators.index')->with('success', 'Akun administrator berhasil dihapus.');
+        return redirect()->route('admin.administrators.index')->with('success', 'Akun administrator berhasil dihapus.');
     }
+
     public function toggleStatus(Request $request, string $id)
     {
         $administrator = User::where('role', 'admin')->findOrFail($id);
@@ -87,7 +90,7 @@ class AdministratorController extends Controller
         if (auth()->id() == $id) {
             return response()->json([
                 'success' => false,
-                'message' => 'Anda tidak dapat menonaktifkan akun Anda sendiri.'
+                'message' => 'Anda tidak dapat menonaktifkan akun Anda sendiri.',
             ], 403);
         }
 
@@ -96,7 +99,7 @@ class AdministratorController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Status administrator berhasil ' . ($administrator->is_active ? 'diaktifkan.' : 'dinonaktifkan.')
+            'message' => 'Status administrator berhasil '.($administrator->is_active ? 'diaktifkan.' : 'dinonaktifkan.'),
         ]);
     }
 }

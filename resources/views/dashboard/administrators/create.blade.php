@@ -22,16 +22,16 @@
         <!-- Breadcrumb -->
         @include('dashboard.partials.breadcrumb', [
             "crumb1_label" => "Dashboard",
-            "crumb1_url"   => route('dashboard'),
+            "crumb1_url"   => route('admin.dashboard'),
             "crumb2_label" => "Administrator",
-            "crumb2_url"   => route('administrators.index'),
+            "crumb2_url"   => route('admin.administrators.index'),
             "crumb3_label" => "Tambah",
             "crumb3_url"   => ""
         ])
     </div>
 
     <!-- Form Card Utama -->
-    <form id="createAdminForm" action="{{ route('administrators.store') }}" method="POST">
+    <form id="createAdminForm" action="{{ route('admin.administrators.store') }}" method="POST">
         @csrf
         <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
 
@@ -152,7 +152,7 @@
 
             <!-- Tombol Aksi -->
             <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
-                <a href="{{ route('administrators.index') }}" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
+                <a href="{{ route('admin.administrators.index') }}" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
                     Batal
                 </a>
                 <button type="submit" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2">

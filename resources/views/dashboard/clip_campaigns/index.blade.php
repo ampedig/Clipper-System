@@ -21,7 +21,7 @@
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
-                    'crumb1_url' => route('dashboard'),
+                    'crumb1_url' => route('admin.dashboard'),
                     'crumb2_label' => 'Campaign Clipper',
                     'crumb2_url' => '',
                     'crumb3_label' => '',
@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-                        <a class="btn btn-primary" href="{{ route('clip-campaigns.create') }}">
+                        <a class="btn btn-primary" href="{{ route('admin.clip-campaigns.create') }}">
                             <i class="fa-solid fa-plus"></i> Tambah Campaign
                         </a>
                     </div>
@@ -169,14 +169,14 @@
                                     </td>
                                     <td class="px-6 py-3.5 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
-                                            <a href="{{ route('clip-campaigns.show', $campaign) }}" class="btn btn-secondary btn-icon" title="Detail">
+                                            <a href="{{ route('admin.clip-campaigns.show', $campaign) }}" class="btn btn-secondary btn-icon" title="Detail">
                                                 <i class="fa-solid fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('clip-campaigns.edit', $campaign) }}" class="btn btn-primary btn-icon" title="Edit">
+                                            <a href="{{ route('admin.clip-campaigns.edit', $campaign) }}" class="btn btn-primary btn-icon" title="Edit">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn btn-danger btn-icon" title="Hapus"
-                                                onclick="confirmDelete('{{ addslashes($campaign->title) }}', '{{ route('clip-campaigns.destroy', $campaign) }}')">
+                                                onclick="confirmDelete('{{ addslashes($campaign->title) }}', '{{ route('admin.clip-campaigns.destroy', $campaign) }}')">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
                                         </div>

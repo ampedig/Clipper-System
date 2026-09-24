@@ -15,7 +15,7 @@
             <!-- Breadcrumb -->
             @include('dashboard.partials.breadcrumb', [
                 'crumb1_label' => 'Dashboard',
-                'crumb1_url' => route('dashboard'),
+                'crumb1_url' => route('admin.dashboard'),
                 'crumb2_label' => 'Akun',
                 'crumb2_url' => '',
                 'crumb3_label' => '',

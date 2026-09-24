@@ -26,16 +26,16 @@
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
-                    'crumb1_url' => route('dashboard'),
+                    'crumb1_url' => route('admin.dashboard'),
                     'crumb2_label' => 'List Clip',
-                    'crumb2_url' => route('clip-campaigns.index'),
+                    'crumb2_url' => route('admin.clip-campaigns.index'),
                     'crumb3_label' => 'Tambah',
                     'crumb3_url' => '',
                 ])
             </div>
 
             <!-- Form Card Utama -->
-            <form id="createCampaignForm" action="{{ route('clip-campaigns.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="createCampaignForm" action="{{ route('admin.clip-campaigns.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div
                     class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
@@ -389,7 +389,7 @@
                     <!-- Tombol Aksi Bawah -->
                     <div
                         class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
-                        <a href="{{ route('clip-campaigns.index') }}"
+                        <a href="{{ route('admin.clip-campaigns.index') }}"
                             class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold text-center">
                             Batal
                         </a>

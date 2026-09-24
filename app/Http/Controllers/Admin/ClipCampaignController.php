@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Enums\CampaignStatus;
+use App\Http\Controllers\Controller;
 use App\Models\ClipCampaign;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -77,7 +78,7 @@ class ClipCampaignController extends Controller
 
         ClipCampaign::create($validated);
 
-        return redirect()->route('clip-campaigns.index')->with('success', 'Campaign clipper berhasil ditambahkan.');
+        return redirect()->route('admin.clip-campaigns.index')->with('success', 'Campaign clipper berhasil ditambahkan.');
     }
 
     /**
@@ -141,7 +142,7 @@ class ClipCampaignController extends Controller
 
         $clip_campaign->update($validated);
 
-        return redirect()->route('clip-campaigns.index')->with('success', 'Campaign clipper berhasil diperbarui.');
+        return redirect()->route('admin.clip-campaigns.index')->with('success', 'Campaign clipper berhasil diperbarui.');
     }
 
     /**
@@ -155,6 +156,6 @@ class ClipCampaignController extends Controller
 
         $clip_campaign->delete();
 
-        return redirect()->route('clip-campaigns.index')->with('success', 'Kampanye clip berhasil dihapus.');
+        return redirect()->route('admin.clip-campaigns.index')->with('success', 'Kampanye clip berhasil dihapus.');
     }
 }
