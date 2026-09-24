@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="{{ asset('app/manifest.json') }}">
 
-    <title>{{ $title ?? 'Clipper App' }}</title>
+    <title>{{ isset($title) ? $title . ' - AZCLIP' : 'AZCLIP' }}</title>
 
     <!-- Tailwind & Global Styles -->
     <link href="{{ asset('app/assets/css/input.css') }}" rel="stylesheet">
