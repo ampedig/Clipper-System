@@ -18,6 +18,8 @@ Route::get('/akun/edit', [AppProfileController::class, 'edit'])->middleware('aut
 Route::put('/akun/edit', [AppProfileController::class, 'update'])->middleware('auth')->name('app.profile.update');
 Route::get('/akun/kata-sandi', [AppPasswordController::class, 'edit'])->middleware('auth')->name('app.password.edit');
 Route::put('/akun/kata-sandi', [AppPasswordController::class, 'update'])->middleware('auth')->name('app.password.update');
+Route::get('/akun/rekening', [AppProfileController::class, 'rekening'])->middleware('auth')->name('app.rekening');
+Route::put('/akun/rekening', [AppProfileController::class, 'updateRekening'])->middleware('auth')->name('app.rekening.update');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {

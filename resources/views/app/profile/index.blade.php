@@ -106,7 +106,7 @@
                 </a>
 
                 <!-- Atur Rekening -->
-                <a href="#"
+                <a href="{{ route('app.rekening') }}"
                     class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
                     <div class="flex items-center gap-3.5">
                         <div

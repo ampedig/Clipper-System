@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\WithdrawChannel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -87,5 +88,52 @@ class ProfileController extends Controller
     public function help(): View
     {
         return view('app.profile.help');
+    }
+
+    /**
+     * Menampilkan form pengaturan rekening pencairan dana.
+     */
+    public function rekening(Request $request): View
+    {
+        $user = $request->user()->load('withdrawChannel');
+        $channels = WithdrawChannel::where('is_active', true)->orderBy('name')->get();
+
+        return view('app.profile.rekening', [
+            'user' => $user,
+            'channels' => $channels,
+        ]);
+    }
+
+    /**
+     * Menyimpan data rekening pencairan dana user.
+     */
+    public function updateRekening(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'withdraw_channel_id' => ['required', 'exists:withdraw_channels,id'],
+            'account_number' => ['required', 'numeric', 'digits_between:5,30'],
+            'account_name' => ['required', 'string', 'min:2', 'max:255'],
+        ], [
+            'withdraw_channel_id.required' => 'Silakan pilih bank atau e-wallet tujuan pencairan.',
+            'withdraw_channel_id.exists' => 'Bank atau e-wallet yang dipilih tidak valid.',
+            'account_number.required' => 'Nomor rekening wajib diisi.',
+            'account_number.numeric' => 'Nomor rekening harus berupa angka.',
+            'account_number.digits_between' => 'Nomor rekening harus antara :min dan :max digit.',
+            'account_name.required' => 'Nama pemilik rekening wajib diisi.',
+            'account_name.min' => 'Nama pemilik rekening minimal :min karakter.',
+        ]);
+
+        $user = $request->user();
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        $user->update([
+            'withdraw_channel_id' => $validated['withdraw_channel_id'],
+            'account_number' => $validated['account_number'],
+            'account_name' => $validated['account_name'],
+        ]);
+
+        return redirect()->route('app.rekening')->with('status', 'rekening-updated');
     }
 }

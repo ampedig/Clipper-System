@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -110,5 +111,55 @@ class ExampleTest extends TestCase
         $response->assertSee('Pusat Bantuan');
         $response->assertSee('CS WhatsApp');
         $response->assertSee('CS Telegram');
+    }
+
+    public function test_the_rekening_page_redirects_guest(): void
+    {
+        $response = $this->get('/akun/rekening');
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_the_rekening_page_returns_successful_response_for_authenticated_user(): void
+    {
+        $user = User::factory()->create();
+        WithdrawChannel::factory()->create([
+            'name' => 'Bank BCA',
+            'fee' => 2500,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->get('/akun/rekening');
+
+        $response->assertStatus(200);
+        $response->assertSee('Atur Rekening');
+        $response->assertSee('Bank BCA');
+        $response->assertSee('Fee 2.500');
+    }
+
+    public function test_user_can_update_rekening(): void
+    {
+        $user = User::factory()->create();
+        $channel = WithdrawChannel::factory()->create([
+            'name' => 'Bank Mandiri',
+            'fee' => 0,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->put('/akun/rekening', [
+            'withdraw_channel_id' => $channel->id,
+            'account_number' => '1234567890',
+            'account_name' => 'Budi Santoso',
+        ]);
+
+        $response->assertRedirect('/akun/rekening');
+        $response->assertSessionHas('status', 'rekening-updated');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'withdraw_channel_id' => $channel->id,
+            'account_number' => '1234567890',
+            'account_name' => 'Budi Santoso',
+        ]);
     }
 }
