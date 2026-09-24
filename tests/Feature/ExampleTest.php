@@ -92,4 +92,23 @@ class ExampleTest extends TestCase
         $response->assertRedirect('/akun');
         $this->assertTrue(Hash::check('password_baru123', $user->fresh()->password));
     }
+
+    public function test_the_policy_page_returns_a_successful_response(): void
+    {
+        $response = $this->get('/kebijakan-layanan');
+
+        $response->assertStatus(200);
+        $response->assertSee('Kebijakan Layanan');
+        $response->assertSee('Daftar Ketentuan');
+    }
+
+    public function test_the_help_page_returns_a_successful_response(): void
+    {
+        $response = $this->get('/bantuan');
+
+        $response->assertStatus(200);
+        $response->assertSee('Pusat Bantuan');
+        $response->assertSee('CS WhatsApp');
+        $response->assertSee('CS Telegram');
+    }
 }

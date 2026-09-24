@@ -2339,4 +2339,27 @@
   }
 }
 
+/* Telegram Brand Color Utilities */
+.text-telegram {
+  color: #24A1DE;
+}
+.bg-telegram-soft {
+  background-color: #E8F5FD;
+}
+.border-telegram-soft {
+  border-color: #CBE7F8;
+}
+.hover\:border-telegram:hover {
+  border-color: #90D0F4;
+}
+.group:hover .group-hover\:text-telegram {
+  color: #24A1DE;
+}
+.group:hover .group-hover\:bg-telegram-soft {
+  background-color: #E8F5FD;
+}
+.group:hover .group-hover\:border-telegram-soft {
+  border-color: #CBE7F8;
+}
+
 

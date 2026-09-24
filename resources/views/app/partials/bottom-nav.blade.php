@@ -31,7 +31,7 @@
 
             <!-- Floating Icon -->
             <div
-                class="absolute -top-5 left-1/2 -translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-full transition-transform duration-300 group-hover:scale-105 group-active:scale-95 shadow-lg shadow-indigo-600/30 {{ isset($active) && $active === 'campaign' ? 'bg-indigo-700 text-white ring-4 ring-indigo-50' : 'bg-indigo-600 text-white ring-4 ring-white' }}">
+                class="absolute -top-5 left-1/2 -translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-full transition-transform duration-300 group-hover:scale-105 group-active:scale-95 {{ isset($active) && $active === 'campaign' ? 'bg-indigo-700 text-white ring-4 ring-indigo-50' : 'bg-indigo-600 text-white ring-4 ring-white' }}">
                 <i class="fa-solid fa-fire-flame-curved text-xl"></i>
             </div>
 

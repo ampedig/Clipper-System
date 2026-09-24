@@ -72,4 +72,20 @@ class ProfileController extends Controller
 
         return redirect()->route('app.profile')->with('status', 'profile-updated');
     }
+
+    /**
+     * Menampilkan halaman syarat dan kebijakan layanan AZCLIP.
+     */
+    public function policy(): View
+    {
+        return view('app.profile.policy');
+    }
+
+    /**
+     * Menampilkan halaman pusat bantuan dan kontak customer service.
+     */
+    public function help(): View
+    {
+        return view('app.profile.help');
+    }
 }

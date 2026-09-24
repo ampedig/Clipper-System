@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
+Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
+Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
 Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');
 Route::get('/akun/edit', [AppProfileController::class, 'edit'])->middleware('auth')->name('app.profile.edit');
 Route::put('/akun/edit', [AppProfileController::class, 'update'])->middleware('auth')->name('app.profile.update');

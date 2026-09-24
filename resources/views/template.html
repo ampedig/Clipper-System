@@ -1,5 +1,5 @@
 @@include('../partials/head.html', {
-  "title": "Kata Sandi"
+  "title": "Kebijakan Layanan"
 })
 
 <div class="min-h-[100dvh] bg-slate-50 relative pb-32">
@@ -10,108 +10,410 @@
       <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0">
         <i class="fa-solid fa-arrow-left text-sm"></i>
       </button>
-      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Kata Sandi</h1>
+      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Kebijakan Layanan</h1>
     </div>
   </header>
 
-  <!-- Main Content Form -->
+  <!-- Main Content Area -->
   <main class="p-4 space-y-4">
 
-    <!-- Security Info Banner Card -->
-    <div class="bg-indigo-50/70 border border-indigo-100/80 rounded-2xl p-4 flex items-center gap-3">
-      <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shrink-0">
-        <i class="fa-solid fa-shield-halved"></i>
+    <!-- Hero Card: Document Header -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100/80 flex items-center justify-center text-base shrink-0">
+            <i class="fa-solid fa-file-shield"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-extrabold text-slate-900 tracking-tight leading-snug">Kebijakan Layanan</h2>
+            <p class="text-[10px] font-semibold text-slate-400">Clipper Creator Guidelines</p>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold border border-slate-200/60">
+          v1.2 • 2026
+        </span>
       </div>
-      <div>
-        <h4 class="text-xs font-bold text-slate-800 mb-0.5">Keamanan Akun</h4>
-        <p class="text-[11px] text-slate-500 font-medium leading-relaxed">Gunakan kombinasi minimal 6 karakter dengan campuran huruf dan angka agar akun tetap aman.</p>
+
+      <p class="text-xs text-slate-500 font-medium leading-relaxed">
+        Panduan resmi mengenai hak, kewajiban kreator, standarisasi video klip, dan sistem pencairan reward di platform Clipper.
+      </p>
+
+      <div class="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+        <span class="text-slate-400 font-medium flex items-center gap-1.5">
+          <i class="fa-regular fa-clock text-slate-400"></i>
+          Terakhir diperbarui
+        </span>
+        <span class="font-bold text-slate-700">19 September 2026</span>
       </div>
     </div>
 
-    <!-- Password Form Panel -->
-    <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-5">
-      
-      <!-- Field 1: Kata Sandi Saat Ini -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label for="current_password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">
-            Kata Sandi Saat Ini
-          </label>
-          <button type="button" id="btn-forgot" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer">
-            Lupa Kata Sandi?
-          </button>
-        </div>
-        <div class="relative flex items-center rounded-xl bg-slate-50/80 border border-slate-200 focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
-          <input 
-            type="password" 
-            id="current_password" 
-            placeholder="Masukkan kata sandi saat ini" 
-            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" 
-          />
-          <button 
-            type="button" 
-            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer" 
-            data-target="current_password"
-          >
-            <i class="fa-regular fa-eye text-sm"></i>
-          </button>
-        </div>
-        <div id="current-error" class="hidden mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span>Kata sandi saat ini wajib diisi</span>
+    <!-- Real-time Search Filter -->
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400"></i>
+      <input 
+        type="text" 
+        id="policy-search" 
+        placeholder="Cari topik kebijakan (misal: komisi, larangan)..." 
+        class="w-full pl-9 pr-9 py-3 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-indigo-500 transition-colors"
+      />
+      <button 
+        type="button" 
+        id="btn-clear-search" 
+        class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer p-1"
+      >
+        <i class="fa-solid fa-circle-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Section Bar: Title & Toggle All Button -->
+    <div class="flex items-center justify-between px-1">
+      <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider" id="section-title">Daftar Ketentuan (11 Poin)</p>
+      <button 
+        type="button" 
+        id="btn-toggle-all" 
+        class="text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+      >
+        <i class="fa-solid fa-arrows-up-down text-[10px]"></i>
+        <span id="toggle-all-text">Buka Semua</span>
+      </button>
+    </div>
+
+    <!-- Empty Search State -->
+    <div id="search-empty" class="hidden bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-2">
+      <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center text-lg mx-auto mb-2">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <h3 class="text-xs font-bold text-slate-800">Topik Tidak Ditemukan</h3>
+      <p class="text-[11px] text-slate-400 font-medium max-w-[240px] mx-auto">Coba cari dengan kata kunci lain seperti komisi, penarikan, atau video.</p>
+    </div>
+
+    <!-- Unified Policy Accordion Panel -->
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100" id="policy-accordion">
+
+      <!-- 1. Ketentuan Umum -->
+      <div class="policy-item transition-colors" data-keywords="ketentuan umum platform clipper kreator syarat daftar akun 17 tahun usia kontak whatsapp">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              1
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Ketentuan Umum</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200 rotate-180"></i>
+          </div>
+        </button>
+        <div class="policy-content px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Clipper App merupakan platform penghubung antara kreator/clipper dengan campaign resmi untuk mempromosikan video pendek.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Dengan mendaftar dan menggunakan aplikasi ini, Anda menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan layanan yang berlaku.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Pengguna wajib memberikan data akun, profil, dan kontak nomor WhatsApp yang aktif dan valid.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Layanan ini diperuntukkan bagi pengguna berusia minimal 17 tahun atau yang memiliki persetujuan sah dari orang tua/wali hukum.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Field 2: Kata Sandi Baru -->
-      <div>
-        <label for="new_password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-          Kata Sandi Baru
-        </label>
-        <div class="relative flex items-center rounded-xl bg-slate-50/80 border border-slate-200 focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
-          <input 
-            type="password" 
-            id="new_password" 
-            placeholder="Minimal 6 karakter" 
-            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" 
-          />
-          <button 
-            type="button" 
-            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer" 
-            data-target="new_password"
-          >
-            <i class="fa-regular fa-eye text-sm"></i>
-          </button>
-        </div>
-        <p class="text-[11px] text-slate-400 font-medium mt-1.5">Kata sandi baru minimal 6 karakter.</p>
-        <div id="new-error" class="hidden mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span>Kata sandi baru minimal 6 karakter</span>
+      <!-- 2. Campaign -->
+      <div class="policy-item transition-colors" data-keywords="campaign brief instruksi target audiens periode aktif budget pool kuota anggaran anggaran">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              2
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Campaign</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Setiap campaign memiliki brief instruksi konten, target audiens, dan batas periode penayangan yang wajib ditaati.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Setiap campaign memiliki alokasi anggaran (<span class="font-bold text-slate-700">budget pool</span>) tertentu yang didistribusikan secara transparan kepada para clipper.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Pengguna hanya dapat berpartisipasi dan mengirimkan tautan video selama status campaign berlabel <span class="font-bold text-emerald-600">Aktif</span>.</p>
+          </div>
         </div>
       </div>
 
-      <!-- Field 3: Konfirmasi Kata Sandi -->
-      <div>
-        <label for="confirm_password" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-          Konfirmasi Kata Sandi
-        </label>
-        <div class="relative flex items-center rounded-xl bg-slate-50/80 border border-slate-200 focus-within:border-indigo-500 focus-within:bg-white transition-colors overflow-hidden">
-          <input 
-            type="password" 
-            id="confirm_password" 
-            placeholder="Ulangi kata sandi baru" 
-            class="w-full px-4 py-3.5 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none pr-11" 
-          />
-          <button 
-            type="button" 
-            class="toggle-password absolute right-0 top-0 bottom-0 px-3.5 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer" 
-            data-target="confirm_password"
-          >
-            <i class="fa-regular fa-eye text-sm"></i>
-          </button>
+      <!-- 3. Ketentuan Video -->
+      <div class="policy-item transition-colors" data-keywords="ketentuan video orisinal editing hd 720p 1080p 9:16 vertikal tiktok reels shorts pornografi sara judi musik audio hak cipta">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              3
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Ketentuan Video</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Video klip harus dibuat secara orisinal dari materi resmi campaign dengan hasil editing kreatif yang berkualitas dan menarik.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Format video wajib vertikal (<span class="font-bold text-slate-700">9:16</span>) resolusi minimal HD (720p atau 1080p) untuk platform TikTok, Instagram Reels, atau YouTube Shorts.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Dilarang keras memuat konten pornografi, ujaran kebencian, fitnah, diskriminasi SARA, kekerasan, perjudian, atau pelanggaran hukum lainnya.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Penggunaan audio dan musik latar wajib mematuhi katalog musik resmi atau lisensi bebas royalti pada platform media sosial yang digunakan.</p>
+          </div>
         </div>
-        <div id="confirm-error" class="hidden mt-1.5 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <span>Konfirmasi kata sandi tidak cocok</span>
+      </div>
+
+      <!-- 4. Submission -->
+      <div class="policy-item transition-colors" data-keywords="submission pengajuan link tautan url publik private arsip hapus tenggat waktu batas submit">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              4
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Submission</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Pengguna wajib menyertakan tautan (<span class="font-bold text-slate-700">link URL</span>) video publik yang sah saat melakukan pengajuan submission.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Tautan video harus dapat diakses secara publik dan <span class="font-bold text-rose-600">dilarang di-private, diarsipkan, atau dihapus</span> selama masa campaign dan verifikasi berlangsung.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Pengajuan submission yang dikirimkan setelah batas waktu campaign ditutup tidak akan diproses oleh sistem.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Perhitungan Komisi -->
+      <div class="policy-item transition-colors" data-keywords="perhitungan komisi reward views tayangan metrik rpm organik audit validasi estimasi saldo">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              5
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Perhitungan Komisi</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Komisi dihitung berdasarkan metrik penayangan (<span class="font-bold text-slate-700">views</span>) organik yang tervalidasi oleh sistem audit Clipper App.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Besaran komisi mengikuti skema reward rate atau rasio RPM yang tercantum pada halaman detail masing-masing campaign.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Penayangan yang diakui murni merupakan penayangan organik. Lonjakan views tidak wajar akibat manipulasi akan dianulir otomatis.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Saldo dan Penarikan -->
+      <div class="policy-item transition-colors" data-keywords="saldo penarikan withdraw dompet wallet rekening bank e-wallet minimum 50000 1x24 jam biaya transfer">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              6
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Saldo dan Penarikan</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Saldo reward yang telah disetujui akan masuk ke Saldo Dompet akun Anda secara berkala.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Penarikan saldo dapat diajukan ke rekening bank atau e-wallet yang telah diatur pada menu <span class="font-bold text-slate-700">Atur Rekening</span>.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Batas minimal penarikan adalah <span class="font-bold text-slate-900">Rp50.000</span> dengan estimasi proses verifikasi pencairan maksimal 1x24 jam kerja.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Biaya transaksi atau transfer antar-bank mengikuti ketentuan resmi penyedia gerbang pembayaran.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Larangan -->
+      <div class="policy-item transition-colors" data-keywords="larangan bot script auto-viewers click farm reupload copyright theft spam hack manipulasi">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              7
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Larangan</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Dilarang keras menggunakan bot, script otomatis, auto-viewers, click-farm, atau jasa manipulasi views ilegal lainnya.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Dilarang mengunggah tautan video milik kreator lain tanpa izin sah (<span class="font-bold text-slate-700">copyright theft</span>).</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Dilarang mengirimkan submission duplikat berulang atau link yang tidak berhubungan dengan campaign.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Dilarang melakukan manipulasi data, celah sistem, atau upaya rekayasa balik terhadap aplikasi.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Pelanggaran -->
+      <div class="policy-item transition-colors" data-keywords="pelanggaran sanksi rejected tolak pembatalan komisi banned akun permanen blacklist">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              8
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Pelanggaran & Sanksi</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Pengajuan yang melanggar brief akan berstatus <span class="font-bold text-rose-600">Ditolak (Rejected)</span> tanpa kompensasi.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Jika terbukti ada kecurangan tayangan, sistem berhak membatalkan dan menarik saldo reward yang diperoleh secara tidak sah.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 shrink-0"></div>
+            <p>Pelanggaran berat berulang berakibat pada <span class="font-bold text-rose-600">pemblokiran akun permanen (Banned)</span> dan pencantuman pada daftar hitam (<span class="font-bold text-slate-700">blacklist</span>).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Perubahan Campaign -->
+      <div class="policy-item transition-colors" data-keywords="perubahan campaign kuota budget habis tutup perpanjang klip selesai reward">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              9
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Perubahan Campaign</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Pihak pengelola campaign berhak mengubah batas kuota, memperpanjang, atau menghentikan campaign lebih awal jika alokasi anggaran terpenuhi.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Klip yang telah diverifikasi sebelum penutupan campaign tetap berhak atas komisi tayangan sah hingga tanggal efektif penutupan.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Perubahan Kebijakan -->
+      <div class="policy-item transition-colors" data-keywords="perubahan kebijakan update syarat ketentuan pembaruan tanggal efektif pengumuman aplikasi">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              10
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Perubahan Kebijakan</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-2.5">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Clipper App berhak memperbarui dan memodifikasi ketentuan ini sewaktu-waktu demi menjaga keamanan ekosistem layanan.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Setiap revisi akan diinformasikan melalui pengumuman di aplikasi dengan pembaruan tanggal efektif di bagian atas dokumen.</p>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+            <p>Dengan terus mengakses aplikasi setelah pembaruan, Anda dianggap telah menyetujui kebijakan terbaru yang berlaku.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Hubungi Kami -->
+      <div class="policy-item transition-colors" data-keywords="hubungi kami kontak customer support cs whatsapp bantuan pertanyaan klarifikasi">
+        <button type="button" class="policy-toggle w-full px-4 py-3.5 flex items-center justify-between text-left hover:bg-slate-50/70 transition-colors cursor-pointer select-none">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 font-extrabold text-[11px] flex items-center justify-center shrink-0">
+              11
+            </span>
+            <h3 class="text-xs font-bold text-slate-900 tracking-tight">Hubungi Kami</h3>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shrink-0">
+            <i class="policy-chevron fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+          </div>
+        </button>
+        <div class="policy-content hidden px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100/80 bg-slate-50/30 space-y-3">
+          <p>Apabila Anda memiliki pertanyaan, klarifikasi, atau laporan seputar Kebijakan Layanan ini, tim Customer Care kami siap membantu Anda setiap hari pukul 08:00 – 22:00 WIB.</p>
+          <a 
+            href="bantuan.html" 
+            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer shadow-none"
+          >
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span>Hubungi Bantuan CS via WhatsApp</span>
+          </a>
         </div>
       </div>
 
@@ -119,16 +421,15 @@
 
   </main>
 
-  <!-- Bottom Fixed Save Button (Floating) -->
+  <!-- Bottom Navigation Button to Help (Floating) -->
   <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-4 pb-6 pt-2 z-40 pb-safe">
-    <button 
-      type="button" 
-      id="btn-save-password" 
+    <a 
+      href="bantuan.html" 
       class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
     >
-      <i class="fa-solid fa-key text-xs"></i>
-      <span>Simpan Kata Sandi</span>
-    </button>
+      <i class="fa-solid fa-headset text-sm"></i>
+      <span>Punya Pertanyaan? Hubungi CS</span>
+    </a>
   </div>
 
 </div>
@@ -136,178 +437,105 @@
 @@include('../partials/vendor-script.html')
 
 <script>
-  // Toggle show/hide password visibility
-  document.querySelectorAll('.toggle-password').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target');
-      const input = document.getElementById(targetId);
-      const icon = btn.querySelector('i');
+  // Elements
+  const toggles = document.querySelectorAll('.policy-toggle');
+  const btnToggleAll = document.getElementById('btn-toggle-all');
+  const toggleAllText = document.getElementById('toggle-all-text');
+  const searchInput = document.getElementById('policy-search');
+  const btnClearSearch = document.getElementById('btn-clear-search');
+  const emptyState = document.getElementById('search-empty');
+  const policyAccordion = document.getElementById('policy-accordion');
+  const sectionTitle = document.getElementById('section-title');
+  const allItems = document.querySelectorAll('.policy-item');
 
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+  let allExpanded = false;
+
+  // Single Item Toggle
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const parent = toggle.closest('.policy-item');
+      const content = parent.querySelector('.policy-content');
+      const chevron = toggle.querySelector('.policy-chevron');
+      const isHidden = content.classList.contains('hidden');
+
+      if (isHidden) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
       } else {
-        input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        content.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
       }
     });
   });
 
-  // Handler Lupa Kata Sandi
-  const btnForgot = document.getElementById('btn-forgot');
-  btnForgot.addEventListener('click', () => {
-    if (typeof Swal !== 'undefined') {
-      Swal.fire({
-        html: `
-          <div class="flex flex-col items-center text-center pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
-              <i class="fa-solid fa-headset"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Lupa Kata Sandi?</h3>
-            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-              Tautan reset kata sandi dapat dikirimkan ke email terdaftar Anda atau hubungi Customer Service.
-            </p>
-          </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'Kirim Email Reset',
-        cancelButtonText: 'Tutup',
-        buttonsStyling: false,
-        backdrop: 'rgba(15, 23, 42, 0.65)',
-        customClass: {
-          popup: 'custom-swal-popup !rounded-[2.25rem]',
-          actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-          confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-          cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+  // Toggle All Logic
+  btnToggleAll.addEventListener('click', () => {
+    allExpanded = !allExpanded;
+
+    allItems.forEach(item => {
+      if (item.classList.contains('hidden')) return;
+      const content = item.querySelector('.policy-content');
+      const chevron = item.querySelector('.policy-chevron');
+
+      if (allExpanded) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    });
+
+    toggleAllText.textContent = allExpanded ? 'Tutup Semua' : 'Buka Semua';
+  });
+
+  // Real-time Search Filter
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+
+    if (query.length > 0) {
+      btnClearSearch.classList.remove('hidden');
+    } else {
+      btnClearSearch.classList.add('hidden');
+    }
+
+    let visibleCount = 0;
+
+    allItems.forEach(item => {
+      const keywords = (item.getAttribute('data-keywords') || '').toLowerCase();
+      const text = item.textContent.toLowerCase();
+      const content = item.querySelector('.policy-content');
+      const chevron = item.querySelector('.policy-chevron');
+
+      if (!query || keywords.includes(query) || text.includes(query)) {
+        item.classList.remove('hidden');
+        visibleCount++;
+        // Auto expand matching item when searching
+        if (query.length >= 2) {
+          content.classList.remove('hidden');
+          chevron.classList.add('rotate-180');
         }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            html: `
-              <div class="flex flex-col items-center text-center pt-2">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
-                  <i class="fa-solid fa-envelope-circle-check"></i>
-                </div>
-                <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Email Terkirim!</h3>
-                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-                  Silakan periksa kotak masuk email Anda untuk instruksi pengaturan ulang kata sandi.
-                </p>
-              </div>
-            `,
-            showConfirmButton: false,
-            timer: 1600,
-            backdrop: 'rgba(15, 23, 42, 0.65)',
-            customClass: {
-              popup: 'custom-swal-popup !rounded-[2.25rem]'
-            }
-          });
-        }
-      });
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    if (visibleCount === 0) {
+      emptyState.classList.remove('hidden');
+      policyAccordion.classList.add('hidden');
+      sectionTitle.textContent = 'Daftar Ketentuan (0 Poin)';
+    } else {
+      emptyState.classList.add('hidden');
+      policyAccordion.classList.remove('hidden');
+      sectionTitle.textContent = `Daftar Ketentuan (${visibleCount} Poin)`;
     }
   });
 
-  // Handler Simpan Kata Sandi
-  const btnSave = document.getElementById('btn-save-password');
-  const currentPass = document.getElementById('current_password');
-  const newPass = document.getElementById('new_password');
-  const confirmPass = document.getElementById('confirm_password');
-
-  const currentError = document.getElementById('current-error');
-  const newError = document.getElementById('new-error');
-  const confirmError = document.getElementById('confirm-error');
-
-  btnSave.addEventListener('click', () => {
-    const curVal = currentPass.value.trim();
-    const newVal = newPass.value.trim();
-    const confVal = confirmPass.value.trim();
-    let isValid = true;
-
-    // Validasi Kata Sandi Saat Ini
-    if (!curVal) {
-      currentError.classList.remove('hidden');
-      currentPass.parentElement.classList.add('border-rose-400');
-      isValid = false;
-    } else {
-      currentError.classList.add('hidden');
-      currentPass.parentElement.classList.remove('border-rose-400');
-    }
-
-    // Validasi Kata Sandi Baru
-    if (newVal.length < 6) {
-      newError.classList.remove('hidden');
-      newPass.parentElement.classList.add('border-rose-400');
-      isValid = false;
-    } else {
-      newError.classList.add('hidden');
-      newPass.parentElement.classList.remove('border-rose-400');
-    }
-
-    // Validasi Konfirmasi Kata Sandi
-    if (!confVal || confVal !== newVal) {
-      confirmError.classList.remove('hidden');
-      confirmPass.parentElement.classList.add('border-rose-400');
-      isValid = false;
-    } else {
-      confirmError.classList.add('hidden');
-      confirmPass.parentElement.classList.remove('border-rose-400');
-    }
-
-    if (!isValid) return;
-
-    // SweetAlert Konfirmasi
-    if (typeof Swal !== 'undefined') {
-      Swal.fire({
-        html: `
-          <div class="flex flex-col items-center text-center pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Ubah Sandi</h3>
-            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-              Apakah Anda yakin ingin memperbarui kata sandi akun Anda?
-            </p>
-          </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'Ya, Simpan',
-        cancelButtonText: 'Batal',
-        buttonsStyling: false,
-        backdrop: 'rgba(15, 23, 42, 0.65)',
-        customClass: {
-          popup: 'custom-swal-popup !rounded-[2.25rem]',
-          actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-          confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-          cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            html: `
-              <div class="flex flex-col items-center text-center pt-2">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
-                  <i class="fa-solid fa-check"></i>
-                </div>
-                <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Kata Sandi Diperbarui!</h3>
-                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-                  Kata sandi baru berhasil disimpan. Silakan gunakan kata sandi baru untuk masuk berikutnya.
-                </p>
-              </div>
-            `,
-            showConfirmButton: false,
-            timer: 1600,
-            backdrop: 'rgba(15, 23, 42, 0.65)',
-            customClass: {
-              popup: 'custom-swal-popup !rounded-[2.25rem]'
-            }
-          }).then(() => {
-            window.location.href = 'profile.html';
-          });
-        }
-      });
-    } else {
-      window.location.href = 'profile.html';
-    }
+  // Clear Search
+  btnClearSearch.addEventListener('click', () => {
+    searchInput.value = '';
+    btnClearSearch.classList.add('hidden');
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
   });
 </script>

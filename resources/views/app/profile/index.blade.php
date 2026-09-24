@@ -4,9 +4,14 @@
 
 @php
     $currentUser = $user ?? auth()->user();
-    $name = $currentUser->name ?? 'Masum';
+    $name = trim($currentUser->name ?? 'Masum');
     $email = $currentUser->email ?? 'masum@example.com';
-    $initial = strtoupper(substr($name, 0, 1));
+    $words = preg_split('/\s+/', $name);
+    if (count($words) >= 2) {
+        $initial = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+    } else {
+        $initial = strtoupper(substr($name, 0, 2));
+    }
     $balance = 450000;
 @endphp
 
@@ -125,7 +130,7 @@
             <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Bantuan & Kebijakan</h3>
             <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
                 <!-- Hubungi CS -->
-                <a href="#"
+                <a href="{{ route('app.help') }}"
                     class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
                     <div class="flex items-center gap-3.5">
                         <div
@@ -134,7 +139,7 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-slate-800">Bantuan & Kontak CS</p>
-                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Hubungi customer care via WhatsApp
+                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Hubungi customer care via WhatsApp & Telegram
                             </p>
                         </div>
                     </div>
@@ -143,7 +148,7 @@
                 </a>
 
                 <!-- Syarat & Ketentuan -->
-                <a href="#"
+                <a href="{{ route('app.policy') }}"
                     class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
                     <div class="flex items-center gap-3.5">
                         <div
