@@ -85,6 +85,8 @@ class ClipCampaignController extends Controller
      */
     public function show(ClipCampaign $clip_campaign): View
     {
+        $clip_campaign->load('creator');
+
         return view('dashboard.clip_campaigns.show', compact('clip_campaign'));
     }
 
