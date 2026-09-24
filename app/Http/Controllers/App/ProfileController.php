@@ -48,6 +48,12 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'whatsapp' => ['required', 'numeric', 'digits_between:8,15'],
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'name.min' => 'Nama lengkap minimal :min karakter.',
+            'whatsapp.required' => 'Nomor WhatsApp wajib diisi.',
+            'whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka.',
+            'whatsapp.digits_between' => 'Nomor WhatsApp harus antara :min dan :max digit.',
         ]);
 
         $user = $request->user();
