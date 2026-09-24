@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="{{ asset('app/manifest.json') }}">
+
+    <title>{{ $title ?? 'Clipper App' }}</title>
+
+    <!-- Tailwind & Global Styles -->
+    <link href="{{ asset('app/assets/css/input.css') }}" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link href="{{ asset('app/assets/libs/fontawesome/css/all.css') }}" rel="stylesheet">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="bg-slate-100 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-700 min-h-screen">
+    <div class="mobile-container pb-24">

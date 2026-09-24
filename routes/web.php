@@ -7,9 +7,9 @@ use App\Http\Controllers\Admin\WithdrawChannelController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\App\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('app.home');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
