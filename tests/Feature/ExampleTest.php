@@ -195,4 +195,42 @@ class ExampleTest extends TestCase
         $response->assertDontSee('Kampanye Tidak Aktif');
         $response->assertDontSee('Kampanye Sudah Selesai');
     }
+
+    public function test_the_campaign_detail_page_returns_successful_response_using_slug(): void
+    {
+        $campaign = ClipCampaign::factory()->active()->create([
+            'title' => 'Kampanye Produk Glowing',
+            'slug' => 'kampanye-produk-glowing-xyz',
+            'description' => 'Deskripsi kampanye produk glowing',
+            'brief' => '<p>Wajib video vertikal</p>',
+            'commission_amount' => 20000,
+            'view_threshold' => 1000,
+        ]);
+
+        $response = $this->get('/campaign/'.$campaign->slug);
+
+        $response->assertStatus(200);
+        $response->assertSee('Kampanye Produk Glowing');
+        $response->assertSee('Deskripsi kampanye produk glowing');
+        $response->assertSee('Wajib video vertikal', false);
+        $response->assertSee('Rp20.000');
+    }
+
+    public function test_inactive_campaign_detail_returns_404(): void
+    {
+        $inactiveCampaign = ClipCampaign::factory()->inactive()->create([
+            'slug' => 'kampanye-nonaktif-slug',
+        ]);
+
+        $response = $this->get('/campaign/'.$inactiveCampaign->slug);
+
+        $response->assertStatus(404);
+    }
+
+    public function test_non_existent_campaign_slug_returns_404(): void
+    {
+        $response = $this->get('/campaign/slug-yang-tidak-ada');
+
+        $response->assertStatus(404);
+    }
 }

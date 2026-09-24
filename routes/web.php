@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
 Route::get('/campaign', [CampaignController::class, 'index'])->name('app.campaigns');
+Route::get('/campaign/{campaign:slug}', [CampaignController::class, 'show'])->name('app.campaigns.show');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
 Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');

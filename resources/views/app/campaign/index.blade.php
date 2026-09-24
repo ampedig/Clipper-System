@@ -27,7 +27,7 @@
     <!-- 2. Campaign List (Gaya Panel & Background Senada Profile) -->
     <div id="campaignList" class="space-y-4 pt-1">
         @forelse ($campaigns as $campaign)
-            <a href="#" data-title="{{ strtolower($campaign->title) }}" data-desc="{{ strtolower($campaign->description) }}" class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
+            <a href="{{ route('app.campaigns.show', $campaign) }}" data-title="{{ strtolower($campaign->title) }}" data-desc="{{ strtolower($campaign->description) }}" class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
                 <!-- Thumbnail -->
                 <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
                     <img src="{{ $campaign->thumbnail_url }}" alt="{{ $campaign->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy">

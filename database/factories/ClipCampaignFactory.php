@@ -6,6 +6,7 @@ use App\Enums\CampaignStatus;
 use App\Models\ClipCampaign;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<ClipCampaign>
@@ -19,8 +20,11 @@ class ClipCampaignFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->sentence(4);
+
         return [
-            'title' => fake()->sentence(4),
+            'title' => $title,
+            'slug' => Str::slug($title).'-'.fake()->unique()->lexify('?????'),
             'description' => fake()->paragraph(3),
             'brief' => fake()->paragraphs(2, true),
             'source_url' => fake()->url(),

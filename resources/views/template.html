@@ -1,588 +1,230 @@
 @@include('../partials/head.html', {
-  "title": "Daftar Campaign"
+  "title": "Detail Campaign"
 })
 
-<div class="px-5 pt-6 space-y-4 pb-28">
-
-  <!-- 1. Search Bar (Tanpa Header) -->
-  <div class="relative flex items-center">
-    <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-xs pointer-events-none"></i>
-    <input 
-      type="text" 
-      id="searchInput" 
-      oninput="handleSearch()" 
-      placeholder="Cari campaign atau produk..." 
-      class="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-2xl text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-    />
-    <button 
-      id="clearSearchBtn" 
-      onclick="clearSearch()" 
-      type="button" 
-      class="hidden absolute right-3 w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center text-[10px] transition-colors cursor-pointer"
-      aria-label="Hapus pencarian">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-
-  <!-- 2. Campaign List (Gaya Panel & Background Senada Profile) -->
-  <div id="campaignList" class="space-y-4 pt-1">
-
-    <!-- Item 1 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Serum Glow & Bright XYZ" data-desc="Buat video TikTok untuk mempromosikan produk Serum Glow & Bright XYZ dengan review jujur dan hasil pemakaian natural." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=60" alt="Serum Glow & Bright XYZ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Serum Glow & Bright XYZ
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan produk Serum Glow & Bright XYZ dengan review jujur dan hasil pemakaian natural.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp5.000 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>30 Sep 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 24 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 2 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Earphone TWS BassPro Max" data-desc="Buat video TikTok untuk mempromosikan produk Earphone TWS BassPro Max dengan unboxing dan demonstrasi bass audio." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=60" alt="Earphone TWS BassPro Max" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Earphone TWS BassPro Max
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan produk Earphone TWS BassPro Max dengan unboxing dan demonstrasi bass audio.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp7.500 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>05 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 12 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 3 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Aplikasi Finansial Cermat" data-desc="Buat video TikTok untuk mempromosikan fitur budgeting otomatis dan tips mencatat pengeluaran bulanan." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=60" alt="Aplikasi Finansial Cermat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Aplikasi Finansial Cermat
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan fitur budgeting otomatis dan tips mencatat pengeluaran bulanan.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp10.000 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>28 Sep 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 8 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 4 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Sepatu Sneakers Urban XYZ" data-desc="Buat video TikTok untuk mempromosikan produk Sneakers Urban XYZ dengan tema mix and match OOTD jalanan." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&auto=format&fit=crop&q=60" alt="Sepatu Sneakers Urban XYZ" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Sepatu Sneakers Urban XYZ
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan produk Sneakers Urban XYZ dengan tema mix and match OOTD jalanan.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp6.000 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>12 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 19 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 5 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Minuman Herbal DetoxFit XYZ" data-desc="Buat video TikTok untuk mempromosikan produk minuman herbal DetoxFit XYZ saat rutinitas pagi sehat." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=800&auto=format&fit=crop&q=60" alt="Minuman Herbal DetoxFit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Minuman Herbal DetoxFit XYZ
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan produk minuman herbal DetoxFit XYZ saat rutinitas pagi sehat.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp4.500 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>02 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 31 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 6 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Game RPG Fantasy Hero" data-desc="Buat video TikTok untuk mempromosikan game RPG Fantasy Hero saat gameplay aksi pertarungan boss." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?w=800&auto=format&fit=crop&q=60" alt="Game RPG Fantasy Hero" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Game RPG Fantasy Hero
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan game RPG Fantasy Hero saat gameplay aksi pertarungan boss.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp8.000 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>15 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 15 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 7 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Powerbank Wireless FastCharge" data-desc="Buat video TikTok untuk mempromosikan kepraktisan powerbank nirkabel magnetik saat traveling." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1609081219090-a6d81d3085bf?w=800&auto=format&fit=crop&q=60" alt="Powerbank Wireless" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Powerbank Wireless FastCharge
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan kepraktisan powerbank nirkabel magnetik saat traveling.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp5.500 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>20 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 14 slot</span>
-      </div>
-    </a>
-
-    <!-- Item 8 -->
-    <a href="campaigns-detail.html" data-title="Campaign Promo Kopi Cold Brew Pack XYZ" data-desc="Buat video TikTok untuk mempromosikan produk Kopi Cold Brew XYZ dengan kreasi es kopi susu kafe di rumah." class="campaign-card flex flex-col bg-white border border-slate-200 rounded-[1.25rem] overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99]">
-      <!-- Thumbnail -->
-      <div class="relative w-full h-32 sm:h-36 bg-slate-100 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&auto=format&fit=crop&q=60" alt="Kopi Cold Brew" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
-      </div>
-      <div class="p-4 flex flex-col flex-1">
-        <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2">
-          Campaign Promo Kopi Cold Brew Pack XYZ
-        </h3>
-        <p class="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2">
-          Buat video TikTok untuk mempromosikan produk Kopi Cold Brew XYZ dengan kreasi es kopi susu kafe di rumah.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold border border-emerald-100/80">
-            <i class="fa-solid fa-coins text-emerald-500"></i>
-            <span>Rp6.500 / 1K views</span>
-          </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 text-slate-600 text-[11px] font-medium border border-slate-200/60">
-            <i class="fa-solid fa-calendar-days text-slate-400"></i>
-            <span>25 Okt 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-3 px-4 bg-slate-50/50 flex items-center justify-between">
-        <span class="text-[11px] font-bold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1.5">
-          Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-        </span>
-        <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">Sisa 20 slot</span>
-      </div>
-    </a>
-
-  </div>
-
-  <!-- 3. Empty Search State -->
-  <div id="emptySearchState" class="hidden py-12 flex-col items-center justify-center text-center">
-    <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-xl mb-3">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </div>
-    <h3 class="text-sm font-bold text-slate-800 mb-1">Campaign Tidak Ditemukan</h3>
-    <p class="text-xs text-slate-500 max-w-[240px] leading-relaxed">Coba gunakan kata kunci pencarian lain.</p>
-    <button type="button" onclick="clearSearch()" class="mt-4 px-4 py-2 bg-indigo-50 text-indigo-600 font-bold rounded-xl text-xs hover:bg-indigo-100 transition-colors cursor-pointer">
-      Reset Pencarian
-    </button>
-  </div>
-
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200 px-5 py-4 flex items-center justify-between">
+  <a href="campaigns.html" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+  <h1 class="text-sm font-bold text-slate-800">Detail Campaign</h1>
+  <div class="w-8"></div> <!-- Spacer for centering -->
 </div>
 
-<!-- Native Bottom Sheet Modal: Campaign Detail -->
-<div id="campaignDetailModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">
-  <!-- Backdrop -->
-  <div id="campaignBackdrop" onclick="closeCampaignDetail()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
+<div class="px-5 pt-6 pb-28 space-y-6">
 
-  <!-- Sheet Panel -->
-  <div id="campaignSheet" class="relative w-full max-w-[480px] bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto max-h-[88vh] flex flex-col">
+  <!-- Main Campaign Info Panel (Title, Desc, Brief) -->
+  <div class="bg-white border border-slate-200 rounded-[1.5rem] overflow-hidden">
     
-    <!-- Drag Handle Indicator -->
-    <div id="campaignDragHandle" class="w-12 h-1.5 bg-slate-300/80 hover:bg-slate-400 rounded-full mx-auto mb-4 cursor-grab active:cursor-grabbing transition-colors shrink-0"></div>
-
-    <!-- Scrollable Modal Content -->
-    <div class="overflow-y-auto no-scrollbar space-y-4 text-left pr-0.5 flex-1">
-      <!-- Title & Badges -->
-      <div>
-        <div class="flex items-center gap-2 mb-2">
-          <span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-[10px]">Aktif</span>
-          <span id="modalSlots" class="text-[11px] text-slate-400 font-medium ml-auto">Sisa 24 slot</span>
-        </div>
-        <h2 id="modalTitle" class="text-base font-bold text-slate-900 leading-snug">Campaign Promo Produk XYZ</h2>
-      </div>
-
-      <!-- Brief Description -->
-      <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-100">
-        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Brief Konten</span>
-        <p id="modalDesc" class="text-xs text-slate-600 leading-relaxed font-medium">-</p>
-      </div>
-
-      <!-- Detail Grid Specifications -->
-      <div class="grid grid-cols-2 gap-2.5">
-        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-[10px] font-medium text-slate-400 block mb-0.5">
-            <i class="fa-solid fa-coins mr-1 text-emerald-500 text-[10px]"></i> Rate Reward
-          </span>
-          <p id="modalRate" class="text-xs font-bold text-emerald-600">Rp5.000 / 1.000 views</p>
-        </div>
-        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-[10px] font-medium text-slate-400 block mb-0.5">
-            <i class="fa-solid fa-calendar-days mr-1 text-slate-400 text-[10px]"></i> Batas Pengumpulan
-          </span>
-          <p id="modalDeadline" class="text-xs font-bold text-slate-800">30 Sep 2026</p>
-        </div>
-        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-[10px] font-medium text-slate-400 block mb-0.5">
-            <i class="fa-solid fa-wallet mr-1 text-indigo-500 text-[10px]"></i> Maks. Payout
-          </span>
-          <p id="modalMaxPayout" class="text-xs font-bold text-indigo-600">Rp 500.000</p>
-        </div>
-        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-          <span class="text-[10px] font-medium text-slate-400 block mb-0.5">
-            <i class="fa-solid fa-stopwatch mr-1 text-slate-400 text-[10px]"></i> Durasi Video
-          </span>
-          <p id="modalDuration" class="text-xs font-bold text-slate-800">30 - 60 detik</p>
-        </div>
-      </div>
-
-      <!-- Rules & Mandatory Hashtags -->
-      <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Ketentuan Video</span>
-        <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
-          <li>Format video vertikal (9:16) dengan audio trending / sound produk.</li>
-          <li>Kualitas video minimal 1080p dengan pencahayaan jelas dan tanpa watermark.</li>
-          <li>Wajib mencantumkan hashtag resmi pada caption video.</li>
-        </ul>
-        <div class="pt-2 border-t border-slate-200/60">
-          <span class="text-[10px] font-semibold text-slate-400 block mb-1">Hashtag Wajib:</span>
-          <p id="modalHashtags" class="text-xs font-bold text-indigo-600 font-mono">#GlowBarengXYZ #SerumGlowUp</p>
-        </div>
-      </div>
+    <!-- Thumbnail -->
+    <div class="relative w-full aspect-video bg-slate-100">
+      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=60" alt="Thumbnail Campaign" class="w-full h-full object-cover">
     </div>
 
-    <!-- Action Buttons -->
-    <div class="pt-4 mt-2 border-t border-slate-100 flex flex-col gap-2 shrink-0">
-      <button type="button" onclick="takeCampaign()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
-        Ambil Campaign
-      </button>
-      <button type="button" onclick="closeCampaignDetail()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs active:scale-[0.98] transition-all cursor-pointer">
-        Tutup
-      </button>
+    <!-- Title & Description Header -->
+    <div class="p-5 border-b border-slate-100 bg-slate-50/30">
+      <h2 class="text-lg font-bold text-slate-900 leading-snug tracking-tight mb-1.5">Promo Produk XYZ</h2>
+      <p class="text-xs text-slate-500 leading-relaxed max-w-md">
+        Buat video TikTok untuk mempromosikan produk XYZ sesuai brief yang diberikan.
+      </p>
     </div>
+    
+    <!-- Brief Campaign Content (WYSIWYG) -->
+    <div class="p-5 text-[13px] text-slate-700 leading-relaxed space-y-4">
+      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Brief Campaign</h3>
+      
+      <p>
+        Buat video edukasi dan promosi kreatif untuk memastikan audiens memahami keunggulan produk <strong>XYZ</strong>. Konten harus terkesan organik dan tidak seperti iklan kaku.
+      </p>
+      
+      <p class="font-bold text-slate-900 mt-2">Target Audiens:</p>
+      <ul class="list-disc pl-5 space-y-1.5 text-slate-600 marker:text-slate-400">
+        <li>Pria & Wanita usia 18 - 35 tahun.</li>
+        <li>Menyukai gaya hidup sehat, aktif, dan natural.</li>
+      </ul>
 
+      <p class="font-bold text-slate-900 mt-4">Ketentuan Produksi (Do's):</p>
+      <ol class="list-decimal pl-5 space-y-1.5 text-slate-600 marker:font-medium marker:text-slate-500">
+        <li>Gunakan format video vertikal (9:16) dengan kualitas HD minimal 1080p.</li>
+        <li>Pastikan pencahayaan terang (natural light direkomendasikan) dan menampilkan wajah kreator dengan jelas.</li>
+        <li>Lakukan demonstrasi pemakaian produk minimal 5 detik di awal video.</li>
+        <li>Sertakan hashtag wajib: <strong class="text-indigo-600">#GlowBarengXYZ #PromoXYZ</strong> pada caption.</li>
+      </ol>
+
+      <p class="font-bold text-slate-900 mt-4">Larangan (Don'ts):</p>
+      <ul class="list-disc pl-5 space-y-1.5 text-slate-600 marker:text-rose-400">
+        <li>Jangan menyebutkan, membandingkan, atau menampilkan kemasan brand kompetitor dalam video.</li>
+        <li>Hindari penggunaan filter wajah (beauty filter) yang berlebihan sehingga merubah warna asli tekstur produk.</li>
+      </ul>
+
+      <blockquote class="border-l-[3px] border-indigo-500 pl-4 py-1 italic text-slate-500 bg-indigo-50/50 rounded-r-xl mt-4 text-xs">
+        "Kami mencari kreator yang bisa menyampaikan pesan secara jujur, luwes, dan berinteraksi aktif dengan *followers* di kolom komentar."
+      </blockquote>
+    </div>
   </div>
+
+  <!-- Metrik Utama Panel -->
+  <div class="bg-white rounded-[1.5rem] p-5 border border-slate-200">
+    <div class="space-y-4">
+      
+      <!-- Komisi -->
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-coins text-sm"></i>
+        </div>
+        <div>
+          <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Komisi</span>
+          <span class="text-sm font-bold text-slate-900">Rp5.000 <span class="text-[11px] font-medium text-slate-500">/ 1K views</span></span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="h-px bg-slate-100 ml-14"></div>
+
+      <!-- Periode -->
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-calendar-days text-sm"></i>
+        </div>
+        <div>
+          <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Periode</span>
+          <span class="text-sm font-bold text-slate-900">17 Sep - 30 Sep</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="h-px bg-slate-100 ml-14"></div>
+
+      <!-- Sisa Kuota -->
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-users text-sm"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex justify-between items-end mb-1.5">
+            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sisa Kuota</span>
+            <span class="text-xs font-bold text-indigo-600">24 / 100</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 24%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sumber Konten (Simplified Link Card) -->
+  <a href="#" target="_blank" class="flex items-center gap-3 p-3.5 bg-white border border-slate-200 rounded-[1.5rem] hover:border-indigo-300 hover:shadow-sm transition-all group active:scale-[0.99]">
+    <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors shrink-0">
+      <i class="fa-solid fa-folder-open text-sm"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">Buka Sumber Konten</h3>
+      <p class="text-[10px] text-indigo-500/80 truncate mt-0.5 font-medium">drive.google.com/drive/folders/...</p>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-500 group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0">
+      <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+    </div>
+  </a>
+
 </div>
 
-@@include('../partials/bottom-nav.html', {
-  "active": "campaign"
-})
+<!-- Bottom Action Bar (Floating) -->
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-5 pb-6 pt-2 z-40 pb-safe">
+  <button type="button" onclick="openSubmissionSheet()" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-2xl hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center justify-center gap-2">
+    <i class="fa-solid fa-video text-xs"></i> Submit Video
+  </button>
+</div>
+
+<!-- Modal Bottom Sheet: Submit Video -->
+<div id="submitSheetModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">
+  <div id="submitBackdrop" onclick="closeSubmissionSheet()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
+  
+  <div id="submitSheet" class="relative w-full max-w-md bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+    
+    <div id="submitDragHandle" class="w-12 h-1.5 bg-slate-300/80 hover:bg-slate-400 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors shrink-0"></div>
+
+    <div class="text-center mb-5">
+      <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3 text-indigo-600">
+        <i class="fa-solid fa-link text-xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-900">Submit URL Video</h3>
+      <p class="text-xs text-slate-500 mt-1">Masukkan link video TikTok, Reels, atau Shorts yang sudah Anda buat.</p>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Link Video</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <i class="fa-solid fa-link text-slate-400 text-sm"></i>
+          </div>
+          <input type="url" id="videoUrlInput" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="https://tiktok.com/@user/video/..." required>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-3">
+      <button type="button" onclick="closeSubmissionSheet()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
+        Batal
+      </button>
+      <button type="button" onclick="submitVideoLink()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
+        Kirim
+      </button>
+    </div>
+  </div>
+</div>
 
 @@include('../partials/vendor-script.html')
 
-<!-- Inline Script: Search and Bottom Sheet Interaction -->
 <script>
-  // Dataset Campaign
-  const CAMPAIGN_DATA = {
-    'cmp-1': {
-      title: 'Campaign Promo Serum Glow & Bright XYZ',
-      desc: 'Buat video untuk mempromosikan produk Serum Glow & Bright XYZ dengan review jujur dan hasil pemakaian natural.',
-      rate: 'Rp5.000 / 1.000 views',
-      deadline: '30 Sep 2026',
-      slots: 'Sisa 24 slot',
-      maxPayout: 'Rp 500.000',
-      duration: '30 - 60 detik',
-      hashtags: '#GlowBarengXYZ #SerumGlowUp #ReviewXYZ'
-    },
-    'cmp-2': {
-      title: 'Campaign Promo Earphone TWS BassPro Max',
-      desc: 'Buat video untuk mempromosikan produk Earphone TWS BassPro Max dengan unboxing dan demonstrasi bass audio.',
-      rate: 'Rp7.500 / 1.000 views',
-      deadline: '05 Okt 2026',
-      slots: 'Sisa 12 slot',
-      maxPayout: 'Rp 750.000',
-      duration: '25 - 45 detik',
-      hashtags: '#BassProMax #EarphoneGamingTWS #AudioKeren'
-    },
-    'cmp-3': {
-      title: 'Campaign Promo Aplikasi Finansial Cermat',
-      desc: 'Buat video untuk mempromosikan fitur budgeting otomatis dan tips mencatat pengeluaran bulanan.',
-      rate: 'Rp10.000 / 1.000 views',
-      deadline: '28 Sep 2026',
-      slots: 'Sisa 8 slot',
-      maxPayout: 'Rp 1.000.000',
-      duration: '30 - 60 detik',
-      hashtags: '#KeuanganCermat #AturDuitGampang #FinansialSehat'
-    },
-    'cmp-4': {
-      title: 'Campaign Promo Sepatu Sneakers Urban XYZ',
-      desc: 'Buat video untuk mempromosikan produk Sneakers Urban XYZ dengan tema mix and match OOTD jalanan.',
-      rate: 'Rp6.000 / 1.000 views',
-      deadline: '12 Okt 2026',
-      slots: 'Sisa 19 slot',
-      maxPayout: 'Rp 600.000',
-      duration: '20 - 40 detik',
-      hashtags: '#OOTDUrbanSneakers #SepatuLokalKeren #SneakersXYZ'
-    },
-    'cmp-5': {
-      title: 'Campaign Promo Minuman Herbal DetoxFit XYZ',
-      desc: 'Buat video untuk mempromosikan produk minuman herbal DetoxFit XYZ saat rutinitas pagi sehat.',
-      rate: 'Rp4.500 / 1.000 views',
-      deadline: '02 Okt 2026',
-      slots: 'Sisa 31 slot',
-      maxPayout: 'Rp 450.000',
-      duration: '30 - 60 detik',
-      hashtags: '#DetoxFitXYZ #MinumanSehatPagi #KesehatanAlami'
-    },
-    'cmp-6': {
-      title: 'Campaign Promo Game RPG Fantasy Hero',
-      desc: 'Buat video untuk mempromosikan game RPG Fantasy Hero saat gameplay aksi pertarungan boss.',
-      rate: 'Rp8.000 / 1.000 views',
-      deadline: '15 Okt 2026',
-      slots: 'Sisa 15 slot',
-      maxPayout: 'Rp 800.000',
-      duration: '30 - 60 detik',
-      hashtags: '#FantasyHeroGame #MobileRPGKeren #GamingSeru'
-    },
-    'cmp-7': {
-      title: 'Campaign Promo Powerbank Wireless FastCharge',
-      desc: 'Buat video untuk mempromosikan kepraktisan powerbank nirkabel magnetik saat traveling.',
-      rate: 'Rp5.500 / 1.000 views',
-      deadline: '20 Okt 2026',
-      slots: 'Sisa 14 slot',
-      maxPayout: 'Rp 550.000',
-      duration: '20 - 35 detik',
-      hashtags: '#FastChargeWireless #GadgetTravel #AksesorisHP'
-    },
-    'cmp-8': {
-      title: 'Campaign Promo Kopi Cold Brew Pack XYZ',
-      desc: 'Buat video untuk mempromosikan produk Kopi Cold Brew XYZ dengan kreasi es kopi susu kafe di rumah.',
-      rate: 'Rp6.500 / 1.000 views',
-      deadline: '25 Okt 2026',
-      slots: 'Sisa 20 slot',
-      maxPayout: 'Rp 650.000',
-      duration: '30 - 45 detik',
-      hashtags: '#ColdBrewXYZ #KopiSusuRumahan #ResepKopi'
-    }
-  };
-
-  let activeCampaignId = null;
-
-  // Search Logic
-  function handleSearch() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const clearBtn = document.getElementById('clearSearchBtn');
-    
-    if (query.length > 0) {
-      clearBtn.classList.remove('hidden');
-    } else {
-      clearBtn.classList.add('hidden');
-    }
-
-    filterList();
-  }
-
-  function clearSearch() {
-    const searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    document.getElementById('clearSearchBtn').classList.add('hidden');
-    filterList();
-    searchInput.focus();
-  }
-
-  function filterList() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const cards = document.querySelectorAll('.campaign-card');
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      const title = (card.dataset.title || '').toLowerCase();
-      const desc = (card.dataset.desc || '').toLowerCase();
-      const matchQuery = (query === '' || title.includes(query) || desc.includes(query));
-
-      if (matchQuery) {
-        card.classList.remove('hidden');
-        visibleCount++;
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-
-    const emptyState = document.getElementById('emptySearchState');
-    if (visibleCount === 0) {
-      emptyState.classList.remove('hidden');
-      emptyState.classList.add('flex');
-    } else {
-      emptyState.classList.add('hidden');
-      emptyState.classList.remove('flex');
+  function copySourceLink() {
+    // Simulasi copy link
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Link berhasil disalin',
+        showConfirmButton: false,
+        timer: 2000,
+        customClass: { popup: 'rounded-xl' }
+      });
     }
   }
 
-  // --- Bottom Sheet Modal Details ---
-  const modal = document.getElementById('campaignDetailModal');
-  const backdrop = document.getElementById('campaignBackdrop');
-  const sheet = document.getElementById('campaignSheet');
-
+  // --- Bottom Sheet Logic ---
+  const modal = document.getElementById('submitSheetModal');
+  const backdrop = document.getElementById('submitBackdrop');
+  const sheet = document.getElementById('submitSheet');
+  
   let startY = 0;
   let currentY = 0;
   let isDragging = false;
 
-  function openCampaignDetail(id) {
-    const data = CAMPAIGN_DATA[id];
-    if (!data) return;
-
-    activeCampaignId = id;
-
-    // Bind data to modal elements
-    document.getElementById('modalTitle').textContent = data.title;
-    document.getElementById('modalSlots').textContent = data.slots;
-    document.getElementById('modalDesc').textContent = data.desc;
-    document.getElementById('modalRate').textContent = data.rate;
-    document.getElementById('modalDeadline').textContent = data.deadline;
-    document.getElementById('modalMaxPayout').textContent = data.maxPayout;
-    document.getElementById('modalDuration').textContent = data.duration;
-    document.getElementById('modalHashtags').textContent = data.hashtags;
-
-    // Reset styles
+  function openSubmissionSheet() {
+    document.getElementById('videoUrlInput').value = '';
     sheet.style.transform = '';
     sheet.style.transition = '';
     backdrop.style.opacity = '';
-
     modal.classList.remove('invisible', 'pointer-events-none');
-
+    
     requestAnimationFrame(() => {
       backdrop.classList.remove('opacity-0');
       backdrop.classList.add('opacity-100');
       sheet.classList.remove('translate-y-full');
       sheet.classList.add('translate-y-0');
     });
-
     document.body.style.overflow = 'hidden';
   }
 
-  function closeCampaignDetail() {
+  function closeSubmissionSheet() {
     sheet.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
     sheet.style.transform = 'translateY(100%)';
     backdrop.classList.remove('opacity-100');
     backdrop.classList.add('opacity-0');
-
+    
     setTimeout(() => {
       modal.classList.add('invisible', 'pointer-events-none');
       sheet.classList.remove('translate-y-0');
@@ -593,56 +235,72 @@
     }, 260);
   }
 
-  function takeCampaign() {
-    closeCampaignDetail();
-    if (typeof Swal !== 'undefined') {
-      Swal.fire({
-        title: 'Campaign Berhasil Diambil!',
-        text: 'Silakan buat video Anda sesuai brief dan submit tautan klip sebelum batas waktu berakhir.',
-        icon: 'success',
-        confirmButtonText: 'Lihat Submissions',
-        confirmButtonColor: '#4f46e5',
-        showCancelButton: true,
-        cancelButtonText: 'Nanti Dulu',
-        customClass: {
-          popup: 'rounded-2xl',
-          confirmButton: 'rounded-xl font-semibold text-xs py-2.5 px-4',
-          cancelButton: 'rounded-xl font-semibold text-xs py-2.5 px-4'
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'submissions.html';
-        }
-      });
+  function submitVideoLink() {
+    const url = document.getElementById('videoUrlInput').value.trim();
+    if (!url) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Input Kosong',
+          text: 'Harap masukkan link video terlebih dahulu.',
+          confirmButtonText: 'Mengerti',
+          confirmButtonColor: '#4f46e5',
+          customClass: {
+            popup: 'rounded-2xl',
+            confirmButton: 'rounded-xl font-bold px-5 py-2.5 text-xs'
+          }
+        });
+      }
+      return;
     }
+
+    closeSubmissionSheet();
+    
+    setTimeout(() => {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil Disubmit!',
+          text: 'Video Anda telah masuk dalam antrean review.',
+          confirmButtonText: 'Lihat Status',
+          confirmButtonColor: '#4f46e5',
+          showCancelButton: true,
+          cancelButtonText: 'Tutup',
+          customClass: {
+            popup: 'rounded-2xl',
+            confirmButton: 'rounded-xl font-bold px-5 py-2.5 text-xs',
+            cancelButton: 'rounded-xl font-bold px-5 py-2.5 text-xs bg-slate-100 text-slate-700 hover:bg-slate-200'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = 'submissions.html';
+          }
+        });
+      }
+    }, 300);
   }
 
-  // --- Gesture: Drag to Dismiss ---
+  // --- Drag to Dismiss Logic ---
   function onDragStart(clientY) {
     startY = clientY;
     currentY = clientY;
     isDragging = true;
     sheet.style.transition = 'none';
   }
-
   function onDragMove(clientY) {
     if (!isDragging) return;
     const deltaY = clientY - startY;
     if (deltaY > 0) {
       currentY = clientY;
       sheet.style.transform = `translateY(${deltaY}px)`;
-      const progress = Math.min(deltaY / 250, 1);
-      backdrop.style.opacity = `${Math.max(0.2, 1 - progress)}`;
+      backdrop.style.opacity = `${Math.max(0.2, 1 - (deltaY/250))}`;
     }
   }
-
   function onDragEnd() {
     if (!isDragging) return;
     isDragging = false;
-    const deltaY = currentY - startY;
-
-    if (deltaY > 75) {
-      closeCampaignDetail();
+    if (currentY - startY > 75) {
+      closeSubmissionSheet();
     } else {
       sheet.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
       backdrop.style.transition = 'opacity 0.25s ease';
@@ -651,35 +309,25 @@
     }
   }
 
-  // Touch events
-  sheet.addEventListener('touchstart', (e) => {
-    onDragStart(e.touches[0].clientY);
-  }, { passive: true });
+  // Touch Events
+  sheet.addEventListener('touchstart', e => onDragStart(e.touches[0].clientY), { passive: true });
+  sheet.addEventListener('touchmove', e => onDragMove(e.touches[0].clientY), { passive: true });
+  sheet.addEventListener('touchend', onDragEnd);
 
-  sheet.addEventListener('touchmove', (e) => {
-    onDragMove(e.touches[0].clientY);
-  }, { passive: true });
-
-  sheet.addEventListener('touchend', () => {
-    onDragEnd();
-  });
-
-  // Desktop mouse drag support
+  // Mouse Events
   let isMouseDragging = false;
-  sheet.addEventListener('mousedown', (e) => {
-    if (e.target.closest('button') || e.target.closest('a')) return;
+  sheet.addEventListener('mousedown', e => {
+    if (e.target.closest('button') || e.target.closest('input') || e.target.closest('a')) return;
     isMouseDragging = true;
     onDragStart(e.clientY);
   });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isMouseDragging) return;
-    onDragMove(e.clientY);
+  window.addEventListener('mousemove', e => {
+    if (isMouseDragging) onDragMove(e.clientY);
   });
-
   window.addEventListener('mouseup', () => {
-    if (!isMouseDragging) return;
-    isMouseDragging = false;
-    onDragEnd();
+    if (isMouseDragging) {
+      isMouseDragging = false;
+      onDragEnd();
+    }
   });
 </script>

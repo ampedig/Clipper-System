@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\CampaignStatus;
 use App\Http\Controllers\Controller;
 use App\Models\ClipCampaign;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class CampaignController extends Controller
             ->select([
                 'id',
                 'title',
+                'slug',
                 'description',
                 'thumbnail',
                 'commission_amount',
@@ -31,5 +33,16 @@ class CampaignController extends Controller
             ->get();
 
         return view('app.campaign.index', compact('campaigns'));
+    }
+
+    /**
+     * Menampilkan halaman detail kampanye clip untuk clipper.
+     * Hanya kampanye berstatus aktif yang dapat diakses oleh publik/clipper.
+     */
+    public function show(ClipCampaign $campaign): View
+    {
+        abort_unless($campaign->status === CampaignStatus::Active, 404);
+
+        return view('app.campaign.show', compact('campaign'));
     }
 }
