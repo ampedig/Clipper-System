@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Admin\AdministratorController;
 use App\Http\Controllers\Admin\ClipCampaignController;
+use App\Http\Controllers\Admin\ClipSubmissionController as AdminClipSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\WithdrawChannelController;
 use App\Http\Controllers\App\CampaignController;
-use App\Http\Controllers\App\ClipSubmissionController;
+use App\Http\Controllers\App\ClipSubmissionController as AppClipSubmissionController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\PasswordController as AppPasswordController;
 use App\Http\Controllers\App\ProfileController as AppProfileController;
@@ -15,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
 Route::get('/campaign', [CampaignController::class, 'index'])->name('app.campaigns');
 Route::get('/campaign/{campaign:slug}', [CampaignController::class, 'show'])->name('app.campaigns.show');
-Route::post('/campaign/{campaign:slug}/submissions', [ClipSubmissionController::class, 'store'])->middleware('auth')->name('app.campaigns.submissions.store');
+Route::post('/campaign/{campaign:slug}/submissions', [AppClipSubmissionController::class, 'store'])->middleware('auth')->name('app.campaigns.submissions.store');
+Route::get('/klip', [AppClipSubmissionController::class, 'index'])->middleware('auth')->name('app.submissions.index');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
 Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');
@@ -31,6 +33,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('clip-campaigns', ClipCampaignController::class);
+
+    Route::patch('/clip-submissions/{clip_submission}/status', [AdminClipSubmissionController::class, 'updateStatus'])->name('clip-submissions.update-status');
+    Route::resource('clip-submissions', AdminClipSubmissionController::class)->only(['index', 'destroy']);
 
     Route::patch('/administrators/{administrator}/status', [AdministratorController::class, 'toggleStatus'])->name('administrators.status');
     Route::resource('administrators', AdministratorController::class);

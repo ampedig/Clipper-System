@@ -28,7 +28,8 @@
                 <i class="fa-solid fa-video sb-icon"></i> <span>List Clip</span>
             </a>
 
-            <a href="clip-submission.html" class="sb-item t-sidebar">
+            <a href="{{ route('admin.clip-submissions.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.clip-submissions.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-video sb-icon"></i> <span>Pengajuan</span>
             </a>
 

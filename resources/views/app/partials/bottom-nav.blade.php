@@ -12,7 +12,7 @@
         </a>
 
         <!-- 2. Klip (Video yang sudah disubmit + status & views) -->
-        <a href="#"
+        <a href="{{ route('app.submissions.index') }}"
             class="group flex flex-col items-center justify-center w-[20%] transition-all duration-300 {{ isset($active) && $active === 'submission' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600' }}">
             <div class="relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300">
                 <i

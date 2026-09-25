@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
 class ClipSubmissionController extends Controller
 {
     /**
+     * Display a listing of the authenticated user's clip submissions.
+     */
+    public function index(Request $request)
+    {
+        $submissions = $request->user()
+            ->clipSubmissions()
+            ->with('clipCampaign')
+            ->latest()
+            ->get();
+
+        return view('app.submissions.index', compact('submissions'));
+    }
+
+    /**
      * Store a newly created clip submission.
      */
     public function store(Request $request, ClipCampaign $campaign, TikTokUrlService $tiktokService)
