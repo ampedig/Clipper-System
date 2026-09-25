@@ -39,7 +39,7 @@ class ClipSubmission extends Model
             'total_earned' => 'integer',
             'submitted_at' => 'datetime',
             'approved_at' => 'datetime',
-            'rejected_at' => 'datetime', 
+            'rejected_at' => 'datetime',
         ];
     }
 

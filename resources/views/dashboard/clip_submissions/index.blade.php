@@ -230,9 +230,12 @@
                                         'badgeClass' => $statusData['class'],
                                         'badgeHtml' =>
                                             '<i class="' . $statusData['icon'] . '"></i> ' . $statusData['label'],
+                                        'id' => $sub->id,
+                                        'status' => $sub->status,
+                                        'checkViewsUrl' => route('admin.clip-submissions.check-views', $sub),
                                     ];
                                 @endphp
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors"
+                                <tr id="submission-row-{{ $sub->id }}" class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors"
                                     data-status="{{ $sub->status }}">
                                     <!-- NO -->
                                     <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
@@ -262,13 +265,14 @@
                                     </td>
 
                                     <!-- VIEWS -->
+                                    <!-- VIEWS -->
                                     <td class="px-6 py-4 td-nowrap">
                                         <span
-                                            class="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
+                                            class="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white views-count-val">
                                             <i class="fa-regular fa-eye text-xs text-slate-400"></i>
-                                            {{ number_format($sub->current_views, 0, ',', '.') }}
+                                            <span class="views-num">{{ number_format($sub->current_views, 0, ',', '.') }}</span>
                                         </span>
-                                        <span class="block text-[11px] text-slate-400 font-normal">
+                                        <span class="block text-[11px] text-slate-400 font-normal credited-views-val">
                                             Credited: {{ number_format($sub->credited_views, 0, ',', '.') }}
                                         </span>
                                     </td>
@@ -276,7 +280,7 @@
                                     <!-- PENDAPATAN -->
                                     <td class="px-6 py-4 td-nowrap">
                                         <span
-                                            class="font-semibold {{ $sub->total_earned > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400' }}">
+                                            class="font-semibold total-earned-val {{ $sub->total_earned > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400' }}">
                                             Rp {{ number_format($sub->total_earned, 0, ',', '.') }}
                                         </span>
                                     </td>
@@ -305,6 +309,19 @@
                                                 title="Detail Pengajuan" data-submission="{{ json_encode($modalData) }}">
                                                 <i class="fa-solid fa-eye"></i>
                                             </button>
+
+                                            <!-- Cek Views Button (khusus status active) -->
+                                            @if ($sub->status === 'active')
+                                                <button type="button"
+                                                    class="btn btn-icon bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 dark:text-indigo-400 btn-check-views"
+                                                    title="Cek Views & Hitung Komisi"
+                                                    data-url="{{ route('admin.clip-submissions.check-views', $sub) }}"
+                                                    data-id="{{ $sub->id }}"
+                                                    data-title="{{ $sub->clipCampaign->title ?? '' }}"
+                                                    data-clipper="{{ $sub->user->name ?? '' }}">
+                                                    <i class="fa-solid fa-arrows-rotate"></i>
+                                                </button>
+                                            @endif
 
                                             <!-- Approve Button (jika bukan active/approved) -->
                                             @if ($sub->status !== 'active')
@@ -479,9 +496,13 @@
                 </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex justify-end">
+            <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between gap-3">
+                <button type="button" id="modalBtnCheckViews"
+                    class="hidden btn btn-primary rounded-xl px-4 py-2.5 text-xs font-semibold items-center gap-2">
+                    <i class="fa-solid fa-arrows-rotate"></i> Cek Views Sekarang
+                </button>
                 <button type="button" onclick="closeDetailModal()"
-                    class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold">
+                    class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold ml-auto">
                     Tutup
                 </button>
             </div>
@@ -618,8 +639,155 @@
             });
         }
 
+        function handleCheckViewsAction(url, subId, clipTitle, clipperName) {
+            if (typeof Swal === 'undefined') return;
+
+            Swal.fire({
+                title: "Memeriksa Views...",
+                html: `Mengambil data views terbaru dari TikTok untuk <strong>"${clipTitle}"</strong>...`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                customClass: {
+                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]"
+                }
+            });
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Gagal memeriksa views.');
+                }
+                return data;
+            })
+            .then((res) => {
+                // Update tampilan tabel baris submission
+                const $row = $(`#submission-row-${subId}`);
+                if ($row.length) {
+                    $row.find('.views-num').text(res.data.current_views_formatted);
+                    $row.find('.credited-views-val').text(`Credited: ${res.data.credited_views_formatted}`);
+                    $row.find('.total-earned-val').text(res.data.total_earned_formatted);
+                    if (res.data.total_earned > 0) {
+                        $row.find('.total-earned-val').removeClass('text-slate-400').addClass('text-emerald-600 dark:text-emerald-400');
+                    }
+                }
+
+                // Update tampilan modal jika sedang dibuka
+                $('#modalViewsCount').text(`${res.data.current_views_formatted} Views`);
+                $('#modalPendapatan').text(res.data.total_earned_formatted);
+
+                if (res.data.earned_now > 0) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Komisi Baru Dicairkan! 🎉",
+                        html: `
+                            <div class="mt-2 text-left text-xs bg-slate-50 dark:bg-[#161616] p-3.5 rounded-xl border border-slate-200 dark:border-[#2e2e2e] space-y-2">
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Views Saat Ini:</span>
+                                    <strong class="text-slate-900 dark:text-white">${res.data.current_views_formatted} views</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Views Terhitung Komisi:</span>
+                                    <strong class="text-indigo-600 dark:text-indigo-400">+${res.data.delta_views_formatted} views</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300 border-t border-slate-200 dark:border-[#2e2e2e] pt-2">
+                                    <span>Komisi Masuk Saldo:</span>
+                                    <strong class="text-emerald-600 dark:text-emerald-400 font-bold">+${res.data.earned_now_formatted}</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Total Komisi Klip Ini:</span>
+                                    <strong class="text-slate-900 dark:text-white font-bold">${res.data.total_earned_formatted}</strong>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: "Selesai",
+                        customClass: {
+                            popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                            confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                        },
+                        buttonsStyling: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Views Diperbarui",
+                        html: `Views TikTok saat ini: <strong>${res.data.current_views_formatted} views</strong>.<br><span class="text-xs text-slate-400 mt-1 block">Belum mencapai kelipatan threshold baru untuk pencairan komisi.</span>`,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                            confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal Cek Views",
+                    text: err.message || "Terjadi kesalahan saat memeriksa views dari TikTok.",
+                    confirmButtonText: "Tutup",
+                    customClass: {
+                        popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                        confirmButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                    },
+                    buttonsStyling: false
+                });
+            });
+        }
+
+        let activeModalSubmission = null;
+
         $(document).ready(function() {
+            // Override openDetailModal untuk menangani tombol Cek Views di dalam modal
+            const nativeOpenDetailModal = window.openDetailModal;
+            window.openDetailModal = function(data) {
+                activeModalSubmission = data;
+                if (typeof nativeOpenDetailModal === 'function') {
+                    nativeOpenDetailModal(data);
+                }
+                const $checkBtn = $('#modalBtnCheckViews');
+                if ($checkBtn.length) {
+                    if (data && data.status === 'active') {
+                        $checkBtn.removeClass('hidden').addClass('inline-flex');
+                    } else {
+                        $checkBtn.addClass('hidden').removeClass('inline-flex');
+                    }
+                }
+            };
+
+            // Tombol Cek Views di dalam modal
+            $('#modalBtnCheckViews').on('click', function(e) {
+                e.preventDefault();
+                if (!activeModalSubmission) return;
+                handleCheckViewsAction(
+                    activeModalSubmission.checkViewsUrl,
+                    activeModalSubmission.id,
+                    activeModalSubmission.clipTitle,
+                    activeModalSubmission.clipperName
+                );
+            });
+
             // Action button delegations
+            $(document).on('click', '.btn-check-views', function(e) {
+                e.preventDefault();
+                let url = $(this).data('url');
+                let id = $(this).data('id');
+                let title = $(this).data('title');
+                let clipper = $(this).data('clipper');
+                handleCheckViewsAction(url, id, title, clipper);
+            });
+
             $(document).on('click', '.btn-detail-submission', function(e) {
                 e.preventDefault();
                 let data = $(this).data('submission');

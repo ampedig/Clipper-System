@@ -36,6 +36,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::resource('clip-campaigns', ClipCampaignController::class);
 
     Route::patch('/clip-submissions/{clip_submission}/status', [AdminClipSubmissionController::class, 'updateStatus'])->name('clip-submissions.update-status');
+    Route::post('/clip-submissions/{clip_submission}/check-views', [AdminClipSubmissionController::class, 'checkViews'])->name('clip-submissions.check-views');
     Route::resource('clip-submissions', AdminClipSubmissionController::class)->only(['index', 'destroy']);
 
     Route::patch('/administrators/{administrator}/status', [AdministratorController::class, 'toggleStatus'])->name('administrators.status');

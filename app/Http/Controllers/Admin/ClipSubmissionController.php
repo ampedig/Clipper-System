@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipSubmission;
+use App\Services\ClipViewsSyncService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ClipSubmissionController extends Controller
@@ -61,13 +63,13 @@ class ClipSubmissionController extends Controller
 
         // --- Kirim Notifikasi Telegram ke Topic Activity ---
         $statusLabel = strtoupper($clipSubmission->status);
-        $header = "⏳ <b>[ADMIN] STATUS KLIP DIUBAH</b> ⏳";
+        $header = '⏳ <b>[ADMIN] STATUS KLIP DIUBAH</b> ⏳';
 
         if (in_array($clipSubmission->status, ['approved', 'active', 'completed'])) {
-            $header = "✅ <b>[ADMIN] KLIP DISETUJUI</b> ✅";
+            $header = '✅ <b>[ADMIN] KLIP DISETUJUI</b> ✅';
             $statusLabel = 'APPROVED';
         } elseif ($clipSubmission->status === 'rejected') {
-            $header = "❌ <b>[ADMIN] KLIP DITOLAK</b> ❌";
+            $header = '❌ <b>[ADMIN] KLIP DITOLAK</b> ❌';
             $statusLabel = 'REJECTED';
         }
 
@@ -92,6 +94,38 @@ class ClipSubmissionController extends Controller
         }
 
         return back()->with('success', 'Status submission berhasil diperbarui.');
+    }
+
+    /**
+     * Mengecek views terbaru dari TikTok dan menghitung komisi untuk submission aktif.
+     */
+    public function checkViews(ClipSubmission $clipSubmission, ClipViewsSyncService $syncService): JsonResponse
+    {
+        $result = $syncService->sync($clipSubmission);
+
+        if (! $result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $result['message'],
+            'data' => [
+                'current_views' => $result['current_views'],
+                'current_views_formatted' => number_format($result['current_views'], 0, ',', '.'),
+                'credited_views' => $result['credited_views'],
+                'credited_views_formatted' => number_format($result['credited_views'], 0, ',', '.'),
+                'delta_views' => $result['delta_views'],
+                'delta_views_formatted' => number_format($result['delta_views'], 0, ',', '.'),
+                'earned_now' => $result['earned_now'],
+                'earned_now_formatted' => 'Rp '.number_format($result['earned_now'], 0, ',', '.'),
+                'total_earned' => $result['total_earned'],
+                'total_earned_formatted' => 'Rp '.number_format($result['total_earned'], 0, ',', '.'),
+            ],
+        ]);
     }
 
     /**

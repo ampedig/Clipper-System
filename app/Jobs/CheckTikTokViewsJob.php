@@ -3,14 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\ClipSubmission;
-use App\Models\User;
-use App\Services\TikTokScraperService;
+use App\Services\ClipViewsSyncService;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
 
 class CheckTikTokViewsJob implements ShouldQueue
 {
@@ -36,83 +35,15 @@ class CheckTikTokViewsJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(TikTokScraperService $scraperService): void
+    public function handle(ClipViewsSyncService $syncService): void
     {
-        // Pastikan campaign masih aktif, jika tidak, batalkan proses
-        $campaign = $this->submission->clipCampaign;
-        if ($campaign->status->value !== 'active' || ($campaign->end_at && $campaign->end_at->isPast())) {
-            return;
+        $result = $syncService->sync($this->submission);
+
+        if (! $result['success']) {
+            // Jika kegagalan karena jaringan/scraper TikTok, lempar exception agar antrean me-retry
+            if (str_contains($result['message'], 'TikTok')) {
+                throw new Exception("Gagal mengambil data views untuk submission ID: {$this->submission->id} - {$result['message']}");
+            }
         }
-
-        // Jalankan Scraper
-        $stats = $scraperService->getVideoStats($this->submission->submitted_url);
-
-        if (! $stats) {
-            // Jika scraper gagal (return null), lemparkan exception agar di-retry oleh Queue
-            throw new \Exception("Gagal mengambil data views untuk submission ID: {$this->submission->id}");
-        }
-
-        $newCurrentViews = $stats['views'];
-
-        // 1. Tentukan Effective Views (capping jika ada view_max)
-        $effectiveViews = $campaign->view_max
-            ? min($newCurrentViews, $campaign->view_max)
-            : $newCurrentViews;
-
-        // 2. Hitung total views yang berhak dicairkan (sepanjang waktu)
-        $eligibleCreditedViews = floor($effectiveViews / $campaign->view_threshold) * $campaign->view_threshold;
-
-        // 3. Hitung selisih views yang belum pernah dibayar
-        $deltaViews = $eligibleCreditedViews - $this->submission->credited_views;
-
-        // 4. Guard Clause: Jika tidak ada kelipatan threshold baru yang tercapai
-        if ($deltaViews <= 0) {
-            $this->submission->update(['current_views' => $newCurrentViews]);
-
-            return;
-        }
-
-        // 5. Hitung Nominal Komisi untuk delta views ini
-        $earnedAmount = ($deltaViews / $campaign->view_threshold) * $campaign->commission_amount;
-
-        // 6. DB Transaction untuk konsistensi finansial
-        DB::transaction(function () use ($newCurrentViews, $eligibleCreditedViews, $deltaViews, $earnedAmount, $campaign) {
-            // Lock record user untuk mencegah race condition
-            $user = User::where('id', $this->submission->user_id)->lockForUpdate()->first();
-
-            // Insert catatan mutasi dompet
-            $user->walletTransactions()->create([
-                'type' => 'credit',
-                'amount' => $earnedAmount,
-                'balance_before' => $user->balance,
-                'balance_after' => $user->balance + $earnedAmount,
-                'notes' => 'Komisi +'.number_format($deltaViews, 0, ',', '.')." views - {$campaign->title}",
-            ]);
-
-            // Update saldo user
-            $user->increment('balance', $earnedAmount);
-
-            // Update status submission
-            $this->submission->update([
-                'current_views' => $newCurrentViews,
-                'credited_views' => $eligibleCreditedViews,
-                'total_earned' => $this->submission->total_earned + $earnedAmount,
-            ]);
-
-            // Kirim notifikasi Telegram
-            $formattedAmount = number_format($earnedAmount, 0, ',', '.');
-            $formattedViews = number_format($deltaViews, 0, ',', '.');
-            $formattedBalance = number_format($user->balance, 0, ',', '.'); // Note: balance is already incremented in DB above, so it is the updated balance
-
-            $pesan = "💸 <b>KOMISI BERHASIL DICAIRKAN</b> 💸\n"
-                   ."━━━━━━━━━━━━━━━━━━━━\n"
-                   ."👤 <b>User:</b> {$user->name}\n"
-                   ."💰 <b>Nominal:</b> <b>Rp{$formattedAmount}</b>\n"
-                   ."📈 <b>Penambahan Views:</b> +{$formattedViews} views\n"
-                   ."🎬 <b>Campaign:</b> {$campaign->title} (Klip #{$this->submission->id})\n"
-                   ."💳 <b>Saldo Dompet:</b> Rp{$formattedBalance}";
-
-            SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.commission'));
-        });
     }
 }

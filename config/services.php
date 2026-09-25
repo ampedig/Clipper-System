@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'ytdlp' => [
+        // Di Windows lokal, set full path ke yt-dlp.exe karena PHP tidak mewarisi PATH bash.
+        // Di VPS Linux, cukup isi 'yt-dlp' karena sudah di-install secara global.
+        'path' => env('YTDLP_PATH', 'yt-dlp'),
+    ],
+
 ];
