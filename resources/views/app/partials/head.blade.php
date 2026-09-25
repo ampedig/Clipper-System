@@ -21,6 +21,7 @@
 
     <!-- Tailwind & Global Styles -->
     <link href="{{ asset('app/assets/css/input.css') }}" rel="stylesheet">
+    <link href="{{ asset('app/assets/css/sweetalert-app.css') }}" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link href="{{ asset('app/assets/libs/fontawesome/css/all.css') }}" rel="stylesheet">
