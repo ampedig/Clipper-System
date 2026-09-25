@@ -86,6 +86,6 @@ class ClipSubmissionController extends Controller
 
         SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.clip_submit'));
 
-        return back()->with('success', 'Link video berhasil didaftarkan! Sistem akan mengecek views setiap jam 12 malam.');
+        return back()->with('success', 'Link video berhasil didaftarkan! Tim kami akan segera meninjau pengajuanmu.');
     }
 }
