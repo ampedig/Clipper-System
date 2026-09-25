@@ -1,0 +1,11 @@
+<?php
+
+return [
+    'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+    'chat_id' => env('TELEGRAM_CHAT_ID'),
+
+    'topics' => [
+        'clip_submit' => env('TELEGRAM_TOPIC_CLIP_SUBMIT', 5),
+        'commission' => env('TELEGRAM_TOPIC_COMMISSION', 4),
+    ],
+];

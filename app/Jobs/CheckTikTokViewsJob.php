@@ -98,6 +98,14 @@ class CheckTikTokViewsJob implements ShouldQueue
                 'credited_views' => $eligibleCreditedViews,
                 'total_earned' => $this->submission->total_earned + $earnedAmount,
             ]);
+
+            // Kirim notifikasi Telegram
+            $pesan = "💰 <b>Komisi Baru Cair!</b>\n"
+                   ."User: {$user->name}\n"
+                   .'Nominal: <b>Rp'.number_format($earnedAmount, 0, ',', '.')."</b>\n"
+                   ."Klip ID: #{$this->submission->id} ({$campaign->title})";
+
+            SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.commission'));
         });
     }
 }

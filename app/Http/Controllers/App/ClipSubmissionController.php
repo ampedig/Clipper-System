@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipCampaign;
 use App\Models\ClipSubmission;
 use App\Services\TikTokUrlService;
@@ -66,7 +67,7 @@ class ClipSubmissionController extends Controller
         }
 
         // 3. Simpan ke database
-        $campaign->clipSubmissions()->create([
+        $submission = $campaign->clipSubmissions()->create([
             'user_id' => $request->user()->id,
             'submitted_url' => $request->submitted_url,
             'video_id' => $videoId,
@@ -75,6 +76,13 @@ class ClipSubmissionController extends Controller
             'credited_views' => 0,
             'total_earned' => 0,
         ]);
+
+        $pesan = "📌 <b>Klip Baru Disubmit!</b>\n"
+               ."User: {$request->user()->name}\n"
+               ."Campaign: {$campaign->title}\n"
+               ."URL: <a href=\"{$request->submitted_url}\">Tonton Video</a>";
+
+        SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.clip_submit'));
 
         return back()->with('success', 'Link video berhasil didaftarkan! Sistem akan mengecek views setiap jam 12 malam.');
     }
