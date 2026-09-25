@@ -100,10 +100,17 @@ class CheckTikTokViewsJob implements ShouldQueue
             ]);
 
             // Kirim notifikasi Telegram
-            $pesan = "💰 <b>Komisi Baru Cair!</b>\n"
-                   ."User: {$user->name}\n"
-                   .'Nominal: <b>Rp'.number_format($earnedAmount, 0, ',', '.')."</b>\n"
-                   ."Klip ID: #{$this->submission->id} ({$campaign->title})";
+            $formattedAmount = number_format($earnedAmount, 0, ',', '.');
+            $formattedViews = number_format($deltaViews, 0, ',', '.');
+            $formattedBalance = number_format($user->balance, 0, ',', '.'); // Note: balance is already incremented in DB above, so it is the updated balance
+
+            $pesan = "💸 <b>KOMISI BERHASIL DICAIRKAN</b> 💸\n"
+                   ."━━━━━━━━━━━━━━━━━━━━\n"
+                   ."👤 <b>User:</b> {$user->name}\n"
+                   ."💰 <b>Nominal:</b> <b>Rp{$formattedAmount}</b>\n"
+                   ."📈 <b>Penambahan Views:</b> +{$formattedViews} views\n"
+                   ."🎬 <b>Campaign:</b> {$campaign->title} (Klip #{$this->submission->id})\n"
+                   ."💳 <b>Saldo Dompet:</b> Rp{$formattedBalance}";
 
             SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.commission'));
         });

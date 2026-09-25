@@ -77,10 +77,12 @@ class ClipSubmissionController extends Controller
             'total_earned' => 0,
         ]);
 
-        $pesan = "📌 <b>Klip Baru Disubmit!</b>\n"
-               ."User: {$request->user()->name}\n"
-               ."Campaign: {$campaign->title}\n"
-               ."URL: <a href=\"{$request->submitted_url}\">Tonton Video</a>";
+        $pesan = "📝 <b>NEW CLIP SUBMISSION</b> 📝\n"
+               ."━━━━━━━━━━━━━━━━━━━━\n"
+               ."👤 <b>User:</b> {$request->user()->name}\n"
+               ."🏷 <b>Campaign:</b> {$campaign->title}\n"
+               ."🔗 <b>Link TikTok:</b> <a href=\"{$request->submitted_url}\">Tonton Video</a>\n"
+               .'⏳ <b>Status:</b> Pending Check';
 
         SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.clip_submit'));
 
