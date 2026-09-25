@@ -81,4 +81,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(ClipCampaign::class, 'created_by');
     }
+
+    /**
+     * Get the wallet transactions for the user.
+     */
+    public function walletTransactions(): HasMany
+    {
+        return $this->hasMany(WalletTransaction::class);
+    }
 }
