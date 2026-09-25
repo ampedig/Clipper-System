@@ -233,4 +233,46 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_user_can_view_own_clip_submission_detail(): void
+    {
+        $user = User::factory()->create();
+        $campaign = ClipCampaign::factory()->create([
+            'title' => 'Campaign Keren',
+        ]);
+        $submission = $campaign->clipSubmissions()->create([
+            'user_id' => $user->id,
+            'submitted_url' => 'https://www.tiktok.com/@user/video/1234567890',
+            'video_id' => '1234567890',
+            'status' => 'pending',
+            'current_views' => 100,
+            'credited_views' => 0,
+            'total_earned' => 0,
+        ]);
+
+        $response = $this->actingAs($user)->get('/klip/'.$submission->id);
+
+        $response->assertStatus(200);
+        $response->assertSee('Campaign Keren');
+    }
+
+    public function test_user_cannot_view_others_clip_submission_detail(): void
+    {
+        $owner = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $campaign = ClipCampaign::factory()->create();
+        $submission = $campaign->clipSubmissions()->create([
+            'user_id' => $owner->id,
+            'submitted_url' => 'https://www.tiktok.com/@owner/video/9999999999',
+            'video_id' => '9999999999',
+            'status' => 'active',
+            'current_views' => 500,
+            'credited_views' => 0,
+            'total_earned' => 0,
+        ]);
+
+        $response = $this->actingAs($otherUser)->get('/klip/'.$submission->id);
+
+        $response->assertStatus(403);
+    }
 }

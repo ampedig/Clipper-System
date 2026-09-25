@@ -33,7 +33,7 @@
                 }
             @endphp
 
-            <a href="{{ $sub->submitted_url }}" target="_blank" data-status="{{ $statusGroup }}" class="submission-item block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col">
+            <a href="{{ route('app.submissions.show', $sub) }}" data-status="{{ $statusGroup }}" class="submission-item block bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col">
                 <div class="p-4">
                     <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors">
                         {{ $sub->clipCampaign->title ?? 'Campaign' }}

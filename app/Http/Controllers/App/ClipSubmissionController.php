@@ -25,6 +25,21 @@ class ClipSubmissionController extends Controller
     }
 
     /**
+     * Display the specified clip submission for the authenticated user.
+     */
+    public function show(Request $request, ClipSubmission $clipSubmission)
+    {
+        // Guard against unauthorized access to other users' submissions
+        abort_if($clipSubmission->user_id !== $request->user()->id, 403, 'Akses ditolak.');
+
+        $clipSubmission->load('clipCampaign');
+
+        return view('app.submissions.show', [
+            'submission' => $clipSubmission,
+        ]);
+    }
+
+    /**
      * Store a newly created clip submission.
      */
     public function store(Request $request, ClipCampaign $campaign, TikTokUrlService $tiktokService)

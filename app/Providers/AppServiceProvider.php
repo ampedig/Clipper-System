@@ -21,8 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (request()->server('HTTP_X_FORWARDED_PROTO') === 'https' || request()->isSecure()) {
-            URL::forceScheme('https');
+        if (! $this->app->runningInConsole()) {
+            if (request()->server('HTTP_X_FORWARDED_PROTO') === 'https' || request()->isSecure()) {
+                URL::forceScheme('https');
+            }
         }
 
         Password::defaults(function () {

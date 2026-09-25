@@ -18,6 +18,7 @@ Route::get('/campaign', [CampaignController::class, 'index'])->name('app.campaig
 Route::get('/campaign/{campaign:slug}', [CampaignController::class, 'show'])->name('app.campaigns.show');
 Route::post('/campaign/{campaign:slug}/submissions', [AppClipSubmissionController::class, 'store'])->middleware('auth')->name('app.campaigns.submissions.store');
 Route::get('/klip', [AppClipSubmissionController::class, 'index'])->middleware('auth')->name('app.submissions.index');
+Route::get('/klip/{clipSubmission}', [AppClipSubmissionController::class, 'show'])->middleware('auth')->name('app.submissions.show');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
 Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');
