@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipSubmission;
 use Illuminate\Http\Request;
 
@@ -56,6 +57,32 @@ class ClipSubmissionController extends Controller
         }
 
         $clipSubmission->save();
+        $clipSubmission->load(['user', 'clipCampaign']);
+
+        // --- Kirim Notifikasi Telegram ke Topic Activity ---
+        $statusLabel = strtoupper($clipSubmission->status);
+        $header = "⏳ <b>[ADMIN] STATUS KLIP DIUBAH</b> ⏳";
+
+        if (in_array($clipSubmission->status, ['approved', 'active', 'completed'])) {
+            $header = "✅ <b>[ADMIN] KLIP DISETUJUI</b> ✅";
+            $statusLabel = 'APPROVED';
+        } elseif ($clipSubmission->status === 'rejected') {
+            $header = "❌ <b>[ADMIN] KLIP DITOLAK</b> ❌";
+            $statusLabel = 'REJECTED';
+        }
+
+        $pesan = "{$header}\n"
+               ."━━━━━━━━━━━━━━━━━━━━\n"
+               ."👤 <b>User:</b> {$clipSubmission->user->name}\n"
+               ."🏷 <b>Campaign:</b> {$clipSubmission->clipCampaign->title}\n"
+               ."🔗 <b>Link TikTok:</b> <a href=\"{$clipSubmission->submitted_url}\">Tonton Video</a>\n"
+               ."🎯 <b>Status Baru:</b> {$statusLabel}";
+
+        if ($clipSubmission->status === 'rejected' && $clipSubmission->rejection_reason) {
+            $pesan .= "\n📝 <b>Alasan:</b> {$clipSubmission->rejection_reason}";
+        }
+
+        SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.activity'));
 
         if ($request->wantsJson()) {
             return response()->json([

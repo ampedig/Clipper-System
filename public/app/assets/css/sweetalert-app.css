@@ -34,6 +34,20 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    animation: none !important; /* Disable default shake/scale animations */
+}
+
+/* Hide all inner nodes and pseudo-elements from default SweetAlert DOM */
+.swal2-icon.swal2-success *,
+.swal2-icon.swal2-success::before,
+.swal2-icon.swal2-success::after,
+.swal2-icon.swal2-error *,
+.swal2-icon.swal2-error::before,
+.swal2-icon.swal2-error::after,
+.swal2-icon.swal2-warning *,
+.swal2-icon.swal2-info * {
+    display: none !important;
+    animation: none !important;
 }
 
 /* Success Icon (Red as Primary Theme) */
@@ -43,11 +57,6 @@
     background-size: 28px !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-}
-.swal2-icon.swal2-success [class^='swal2-success-line'],
-.swal2-icon.swal2-success .swal2-success-ring,
-.swal2-icon.swal2-success .swal2-success-fix {
-    display: none !important;
 }
 
 /* Error/Danger Icon */
