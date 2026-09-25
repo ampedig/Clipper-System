@@ -265,16 +265,23 @@
                                     </td>
 
                                     <!-- VIEWS -->
-                                    <!-- VIEWS -->
+                                    @php
+                                        $viewMax = $sub->clipCampaign->view_max ?? 0;
+                                        $isMaxReached = $viewMax > 0 && $sub->current_views >= $viewMax;
+                                    @endphp
                                     <td class="px-6 py-4 td-nowrap">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white views-count-val">
-                                            <i class="fa-regular fa-eye text-xs text-slate-400"></i>
+                                        <span class="font-semibold views-count-val {{ $isMaxReached ? 'text-amber-500 dark:text-amber-400' : 'text-slate-900 dark:text-white' }}">
                                             <span class="views-num">{{ number_format($sub->current_views, 0, ',', '.') }}</span>
                                         </span>
-                                        <span class="block text-[11px] text-slate-400 font-normal credited-views-val">
-                                            Credited: {{ number_format($sub->credited_views, 0, ',', '.') }}
-                                        </span>
+                                        @if ($isMaxReached)
+                                            <span class="inline-flex items-center gap-1 mt-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-bold tracking-wide bg-amber-100 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/30">
+                                                <i class="fa-solid fa-flag text-[8px]"></i> MAX
+                                            </span>
+                                        @else
+                                            <span class="block text-[11px] text-slate-400 font-normal credited-views-val">
+                                                Credited: {{ number_format($sub->credited_views, 0, ',', '.') }}
+                                            </span>
+                                        @endif
                                     </td>
 
                                     <!-- PENDAPATAN -->
