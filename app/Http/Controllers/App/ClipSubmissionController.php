@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Http\Controllers\App;
+
+use App\Http\Controllers\Controller;
+use App\Models\ClipCampaign;
+use App\Models\ClipSubmission;
+use App\Services\TikTokUrlService;
+use Illuminate\Http\Request;
+
+class ClipSubmissionController extends Controller
+{
+    /**
+     * Store a newly created clip submission.
+     */
+    public function store(Request $request, ClipCampaign $campaign, TikTokUrlService $tiktokService)
+    {
+        $request->validate([
+            'submitted_url' => ['required', 'url', 'regex:/tiktok\.com/i'],
+        ], [
+            'submitted_url.regex' => 'Link yang dimasukkan harus berupa link TikTok.',
+        ]);
+
+        // 1. Ekstrak Video ID
+        $videoId = $tiktokService->extractVideoId($request->submitted_url);
+
+        if (! $videoId) {
+            return back()->with('error', 'Gagal memproses link TikTok. Pastikan link video valid.');
+        }
+
+        // 2. Cek apakah video sudah pernah didaftarkan
+        // Bisa di campaign yang sama atau campaign lain (tergantung kebutuhan, kita cek global agar tidak ada kecurangan lintas campaign)
+        $exists = ClipSubmission::where('video_id', $videoId)->exists();
+
+        if ($exists) {
+            return back()->with('error', 'Video ini sudah pernah didaftarkan di sistem kami.');
+        }
+
+        // 3. Simpan ke database
+        $campaign->clipSubmissions()->create([
+            'user_id' => $request->user()->id,
+            'submitted_url' => $request->submitted_url,
+            'video_id' => $videoId,
+            'status' => 'pending',
+            'current_views' => 0,
+            'credited_views' => 0,
+            'total_earned' => 0,
+        ]);
+
+        return back()->with('success', 'Link video berhasil didaftarkan! Sistem akan mengecek views setiap jam 12 malam.');
+    }
+}

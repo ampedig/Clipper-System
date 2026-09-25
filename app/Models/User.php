@@ -59,6 +59,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the clip submissions associated with the user.
+     */
+    public function clipSubmissions()
+    {
+        return $this->hasMany(ClipSubmission::class);
+    }
+
+    /**
      * Get the withdraw channel associated with the user.
      */
     public function withdrawChannel(): BelongsTo

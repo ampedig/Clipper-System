@@ -144,4 +144,12 @@ class ClipCampaign extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Get the clip submissions for the campaign.
+     */
+    public function clipSubmissions()
+    {
+        return $this->hasMany(ClipSubmission::class);
+    }
 }

@@ -194,26 +194,32 @@
             <p class="text-xs text-slate-500 mt-1">Masukkan link video TikTok, Reels, atau Shorts yang sudah Anda buat.</p>
         </div>
 
-        <div class="space-y-4">
-            <div>
-                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Link Video</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-link text-slate-400 text-sm"></i>
+        <form action="{{ route('app.campaigns.submissions.store', $campaign->slug) }}" method="POST">
+            @csrf
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Link Video</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-link text-slate-400 text-sm"></i>
+                        </div>
+                        <input type="url" name="submitted_url" id="videoUrlInput" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border @error('submitted_url') border-red-400 @else border-slate-200 @enderror rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="https://tiktok.com/@user/video/..." required>
                     </div>
-                    <input type="url" id="videoUrlInput" class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="https://tiktok.com/@user/video/..." required>
+                    @error('submitted_url')
+                        <p class="mt-1.5 text-xs font-medium text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
-        </div>
 
-        <div class="mt-6 flex gap-3">
-            <button type="button" onclick="closeSubmissionSheet()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
-                Batal
-            </button>
-            <button type="button" onclick="submitVideoLink()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
-                Kirim
-            </button>
-        </div>
+            <div class="mt-6 flex gap-3">
+                <button type="button" onclick="closeSubmissionSheet()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
+                    Batal
+                </button>
+                <button type="submit" onclick="showLoadingState(this)" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden">
+                    <span class="btn-text">Kirim</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -259,33 +265,26 @@
         }, 260);
     }
 
-    function submitVideoLink() {
-        const url = document.getElementById('videoUrlInput').value.trim();
-        if (!url) {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Input Kosong',
-                    text: 'Harap masukkan link video terlebih dahulu.',
-                    confirmButtonText: 'Mengerti',
-                    confirmButtonColor: '#4f46e5',
-                    customClass: {
-                        popup: 'rounded-2xl',
-                        confirmButton: 'rounded-xl font-bold px-5 py-2.5 text-xs'
-                    }
-                });
-            }
-            return;
+    function showLoadingState(btn) {
+        // Hanya jalan jika form valid HTML5
+        const form = btn.closest('form');
+        if (form && form.checkValidity()) {
+            const span = btn.querySelector('.btn-text');
+            span.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
         }
+    }
 
-        closeSubmissionSheet();
-        
-        setTimeout(() => {
+    // --- Flash Message Handling ---
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            openSubmissionSheet();
+            setTimeout(() => { closeSubmissionSheet(); }, 100); // Hack to reset UI if needed or just let it be
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil Disubmit!',
-                    text: 'Video Anda telah masuk dalam antrean review.',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
                     confirmButtonText: 'Tutup',
                     confirmButtonColor: '#4f46e5',
                     customClass: {
@@ -294,8 +293,27 @@
                     }
                 });
             }
-        }, 300);
-    }
+        @endif
+
+        @if(session('error') || $errors->any())
+            openSubmissionSheet();
+            @if(session('error'))
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: '{{ session('error') }}',
+                        confirmButtonText: 'Mengerti',
+                        confirmButtonColor: '#4f46e5',
+                        customClass: {
+                            popup: 'rounded-2xl',
+                            confirmButton: 'rounded-xl font-bold px-5 py-2.5 text-xs'
+                        }
+                    });
+                }
+            @endif
+        @endif
+    });
 
     // --- Drag to Dismiss Logic ---
     function onDragStart(clientY) {
