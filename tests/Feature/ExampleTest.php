@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CampaignStatus;
 use App\Models\ClipCampaign;
 use App\Models\User;
 use App\Models\WithdrawChannel;
@@ -346,5 +347,63 @@ class ExampleTest extends TestCase
         ]);
         $ajaxResponse->assertSee('11111111');
         $ajaxResponse->assertDontSee('22222222');
+    }
+
+    public function test_user_can_view_paginated_campaigns_and_ajax_infinite_scroll(): void
+    {
+        $user = User::factory()->create();
+
+        // Create 25 active campaigns
+        for ($i = 1; $i <= 25; $i++) {
+            ClipCampaign::factory()->create([
+                'title' => "Campaign Auto {$i}",
+                'status' => CampaignStatus::Active,
+            ]);
+        }
+
+        // Test standard page 1 view
+        $response = $this->actingAs($user)->get('/campaign');
+        $response->assertStatus(200);
+        $response->assertSee('Campaign Auto 25'); // latest first
+
+        // Test AJAX page 2 infinite scroll
+        $ajaxResponse = $this->actingAs($user)->getJson('/campaign?page=2', [
+            'X-Requested-With' => 'XMLHttpRequest',
+        ]);
+        $ajaxResponse->assertStatus(200);
+        $ajaxResponse->assertJsonStructure(['html', 'has_more', 'next_page', 'total']);
+        $ajaxResponse->assertJson([
+            'has_more' => false,
+            'next_page' => null,
+            'total' => 25,
+        ]);
+    }
+
+    public function test_user_can_search_campaigns_from_database(): void
+    {
+        $user = User::factory()->create();
+
+        ClipCampaign::factory()->create([
+            'title' => 'Sepatu Olahraga Pria Nike',
+            'description' => 'Promosikan sepatu lari original',
+            'status' => CampaignStatus::Active,
+        ]);
+
+        ClipCampaign::factory()->create([
+            'title' => 'Kemeja Flannel Kasual Uniqlo',
+            'description' => 'Outfit kasual pria dan wanita',
+            'status' => CampaignStatus::Active,
+        ]);
+
+        $ajaxResponse = $this->actingAs($user)->getJson('/campaign?q=Nike', [
+            'X-Requested-With' => 'XMLHttpRequest',
+        ]);
+
+        $ajaxResponse->assertStatus(200);
+        $ajaxResponse->assertJson([
+            'total' => 1,
+        ]);
+        $ajaxResponse->assertSee('Sepatu Olahraga Pria Nike');
+        $ajaxResponse->assertDontSee('Kemeja Flannel Kasual Uniqlo');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Enums\CampaignStatus;
 use App\Http\Controllers\Controller;
 use App\Models\ClipCampaign;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -12,11 +13,13 @@ class CampaignController extends Controller
 {
     /**
      * Menampilkan daftar kampanye clip aktif untuk clipper.
-     * Hanya mengambil kolom-kolom yang diperlukan untuk card index agar performa optimal.
+     * Mendukung pencarian database dan pagination infinite scroll (20 item per halaman).
      */
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
-        $campaigns = ClipCampaign::active()
+        $search = $request->input('q');
+
+        $query = ClipCampaign::active()
             ->select([
                 'id',
                 'title',
@@ -29,10 +32,32 @@ class CampaignController extends Controller
                 'end_at',
                 'status',
             ])
-            ->latest('id')
-            ->get();
+            ->when($request->filled('q'), function ($q) use ($search) {
+                $keyword = '%'.trim($search).'%';
+                $q->where(function ($sub) use ($keyword) {
+                    $sub->where('title', 'like', $keyword)
+                        ->orWhere('description', 'like', $keyword);
+                });
+            })
+            ->latest('id');
 
-        return view('app.campaign.index', compact('campaigns'));
+        $campaigns = $query->paginate(20);
+
+        if ($request->ajax()) {
+            $html = '';
+            foreach ($campaigns as $campaign) {
+                $html .= view('app.campaign.partials.item', compact('campaign'))->render();
+            }
+
+            return response()->json([
+                'html' => $html,
+                'has_more' => $campaigns->hasMorePages(),
+                'next_page' => $campaigns->hasMorePages() ? $campaigns->currentPage() + 1 : null,
+                'total' => $campaigns->total(),
+            ]);
+        }
+
+        return view('app.campaign.index', compact('campaigns', 'search'));
     }
 
     /**
