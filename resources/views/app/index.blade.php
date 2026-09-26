@@ -7,22 +7,15 @@
 @endphp
 
 <div class="px-4 pt-4 space-y-5 pb-28">
-    <!-- 1. Header Profil & Notifikasi -->
+    <!-- 1. Header Profil -->
     <header class="flex items-center justify-between">
-        <div class="min-w-0 flex-1 mr-3">
+        <div class="min-w-0 flex-1">
             <h1
                 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-800 tracking-tight leading-none">
                 AZCLIP</h1>
             <p class="text-sm font-semibold text-slate-700 truncate mt-1">
                 Halo, {{ $userName }} 👋</p>
         </div>
-
-        <a href="#"
-            class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors relative active:scale-95 shrink-0"
-            aria-label="Notifikasi">
-            <i class="fa-regular fa-bell text-base"></i>
-            <span class="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 ring-2 ring-white"></span>
-        </a>
     </header>
 
     <!-- 2. Wallet & Earning Banner -->
@@ -81,13 +74,13 @@
                 </div>
                 <span class="text-[10px] font-bold text-slate-700">Campaign</span>
             </a>
-            <a href="{{ route('app.submissions.index') }}"
+            <a href="{{ route('app.wallet.index') }}"
                 class="flex flex-col items-center justify-center gap-2.5 group active:scale-95 transition-transform cursor-pointer">
                 <div
                     class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
-                    <i class="fa-solid fa-clock-rotate-left text-[20px]"></i>
+                    <i class="fa-solid fa-wallet text-[20px]"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-700">Riwayat</span>
+                <span class="text-[10px] font-bold text-slate-700">Saldo</span>
             </a>
         </div>
     </section>

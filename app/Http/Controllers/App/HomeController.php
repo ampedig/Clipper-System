@@ -35,7 +35,7 @@ class HomeController extends Controller
         // Ambil kampanye terbaru berstatus aktif
         $latestCampaigns = ClipCampaign::active()
             ->latest('id')
-            ->take(3)
+            ->take(5)
             ->get();
 
         return view('app.index', compact('user', 'totalViews', 'approvedClipsCount', 'latestCampaigns'));
