@@ -29,7 +29,7 @@
             Lihat Detail <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
         </span>
         <span class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-md">
-            Sisa {{ $campaign->clipper_limit !== null ? $campaign->clipper_limit . ' slot' : 'Tanpa Batas' }}
+            Sisa {{ $campaign->clipper_limit !== null ? $campaign->remaining_quota . ' slot' : 'Tanpa Batas' }}
         </span>
     </div>
 </a>

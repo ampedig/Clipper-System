@@ -68,6 +68,24 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#4f46e5',
+                    customClass: {
+                        popup: 'rounded-2xl',
+                        confirmButton: 'rounded-xl font-bold px-5 py-2.5 text-xs'
+                    }
+                });
+            }
+        @endif
+    });
+
     let currentStatus = 'all';
     let nextPage = {{ $submissions->hasMorePages() ? $submissions->currentPage() + 1 : 'null' }};
     let hasMore = {{ $submissions->hasMorePages() ? 'true' : 'false' }};

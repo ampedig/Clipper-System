@@ -39,6 +39,9 @@ class CampaignController extends Controller
                         ->orWhere('description', 'like', $keyword);
                 });
             })
+            ->withCount(['clipSubmissions as approved_submissions_count' => function ($query) {
+                $query->whereIn('status', ['approved', 'active', 'completed']);
+            }])
             ->latest('id');
 
         $campaigns = $query->paginate(20);

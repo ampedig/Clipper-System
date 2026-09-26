@@ -32,8 +32,11 @@ class HomeController extends Controller
             $approvedClipsCount = (int) ($stats->approved_count ?? 0);
         }
 
-        // Ambil kampanye terbaru berstatus aktif
+        // Ambil kampanye terbaru berstatus aktif beserta hitungan klip yang disetujui (eager load count)
         $latestCampaigns = ClipCampaign::active()
+            ->withCount(['clipSubmissions as approved_submissions_count' => function ($query) {
+                $query->whereIn('status', ['approved', 'active', 'completed']);
+            }])
             ->latest('id')
             ->take(5)
             ->get();

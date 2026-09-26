@@ -146,6 +146,22 @@ class ClipCampaign extends Model
     }
 
     /**
+     * Sisa kuota clipper (Dynamic Calculation)
+     */
+    protected function remainingQuota(): Attribute
+    {
+        return Attribute::make(
+            get: function (): int {
+                // Gunakan count dari eager loading (withCount) jika tersedia untuk menghindari N+1 query
+                $used = $this->attributes['approved_submissions_count']
+                    ?? $this->clipSubmissions()->whereIn('status', ['approved', 'active', 'completed'])->count();
+
+                return max(0, $this->clipper_limit - (int) $used);
+            }
+        );
+    }
+
+    /**
      * Get the clip submissions for the campaign.
      */
     public function clipSubmissions()

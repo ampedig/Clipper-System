@@ -134,6 +134,12 @@
             <div class="h-px bg-slate-100 ml-14"></div>
 
             <!-- Sisa Kuota -->
+            @php
+                $quotaPercent = 100;
+                if ($campaign->clipper_limit !== null && $campaign->clipper_limit > 0) {
+                    $quotaPercent = max(0, min(100, (int) round(($campaign->remaining_quota / $campaign->clipper_limit) * 100)));
+                }
+            @endphp
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
                     <i class="fa-solid fa-users text-sm"></i>
@@ -142,11 +148,11 @@
                     <div class="flex justify-between items-end mb-1.5">
                         <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sisa Kuota</span>
                         <span class="text-xs font-bold text-indigo-600">
-                            {{ $campaign->clipper_limit !== null ? $campaign->clipper_limit . ' slot' : 'Tanpa Batas' }}
+                            {{ $campaign->clipper_limit !== null ? $campaign->remaining_quota . ' slot' : 'Tanpa Batas' }}
                         </span>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 100%"></div>
+                        <div class="bg-indigo-500 h-1.5 rounded-full transition-all duration-500 ease-out" style="width: {{ $quotaPercent }}%"></div>
                     </div>
                 </div>
             </div>

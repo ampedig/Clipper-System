@@ -120,6 +120,10 @@
                     <span id="txDate" class="text-xs font-bold text-slate-800">-</span>
                 </div>
                 <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
+                    <span class="text-xs font-semibold text-slate-500">Sisa Saldo</span>
+                    <span id="txBalanceAfter" class="text-xs font-bold text-slate-800">-</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
                     <span class="text-xs font-semibold text-slate-500">No. Referensi</span>
                     <span id="txRefId" class="text-[11px] font-mono font-bold text-slate-800">-</span>
                 </div>
@@ -299,7 +303,8 @@
             el.dataset.txAmount,
             el.dataset.txDate,
             el.dataset.txRef,
-            el.dataset.txNotes
+            el.dataset.txNotes,
+            el.dataset.txBalanceAfter
         );
     }
 
@@ -311,16 +316,16 @@
     const backdrop = document.getElementById('txBackdrop');
     const sheet = document.getElementById('txSheet');
 
-    function showTxDetail(type, title, amount, date, refId, notes) {
+    function showTxDetail(type, title, amount, date, refId, notes, balanceAfter) {
         const isIncome = type === 'income';
         const colorClass = isIncome ? 'text-emerald-600' : 'text-rose-600';
         const bgIconClass = isIncome ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500';
         const iconName = isIncome ? 'fa-arrow-down' : 'fa-arrow-up';
-        const typeLabel = isIncome ? 'Pemasukan' : 'Pengeluaran';
+        const typeLabel = isIncome ? 'Penambahan Saldo' : 'Pengurangan Saldo';
         const prefix = isIncome ? '+' : '-';
         const defaultNotes = isIncome ?
-            'Reward otomatis masuk dari capaian views klip campaign.' :
-            'Penarikan saldo telah berhasil diproses ke rekening tujuan.';
+            'Penambahan saldo telah berhasil diproses.' :
+            'Pengurangan saldo telah berhasil diproses.';
 
         // Populate data
         document.getElementById('txIconContainer').className =
@@ -331,6 +336,7 @@
         document.getElementById('txAmount').textContent = `${prefix}${amount}`;
         document.getElementById('txType').textContent = typeLabel;
         document.getElementById('txDate').textContent = date;
+        document.getElementById('txBalanceAfter').textContent = balanceAfter || '-';
         document.getElementById('txRefId').textContent = refId;
         document.getElementById('txNotes').textContent = notes || defaultNotes;
 

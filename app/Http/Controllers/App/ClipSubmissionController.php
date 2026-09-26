@@ -113,6 +113,6 @@ class ClipSubmissionController extends Controller
 
         SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.clip_submit'));
 
-        return back()->with('success', 'Link video berhasil didaftarkan! Tim kami akan segera meninjau pengajuanmu.');
+        return redirect()->route('app.submissions.index')->with('success', 'Link video berhasil didaftarkan! Tim kami akan segera meninjau pengajuanmu.');
     }
 }

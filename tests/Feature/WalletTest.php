@@ -61,11 +61,12 @@ class WalletTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Hari Ini');
         $response->assertSee('Kemarin');
-        $response->assertSee('+Rp 25.000');
-        $response->assertSee('-Rp 50.000');
-        $response->assertSee('Reward Komisi Klip');
-        $response->assertSee('Penarikan Dana');
-        $response->assertSee('Promo Spesial');
+        $response->assertSee('Rp 25.000');
+        $response->assertSee('Rp 50.000');
+        $response->assertSee('Tambah');
+        $response->assertSee('Kurang');
+        $response->assertSee('Sisa Saldo: Rp 25.000');
+        $response->assertSee('Sisa Saldo: Rp 50.000');
     }
 
     public function test_user_cannot_see_other_users_wallet_transactions(): void
