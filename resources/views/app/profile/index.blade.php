@@ -39,7 +39,7 @@
         <!-- Bagian Bawah: Statistik Saldo & Klip (Interaktif) -->
         <div class="py-3.5 px-2 bg-slate-50/40 grid grid-cols-2 divide-x divide-slate-100">
             <!-- Stat 1: Saldo Aktif -->
-            <a href="#"
+            <a href="{{ route('app.wallet.index') }}"
                 class="px-3 flex flex-col items-center justify-center text-center group active:scale-[0.98] transition-all">
                 <span
                     class="text-[11px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-indigo-600 transition-colors">Total

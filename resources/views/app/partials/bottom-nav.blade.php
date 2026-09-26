@@ -41,7 +41,7 @@
         </a>
 
         <!-- 4. Saldo (Saldo, mutasi, dan withdrawal) -->
-        <a href="#"
+        <a href="{{ route('app.wallet.index') }}"
             class="group flex flex-col items-center justify-center w-[20%] transition-all duration-300 {{ isset($active) && $active === 'saldo' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600' }}">
             <div class="relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300">
                 <i

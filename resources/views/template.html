@@ -1,183 +1,374 @@
 @@include('../partials/head.html', {
-  "title": "Tarik Saldo"
+  "title": "Riwayat Saldo"
 })
 
-<div class="min-h-[100dvh] bg-slate-50 pb-32 relative">
+<div class="px-5 pt-6 space-y-5 pb-24">
+  
+  <!-- Navigation Filter Segmented Control (Warna Primary) -->
+  <nav class="bg-white border border-slate-200 p-1.5 rounded-2xl flex items-center gap-1">
+    <button type="button" onclick="filterTransactions('all', this)" class="tx-filter-btn flex-1 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs text-center transition-all active:scale-95 shadow-sm cursor-pointer">
+      Semua
+    </button>
+    <button type="button" onclick="filterTransactions('income', this)" class="tx-filter-btn flex-1 py-2 rounded-xl text-slate-500 hover:text-indigo-600 font-semibold text-xs text-center transition-all active:scale-95 hover:bg-slate-50 cursor-pointer">
+      Pemasukan
+    </button>
+    <button type="button" onclick="filterTransactions('outcome', this)" class="tx-filter-btn flex-1 py-2 rounded-xl text-slate-500 hover:text-indigo-600 font-semibold text-xs text-center transition-all active:scale-95 hover:bg-slate-50 cursor-pointer">
+      Penarikan
+    </button>
+  </nav>
 
-  <!-- Top App Bar (Modern Premium) -->
-  <header class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
-    <div class="flex items-center gap-3">
-      <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0">
-        <i class="fa-solid fa-arrow-left text-sm"></i>
-      </button>
-      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Tarik Saldo</h1>
+  <!-- Riwayat Transaksi -->
+  <section>
+
+    <div class="space-y-6">
+      <!-- Group 1: Hari Ini -->
+      <div class="tx-group">
+        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Hari Ini</h3>
+        <div class="space-y-3">
+          
+          <!-- Income -->
+          <div onclick="showTxDetail('income', 'Reward Klip TikTok', 'Rp 15.000', '16 Sep 2026, 14:30', 'TRX-9988776655', 'Capaian 15.000 views pada video campaign Fitur PWA.')" data-tx-type="income" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Reward Klip TikTok</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">14:30 • Campaign Launch</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-emerald-600">+Rp 15.000</p>
+          </div>
+
+          <!-- Outcome -->
+          <div onclick="showTxDetail('outcome', 'Penarikan Dana', 'Rp 50.000', '16 Sep 2026, 09:15', 'WD-1122334455', 'Penarikan berhasil ditransfer ke Bank BCA 542019281 a.n John Doe.')" data-tx-type="outcome" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-up"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Penarikan Dana</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">09:15 • Bank BCA</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-rose-600">-Rp 50.000</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Group 2: Kemarin -->
+      <div class="tx-group">
+        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">Kemarin</h3>
+        <div class="space-y-3">
+          
+          <!-- Income -->
+          <div onclick="showTxDetail('income', 'Reward Klip Reels', 'Rp 25.000', '15 Sep 2026, 19:40', 'TRX-1122998877', 'Bonus views FYP Campaign Promo Spesial September.')" data-tx-type="income" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Reward Klip Reels</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">19:40 • Campaign Promo</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-emerald-600">+Rp 25.000</p>
+          </div>
+
+          <!-- Income -->
+          <div onclick="showTxDetail('income', 'Reward Klip Shorts', 'Rp 10.000', '15 Sep 2026, 16:20', 'TRX-6677889900', 'Reward review aplikasi di YouTube Shorts 10.000 valid views.')" data-tx-type="income" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Reward Klip Shorts</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">16:20 • Review Web App</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-emerald-600">+Rp 10.000</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Group 3: 14 Sep 2026 -->
+      <div class="tx-group">
+        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">14 Sep 2026</h3>
+        <div class="space-y-3">
+          
+          <!-- Income -->
+          <div onclick="showTxDetail('income', 'Reward Klip TikTok', 'Rp 20.000', '14 Sep 2026, 11:10', 'TRX-4433221100', 'Tutorial pemasangan PWA di Android dan iOS.')" data-tx-type="income" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Reward Klip TikTok</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">11:10 • Tutorial PWA</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-emerald-600">+Rp 20.000</p>
+          </div>
+
+          <!-- Outcome -->
+          <div onclick="showTxDetail('outcome', 'Penarikan Dana', 'Rp 100.000', '14 Sep 2026, 08:00', 'WD-9988776655', 'Penarikan berhasil ditransfer ke Bank Mandiri 1370001234 a.n John Doe.')" data-tx-type="outcome" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-up"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Penarikan Dana</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">08:00 • Bank Mandiri</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-rose-600">-Rp 100.000</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Group 4: 12 Sep 2026 -->
+      <div class="tx-group">
+        <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 ml-1">12 Sep 2026</h3>
+        <div class="space-y-3">
+          
+          <!-- Income -->
+          <div onclick="showTxDetail('income', 'Reward Klip Instagram', 'Rp 35.000', '12 Sep 2026, 15:30', 'TRX-5544332211', 'Juara 3 Challenge Mingguan Clipper Kreatif.')" data-tx-type="income" class="tx-item flex items-center justify-between p-3 bg-white rounded-2xl border border-slate-200 cursor-pointer hover:border-indigo-200 transition-all active:scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-arrow-down"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800">Reward Klip Instagram</p>
+                <p class="text-[10px] font-medium text-slate-400 mt-0.5">15:30 • Challenge Mingguan</p>
+              </div>
+            </div>
+            <p class="text-sm font-bold text-emerald-600">+Rp 35.000</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
-  </header>
+  </section>
+</div>
 
-  <div class="p-4 space-y-4">
+<!-- Mobile Native Bottom Sheet Modal -->
+<div id="txDetailModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">
+  <!-- Backdrop: klik area gelap untuk menutup modal -->
+  <div id="txBackdrop" onclick="closeTxDetail()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
 
-    <!-- Available Balance -->
-    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200 text-center">
-      <p class="text-xs font-semibold text-slate-500 tracking-wide mb-1">Saldo tersedia</p>
-      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Rp125.000</h2>
-    </section>
+  <!-- Sheet Container -->
+  <div id="txSheet" class="relative w-full max-w-[480px] bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto shadow-2xl">
+    
+    <!-- Drag Handle Indicator (bisa digeser ke bawah) -->
+    <div id="txDragHandle" class="w-12 h-1.5 bg-slate-300/80 hover:bg-slate-400 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors"></div>
 
-    <!-- Destination Bank -->
-    <a href="rekening.html" class="bg-white rounded-[1.5rem] p-4 border border-slate-200 flex items-center justify-between group cursor-pointer hover:border-indigo-300 transition-colors block">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl">
-          <i class="fa-solid fa-building-columns"></i>
-        </div>
-        <div>
-          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Rekening Tujuan</p>
-          <p class="text-sm font-bold text-slate-900 leading-tight">BCA • Moh Ma'sum</p>
-          <p class="text-xs text-slate-500 font-medium mt-0.5">•••• 1234</p>
-        </div>
+    <!-- Modal Content -->
+    <div class="flex flex-col items-center text-center">
+      <div id="txIconContainer" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4 bg-emerald-50 text-emerald-500">
+        <i id="txIcon" class="fa-solid fa-arrow-down"></i>
       </div>
-      <div class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full group-hover:bg-indigo-100 transition-colors flex items-center gap-1">
-        Ubah <i class="fa-solid fa-chevron-right text-[8px]"></i>
-      </div>
-    </a>
-
-    <!-- Withdrawal Amount -->
-    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200">
-      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Jumlah Penarikan</h3>
+      <h2 id="txTitle" class="text-lg font-bold text-slate-900 mb-1">Detail Transaksi</h2>
+      <p id="txAmount" class="text-3xl font-extrabold text-emerald-600 tracking-tight mb-6">+Rp 0</p>
       
-      <div id="amount-container" class="relative flex items-center transition-colors">
-        <span class="text-xl font-bold text-slate-400 mr-2">Rp</span>
-        <input type="number" id="amount" value="100000" class="w-full text-3xl font-extrabold text-slate-900 bg-transparent focus:outline-none" />
-      </div>
-      
-      <!-- Validation Error -->
-      <div id="error-message" class="hidden mt-3 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <span>Minimal penarikan Rp50.000</span>
-      </div>
-    </section>
-
-    <!-- Withdrawal Details -->
-    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200">
-      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Rincian Penarikan</h3>
-      
-      <div class="space-y-3">
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-slate-500 font-medium">Jumlah</span>
-          <span class="font-bold text-slate-900" id="detail-amount">Rp100.000</span>
+      <div class="w-full bg-slate-50 rounded-2xl p-4 space-y-3 text-left border border-slate-100 mb-6">
+        <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
+          <span class="text-xs font-semibold text-slate-500">Status</span>
+          <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check"></i> Berhasil
+          </span>
         </div>
-        <div class="flex justify-between items-center text-sm">
-          <span class="text-slate-500 font-medium">Biaya Admin</span>
-          <span class="font-bold text-rose-500">Rp2.500</span>
+        <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
+          <span class="text-xs font-semibold text-slate-500">Tipe Transaksi</span>
+          <span id="txType" class="text-xs font-bold text-slate-800">Pemasukan</span>
         </div>
-        
-        <div class="border-t border-slate-100 pt-3 mt-1">
-          <div class="flex justify-between items-center">
-            <span class="text-sm font-bold text-slate-700">Diterima</span>
-            <span class="text-lg font-extrabold text-indigo-600" id="detail-received">Rp97.500</span>
+        <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
+          <span class="text-xs font-semibold text-slate-500">Waktu</span>
+          <span id="txDate" class="text-xs font-bold text-slate-800">16 Sep 2026, 14:30</span>
+        </div>
+        <div class="flex justify-between items-center border-b border-slate-200/80 pb-3">
+          <span class="text-xs font-semibold text-slate-500">No. Referensi</span>
+          <span id="txRefId" class="text-[11px] font-mono font-bold text-slate-800">TRX-0000000000</span>
+        </div>
+        <div class="flex flex-col gap-1.5 pt-1">
+          <span class="text-xs font-semibold text-slate-500">Catatan</span>
+          <div class="p-3 bg-white rounded-xl border border-slate-200/80 text-left">
+            <p id="txNotes" class="text-xs text-slate-700 leading-relaxed font-medium">-</p>
           </div>
         </div>
       </div>
-    </section>
 
+      <!-- Action Button -->
+      <button type="button" onclick="closeTxDetail()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
+        Tutup
+      </button>
+    </div>
   </div>
-
-  <!-- Bottom Fixed Button (Floating) -->
-  <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-4 pb-6 pt-2 z-40 pb-safe">
-    <button type="button" id="btn-withdraw" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-2xl transition-all active:scale-[0.98] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-      Tarik Saldo
-    </button>
-  </div>
-
 </div>
+
+@@include('../partials/bottom-nav.html', {
+  "active": "saldo"
+})
 
 @@include('../partials/vendor-script.html')
 
+<!-- Inline Script for Transaction Details Bottom Sheet & Swipe Gesture -->
 <script>
-  // Simple interaction for the form
-  const amountInput = document.getElementById('amount');
-  const detailAmount = document.getElementById('detail-amount');
-  const detailReceived = document.getElementById('detail-received');
-  const btnWithdraw = document.getElementById('btn-withdraw');
-  const adminFee = 2500;
-  
-  function formatRupiah(number) {
-    return 'Rp' + number.toLocaleString('id-ID');
+  function filterTransactions(type, btn) {
+    document.querySelectorAll('.tx-filter-btn').forEach(b => {
+      b.className = 'tx-filter-btn flex-1 py-2 rounded-xl text-slate-500 hover:text-indigo-600 font-semibold text-xs text-center transition-all active:scale-95 hover:bg-slate-50 cursor-pointer';
+    });
+    btn.className = 'tx-filter-btn flex-1 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs text-center transition-all active:scale-95 shadow-sm cursor-pointer';
+
+    document.querySelectorAll('.tx-item').forEach(item => {
+      if (type === 'all' || item.dataset.txType === type) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    document.querySelectorAll('.tx-group').forEach(group => {
+      const visibleItems = group.querySelectorAll('.tx-item:not(.hidden)');
+      if (visibleItems.length === 0) {
+        group.classList.add('hidden');
+      } else {
+        group.classList.remove('hidden');
+      }
+    });
   }
 
-  amountInput.addEventListener('input', (e) => {
-    const val = parseInt(e.target.value) || 0;
-    detailAmount.textContent = formatRupiah(val);
-    const received = Math.max(0, val - adminFee);
-    detailReceived.textContent = formatRupiah(received);
-    
-    // Validation for min withdrawal
-    const errorMessage = document.getElementById('error-message');
-    const amountContainer = document.getElementById('amount-container');
+  let startY = 0;
+  let currentY = 0;
+  let isDragging = false;
 
-    if (val < 50000) {
-      errorMessage.classList.remove('hidden');
-      btnWithdraw.disabled = true;
-      btnWithdraw.classList.add('opacity-50', 'cursor-not-allowed');
-    } else {
-      errorMessage.classList.add('hidden');
-      btnWithdraw.disabled = false;
-      btnWithdraw.classList.remove('opacity-50', 'cursor-not-allowed');
+  const modal = document.getElementById('txDetailModal');
+  const backdrop = document.getElementById('txBackdrop');
+  const sheet = document.getElementById('txSheet');
+
+  function showTxDetail(type, title, amount, date, refId, notes) {
+    const isIncome = type === 'income';
+    const colorClass = isIncome ? 'text-emerald-600' : 'text-rose-600';
+    const bgIconClass = isIncome ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500';
+    const iconName = isIncome ? 'fa-arrow-down' : 'fa-arrow-up';
+    const typeLabel = isIncome ? 'Pemasukan' : 'Pengeluaran';
+    const prefix = isIncome ? '+' : '-';
+    const defaultNotes = isIncome 
+      ? 'Reward otomatis masuk dari capaian views klip campaign.' 
+      : 'Penarikan saldo telah berhasil diproses ke rekening tujuan.';
+
+    // Populate data
+    document.getElementById('txIconContainer').className = `w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-4 ${bgIconClass}`;
+    document.getElementById('txIcon').className = `fa-solid ${iconName}`;
+    document.getElementById('txTitle').textContent = title;
+    document.getElementById('txAmount').className = `text-3xl font-extrabold ${colorClass} tracking-tight mb-6`;
+    document.getElementById('txAmount').textContent = `${prefix}${amount}`;
+    document.getElementById('txType').textContent = typeLabel;
+    document.getElementById('txDate').textContent = date;
+    document.getElementById('txRefId').textContent = refId;
+    document.getElementById('txNotes').textContent = notes || defaultNotes;
+
+    // Reset styles
+    sheet.style.transform = '';
+    sheet.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+    backdrop.style.opacity = '';
+
+    // Show modal container
+    modal.classList.remove('invisible', 'pointer-events-none');
+
+    // Trigger smooth transition
+    requestAnimationFrame(() => {
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
+      sheet.classList.remove('translate-y-full');
+      sheet.classList.add('translate-y-0');
+    });
+
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeTxDetail() {
+    sheet.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+    sheet.style.transform = 'translateY(100%)';
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('invisible', 'pointer-events-none');
+      sheet.classList.remove('translate-y-0');
+      sheet.classList.add('translate-y-full');
+      sheet.style.transform = '';
+      backdrop.style.opacity = '';
+      document.body.style.overflow = '';
+    }, 260);
+  }
+
+  // --- Gesture: Touch & Mouse Drag to Dismiss ---
+  function onDragStart(clientY) {
+    startY = clientY;
+    currentY = clientY;
+    isDragging = true;
+    sheet.style.transition = 'none';
+  }
+
+  function onDragMove(clientY) {
+    if (!isDragging) return;
+    const deltaY = clientY - startY;
+    if (deltaY > 0) {
+      currentY = clientY;
+      sheet.style.transform = `translateY(${deltaY}px)`;
+      const progress = Math.min(deltaY / 250, 1);
+      backdrop.style.opacity = `${Math.max(0.2, 1 - progress)}`;
     }
+  }
+
+  function onDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    const deltaY = currentY - startY;
+
+    if (deltaY > 75) {
+      closeTxDetail();
+    } else {
+      sheet.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+      backdrop.style.transition = 'opacity 0.25s ease';
+      sheet.style.transform = 'translateY(0)';
+      backdrop.style.opacity = '1';
+    }
+  }
+
+  // Touch event listeners
+  sheet.addEventListener('touchstart', (e) => {
+    onDragStart(e.touches[0].clientY);
+  }, { passive: true });
+
+  sheet.addEventListener('touchmove', (e) => {
+    onDragMove(e.touches[0].clientY);
+  }, { passive: true });
+
+  sheet.addEventListener('touchend', () => {
+    onDragEnd();
   });
 
-  // Run initial validation
-  amountInput.dispatchEvent(new Event('input'));
+  // Mouse drag support for desktop preview
+  let isMouseDragging = false;
+  sheet.addEventListener('mousedown', (e) => {
+    if (e.target.closest('button') || e.target.closest('a')) return;
+    isMouseDragging = true;
+    onDragStart(e.clientY);
+  });
 
-  btnWithdraw.addEventListener('click', () => {
-    const val = parseInt(amountInput.value) || 0;
-    if (typeof Swal !== 'undefined') {
-      Swal.fire({
-        html: `
-          <div class="flex flex-col items-center text-center pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
-              <i class="fa-solid fa-money-bill-transfer"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Penarikan</h3>
-            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-              Apakah Anda yakin ingin menarik saldo sebesar <span class="font-extrabold text-slate-900">${formatRupiah(val)}</span>?
-            </p>
-          </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'Ya, Lanjutkan',
-        cancelButtonText: 'Batal',
-        buttonsStyling: false,
-        backdrop: 'rgba(15, 23, 42, 0.65)',
-        customClass: {
-          popup: 'custom-swal-popup !rounded-[2.25rem]',
-          actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-          confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-          cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            html: `
-              <div class="flex flex-col items-center text-center pt-2">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
-                  <i class="fa-solid fa-check"></i>
-                </div>
-                <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Penarikan Berhasil!</h3>
-                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-                  Permintaan penarikan saldo sebesar <span class="font-extrabold text-slate-900">${formatRupiah(val)}</span> sedang diproses.
-                </p>
-              </div>
-            `,
-            showConfirmButton: false,
-            timer: 1600,
-            backdrop: 'rgba(15, 23, 42, 0.65)',
-            customClass: {
-              popup: 'custom-swal-popup !rounded-[2.25rem]'
-            }
-          }).then(() => {
-            window.location.href = 'wallet.html';
-          });
-        }
-      });
-    }
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDragging) return;
+    onDragMove(e.clientY);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDragging) return;
+    isMouseDragging = false;
+    onDragEnd();
   });
 </script>
