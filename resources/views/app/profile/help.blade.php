@@ -44,6 +44,7 @@
             </div>
         </div>
 
+        @if(!empty($settings['cs_whatsapp']) || !empty($settings['cs_telegram']))
         <!-- Section Title: Channel List -->
         <div class="px-1">
             <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Pilih Saluran Bantuan</h3>
@@ -52,8 +53,10 @@
         <!-- Channel Buttons Container -->
         <div class="space-y-3">
 
+
+            @if(!empty($settings['cs_whatsapp']))
             <!-- Channel 1: WhatsApp Support -->
-            <a href="https://wa.me/6281234567890?text=Halo%20Admin%20AZCLIP,%20saya%20butuh%20bantuan"
+            <a href="https://wa.me/62{{ ltrim($settings['cs_whatsapp'], '0') }}?text=Halo%20Admin%20AZCLIP,%20saya%20butuh%20bantuan"
                 target="_blank" rel="noopener noreferrer"
                 class="group block bg-white rounded-2xl border border-slate-200 hover:border-emerald-300 p-4 transition-all duration-200 hover:shadow-sm active:scale-[0.99] cursor-pointer">
                 <div class="flex items-center justify-between">
@@ -67,7 +70,7 @@
                                 CS WhatsApp
                             </h4>
                             <p class="text-xs text-slate-500 font-medium mt-0.5">
-                                +62 812-3456-7890
+                                +62 {{ $settings['cs_whatsapp'] }}
                             </p>
                         </div>
                     </div>
@@ -77,9 +80,11 @@
                     </div>
                 </div>
             </a>
+            @endif
 
+            @if(!empty($settings['cs_telegram']))
             <!-- Channel 2: Telegram Support -->
-            <a href="https://t.me/azclip_support"
+            <a href="https://t.me/{{ $settings['cs_telegram'] }}"
                 target="_blank" rel="noopener noreferrer"
                 class="group block bg-white rounded-2xl border border-slate-200 hover:border-telegram p-4 transition-all duration-200 hover:shadow-sm active:scale-[0.99] cursor-pointer">
                 <div class="flex items-center justify-between">
@@ -94,7 +99,7 @@
                                 CS Telegram
                             </h4>
                             <p class="text-xs text-slate-500 font-medium mt-0.5">
-                                @azclip_support
+                                {{ '@' . $settings['cs_telegram'] }}
                             </p>
                         </div>
                     </div>
@@ -104,8 +109,10 @@
                     </div>
                 </div>
             </a>
+            @endif
 
         </div>
+        @endif
 
         <!-- Support Guidelines Info Card -->
         <div class="bg-indigo-50/70 border border-indigo-100/80 rounded-2xl p-4 space-y-2">

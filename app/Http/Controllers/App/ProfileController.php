@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\WithdrawChannel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -92,7 +93,17 @@ class ProfileController extends Controller
      */
     public function help(): View
     {
-        return view('app.profile.help');
+        $settings = Setting::pluck('value', 'key')->toArray();
+
+        if (! empty($settings['cs_whatsapp'])) {
+            $settings['cs_whatsapp'] = preg_replace('/^(?:\+62|62|0)/', '', $settings['cs_whatsapp']);
+        }
+
+        if (! empty($settings['cs_telegram'])) {
+            $settings['cs_telegram'] = ltrim($settings['cs_telegram'], '@');
+        }
+
+        return view('app.profile.help', compact('settings'));
     }
 
     /**

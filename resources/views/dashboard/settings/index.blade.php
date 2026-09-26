@@ -63,7 +63,7 @@
                             <!-- CS WhatsApp (Kiri) -->
                             <div class="space-y-1.5">
                                 <label for="csWhatsapp" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                    CS WhatsApp <span class="text-rose-500">*</span>
+                                    CS WhatsApp
                                 </label>
                                 <div class="flex">
                                     <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
@@ -76,7 +76,6 @@
                                         value="{{ old('cs_whatsapp', $settings['cs_whatsapp'] ?? '') }}"
                                         placeholder="81234567890" 
                                         class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10 @error('cs_whatsapp') border-red-500 @enderror"
-                                        required
                                     >
                                 </div>
                                 @error('cs_whatsapp')
@@ -87,7 +86,7 @@
                             <!-- CS Telegram (Kanan) -->
                             <div class="space-y-1.5">
                                 <label for="csTelegram" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                    CS Telegram <span class="text-rose-500">*</span>
+                                    CS Telegram
                                 </label>
                                 <div class="flex">
                                     <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
@@ -100,7 +99,6 @@
                                         value="{{ old('cs_telegram', $settings['cs_telegram'] ?? '') }}"
                                         placeholder="clipper_support" 
                                         class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10 @error('cs_telegram') border-red-500 @enderror"
-                                        required
                                     >
                                 </div>
                                 @error('cs_telegram')
@@ -249,11 +247,9 @@
                 btnSave.addEventListener('click', function (e) {
                     e.preventDefault();
 
-                    const waVal = csWhatsappInput ? csWhatsappInput.value.trim() : '';
-                    const tgVal = csTelegramInput ? csTelegramInput.value.trim() : '';
                     const minWdVal = minWithdrawInput ? minWithdrawInput.value.trim() : '';
 
-                    if (!waVal || !tgVal || !minWdVal) {
+                    if (!minWdVal) {
                         if (typeof Swal !== 'undefined') {
                             Swal.fire({
                                 title: 'Perhatian',

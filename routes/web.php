@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdministratorController;
 use App\Http\Controllers\Admin\ClipCampaignController;
 use App\Http\Controllers\Admin\ClipSubmissionController as AdminClipSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\WithdrawChannelController;
 use App\Http\Controllers\App\CampaignController;
 use App\Http\Controllers\App\ClipSubmissionController as AppClipSubmissionController;
@@ -45,8 +46,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::patch('/withdraw-channels/{withdraw_channel}/status', [WithdrawChannelController::class, 'toggleStatus'])->name('withdraw-channels.status');
     Route::resource('withdraw-channels', WithdrawChannelController::class);
 
-    Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
-    Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
 // Shared / Clipper Routes
 Route::middleware('auth')->group(function () {
