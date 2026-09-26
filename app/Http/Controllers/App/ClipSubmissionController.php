@@ -7,22 +7,49 @@ use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipCampaign;
 use App\Models\ClipSubmission;
 use App\Services\TikTokUrlService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ClipSubmissionController extends Controller
 {
     /**
      * Display a listing of the authenticated user's clip submissions.
      */
-    public function index(Request $request)
+    public function index(Request $request): View|JsonResponse
     {
-        $submissions = $request->user()
+        $status = $request->input('status', 'all');
+
+        $query = $request->user()
             ->clipSubmissions()
             ->with('clipCampaign')
-            ->latest()
-            ->get();
+            ->latest();
 
-        return view('app.submissions.index', compact('submissions'));
+        if ($status === 'diproses') {
+            $query->where('status', 'pending');
+        } elseif ($status === 'disetujui') {
+            $query->whereIn('status', ['active', 'approved', 'completed']);
+        } elseif ($status === 'ditolak') {
+            $query->where('status', 'rejected');
+        }
+
+        $submissions = $query->paginate(10);
+
+        if ($request->ajax()) {
+            $html = '';
+            foreach ($submissions as $sub) {
+                $html .= view('app.submissions.partials.item', compact('sub'))->render();
+            }
+
+            return response()->json([
+                'html' => $html,
+                'has_more' => $submissions->hasMorePages(),
+                'next_page' => $submissions->hasMorePages() ? $submissions->currentPage() + 1 : null,
+                'total' => $submissions->total(),
+            ]);
+        }
+
+        return view('app.submissions.index', compact('submissions', 'status'));
     }
 
     /**

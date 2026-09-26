@@ -275,4 +275,76 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_user_can_view_paginated_submissions_and_infinite_scroll_ajax(): void
+    {
+        $user = User::factory()->create();
+        $campaign = ClipCampaign::factory()->create();
+
+        // Create 15 submissions
+        for ($i = 1; $i <= 15; $i++) {
+            $campaign->clipSubmissions()->create([
+                'user_id' => $user->id,
+                'submitted_url' => "https://www.tiktok.com/@owner/video/1000{$i}",
+                'video_id' => "1000{$i}",
+                'status' => 'pending',
+                'current_views' => 0,
+                'credited_views' => 0,
+                'total_earned' => 0,
+            ]);
+        }
+
+        // Test normal page 1 (non-AJAX)
+        $response = $this->actingAs($user)->get('/klip');
+        $response->assertStatus(200);
+
+        // Test AJAX infinite scroll page 2
+        $ajaxResponse = $this->actingAs($user)->getJson('/klip?page=2', [
+            'X-Requested-With' => 'XMLHttpRequest',
+        ]);
+        $ajaxResponse->assertStatus(200);
+        $ajaxResponse->assertJsonStructure(['html', 'has_more', 'next_page', 'total']);
+        $ajaxResponse->assertJson([
+            'has_more' => false,
+            'next_page' => null,
+            'total' => 15,
+        ]);
+    }
+
+    public function test_user_can_filter_submissions_by_status(): void
+    {
+        $user = User::factory()->create();
+        $campaign = ClipCampaign::factory()->create();
+
+        $campaign->clipSubmissions()->create([
+            'user_id' => $user->id,
+            'submitted_url' => 'https://www.tiktok.com/@owner/video/1111111111',
+            'video_id' => '1111111111',
+            'status' => 'rejected',
+            'current_views' => 0,
+            'credited_views' => 0,
+            'total_earned' => 0,
+        ]);
+
+        $campaign->clipSubmissions()->create([
+            'user_id' => $user->id,
+            'submitted_url' => 'https://www.tiktok.com/@owner/video/2222222222',
+            'video_id' => '2222222222',
+            'status' => 'approved',
+            'current_views' => 500,
+            'credited_views' => 0,
+            'total_earned' => 0,
+        ]);
+
+        $ajaxResponse = $this->actingAs($user)->getJson('/klip?status=ditolak', [
+            'X-Requested-With' => 'XMLHttpRequest',
+        ]);
+
+        $ajaxResponse->assertStatus(200);
+        $ajaxResponse->assertJson([
+            'total' => 1,
+        ]);
+        $ajaxResponse->assertSee('11111111');
+        $ajaxResponse->assertDontSee('22222222');
+    }
 }
