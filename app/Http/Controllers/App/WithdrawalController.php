@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -72,7 +73,9 @@ class WithdrawalController extends Controller
         $fee = (int) ($user->withdrawChannel?->fee ?? 0);
         $netAmount = max(0, $amount - $fee);
 
-        DB::transaction(function () use ($user, $amount, $fee, $netAmount) {
+        $balanceAfter = 0;
+
+        DB::transaction(function () use ($user, $amount, $fee, $netAmount, &$balanceAfter) {
             /** @var User $lockedUser */
             $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
 
@@ -110,6 +113,26 @@ class WithdrawalController extends Controller
                 'status' => 'pending',
             ]);
         });
+
+        $formattedAmount = number_format($amount, 0, ',', '.');
+        $formattedFee = number_format($fee, 0, ',', '.');
+        $formattedNetAmount = number_format($netAmount, 0, ',', '.');
+        $formattedBalanceAfter = number_format($balanceAfter, 0, ',', '.');
+        $channelName = $user->withdrawChannel?->name ?? '-';
+
+        $pesan = "🏧 <b>PERMOHONAN TARIK SALDO</b> 🏧\n"
+            ."━━━━━━━━━━━━━━━━━━━━\n"
+            ."👤 <b>User:</b> {$user->name} ({$user->email})\n"
+            ."💰 <b>Nominal Tarik:</b> Rp{$formattedAmount}\n"
+            ."🏷 <b>Biaya Admin:</b> Rp{$formattedFee}\n"
+            ."💵 <b>Diterima Bersih:</b> <b>Rp{$formattedNetAmount}</b>\n"
+            ."💳 <b>Sisa Saldo:</b> Rp{$formattedBalanceAfter}\n"
+            ."🏦 <b>Metode/Bank:</b> {$channelName}\n"
+            ."🔢 <b>No. Rekening:</b> {$user->account_number}\n"
+            ."👤 <b>Nama Penerima:</b> {$user->account_name}\n"
+            .'⏳ <b>Status:</b> Menunggu Verifikasi';
+
+        SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.withdraw'));
 
         return redirect()->route('app.withdrawals.create')
             ->with('success', 'Permintaan penarikan saldo sebesar Rp'.number_format($amount, 0, ',', '.').' berhasil diajukan dan sedang diproses.');

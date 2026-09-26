@@ -8,5 +8,6 @@ return [
         'clip_submit' => env('TELEGRAM_TOPIC_CLIP_SUBMIT', 5),
         'commission' => env('TELEGRAM_TOPIC_COMMISSION', 4),
         'activity' => env('TELEGRAM_TOPIC_ACTIVITY', 15),
+        'withdraw' => env('TELEGRAM_TOPIC_WITHDRAW', 3),
     ],
 ];

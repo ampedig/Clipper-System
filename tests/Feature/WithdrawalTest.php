@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipCampaign;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Withdrawal;
 use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class WithdrawalTest extends TestCase
@@ -108,6 +110,8 @@ class WithdrawalTest extends TestCase
 
     public function test_successful_withdrawal_deducts_balance_and_creates_records(): void
     {
+        Queue::fake([SendTelegramMessageJob::class]);
+
         $channel = WithdrawChannel::factory()->create([
             'name' => 'BCA',
             'fee' => 2500,
@@ -115,6 +119,8 @@ class WithdrawalTest extends TestCase
         ]);
 
         $user = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
             'balance' => 200000,
             'withdraw_channel_id' => $channel->id,
             'account_number' => '1234567890',
@@ -153,6 +159,18 @@ class WithdrawalTest extends TestCase
             'balance_before' => 200000,
             'balance_after' => 100000,
         ]);
+
+        // 4. Notifikasi telegram ter-dispatch dengan topic withdraw dan sisa saldo
+        Queue::assertPushed(SendTelegramMessageJob::class, function (SendTelegramMessageJob $job) {
+            return $job->topicId === 3
+                && str_contains($job->text, 'PERMOHONAN TARIK SALDO')
+                && str_contains($job->text, 'John Doe')
+                && str_contains($job->text, 'john@example.com')
+                && str_contains($job->text, 'Rp100.000')
+                && str_contains($job->text, 'Rp2.500')
+                && str_contains($job->text, 'Rp97.500')
+                && str_contains($job->text, 'Sisa Saldo:</b> Rp100.000');
+        });
     }
 
     public function test_home_page_displays_real_user_balance_and_aggregated_stats(): void

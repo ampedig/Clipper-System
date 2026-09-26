@@ -20,18 +20,13 @@ class SendTelegramMessageJob implements ShouldQueue
      */
     public $tries = 3;
 
-    protected $text;
-
-    protected $topicId;
-
     /**
      * Create a new job instance.
      */
-    public function __construct(string $text, ?int $topicId = null)
-    {
-        $this->text = $text;
-        $this->topicId = $topicId;
-    }
+    public function __construct(
+        public string $text,
+        public ?int $topicId = null
+    ) {}
 
     /**
      * Execute the job.
