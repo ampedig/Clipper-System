@@ -12,7 +12,6 @@
     } else {
         $initial = strtoupper(substr($name, 0, 2));
     }
-    $balance = 450000;
 @endphp
 
 <div class="px-5 pt-6 space-y-6 pb-24">
@@ -46,19 +45,19 @@
                     class="text-[11px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-indigo-600 transition-colors">Total
                     Saldo</span>
                 <p class="text-xl font-extrabold text-indigo-600 tracking-tight mt-0.5">Rp
-                    {{ number_format($balance, 0, ',', '.') }}</p>
+                    {{ number_format($currentUser->balance ?? 0, 0, ',', '.') }}</p>
             </a>
 
             <!-- Stat 2: Klip Disetujui -->
-            <a href="#"
+            <a href="{{ route('app.submissions.index') }}"
                 class="px-3 flex flex-col items-center justify-center text-center group active:scale-[0.98] transition-all">
                 <span
                     class="text-[11px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-indigo-600 transition-colors">Klip
                     Disetujui</span>
                 <div class="flex items-baseline justify-center gap-1 mt-0.5">
                     <span
-                        class="text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">18</span>
-                    <span class="text-xs font-medium text-slate-400">/ 24 klip</span>
+                        class="text-xl font-extrabold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">{{ $approvedSubmissions ?? 0 }}</span>
+                    <span class="text-xs font-medium text-slate-400">/ {{ $totalSubmissions ?? 0 }} klip</span>
                 </div>
             </a>
         </div>
@@ -139,7 +138,8 @@
                         </div>
                         <div>
                             <p class="text-xs font-bold text-slate-800">Bantuan & Kontak CS</p>
-                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Hubungi customer care via WhatsApp & Telegram
+                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Hubungi customer care via WhatsApp
+                                & Telegram
                             </p>
                         </div>
                     </div>
@@ -274,4 +274,3 @@
         });
     </script>
 @endif
-

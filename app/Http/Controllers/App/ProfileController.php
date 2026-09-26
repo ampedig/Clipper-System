@@ -17,8 +17,13 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+        $totalSubmissions = $user->clipSubmissions()->count();
+        $approvedSubmissions = $user->clipSubmissions()->whereIn('status', ['approved', 'active', 'completed'])->count();
+
         return view('app.profile.index', [
             'user' => $user,
+            'totalSubmissions' => $totalSubmissions,
+            'approvedSubmissions' => $approvedSubmissions,
         ]);
     }
 
