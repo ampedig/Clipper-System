@@ -72,7 +72,7 @@
                     <i class="fa-regular fa-user w-4 text-center text-slate-400 dark:text-slate-500"></i>
                     <span>Profil</span>
                 </a>
-                <a href="settings.html"
+                <a href="{{ route('admin.settings.index') }}"
                     class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-[#2e2e2e] transition-colors">
                     <i class="fa-solid fa-sliders w-4 text-center text-slate-400 dark:text-slate-500"></i>
                     <span>Settings</span>

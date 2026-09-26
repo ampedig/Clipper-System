@@ -62,66 +62,11 @@
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Pengaturan</p>
 
-            <a href="settings.html" class="sb-item t-sidebar">
+            <a href="{{ route('admin.settings.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-sliders sb-icon"></i>
                 <span>Pengaturan</span>
             </a>
-
-            <!-- Dropdown: Multi Level -->
-            <div class="relative group">
-                <button type="button" class="sb-dropdown t-sidebar dropdown-toggle" aria-expanded="false">
-                    <div class="sb-dropdown-content">
-                        <i class="fa-solid fa-folder-tree sb-icon"></i>
-                        <span>Multi Level</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-down sb-chevron chevron-icon"></i>
-                </button>
-                <div
-                    class="submenu-container grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
-                    <div class="overflow-hidden">
-                        <ul class="sb-submenu-line">
-                            <li><a href="#" class="sb-sub-item">Level 1 Item</a></li>
-                            <li class="relative">
-                                <button type="button"
-                                    class="sb-sub-item w-full flex items-center justify-between dropdown-toggle bg-transparent border-0 outline-none text-left"
-                                    aria-expanded="false">
-                                    <span>Level 1 Dropdown</span>
-                                    <i
-                                        class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300 chevron-icon"></i>
-                                </button>
-                                <div
-                                    class="submenu-container grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
-                                    <div class="overflow-hidden">
-                                        <ul class="sb-submenu-line space-y-1">
-                                            <li><a href="level-2.html" class="sb-sub-item">Level 2 Item</a></li>
-                                            <li class="relative">
-                                                <button type="button"
-                                                    class="sb-sub-item w-full flex items-center justify-between dropdown-toggle bg-transparent border-0 outline-none text-left"
-                                                    aria-expanded="false">
-                                                    <span>Level 2 Dropdown</span>
-                                                    <i
-                                                        class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300 chevron-icon"></i>
-                                                </button>
-                                                <div
-                                                    class="submenu-container grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
-                                                    <div class="overflow-hidden">
-                                                        <ul class="sb-submenu-line space-y-1">
-                                                            <li><a href="level-3.html" class="sb-sub-item">Level 3
-                                                                    Item A</a></li>
-                                                            <li><a href="#" class="sb-sub-item">Level 3 Item
-                                                                    B</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
         </nav>
 

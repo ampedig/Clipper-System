@@ -1,115 +1,321 @@
-@@include('../partials/head.html', {
-  "title": "Detail Submission"
-})
+<!DOCTYPE html>
+<html lang="id">
 
-<div class="min-h-[100dvh] bg-slate-50 relative pb-24">
+<head>
+    @@include('../partials/head.html', {
+    "title": "Pengaturan Sistem - AMPEDIG Admin",
+    "description": "Konfigurasi Customer Service dan Batas Minimal Withdraw"
+    })
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
+</head>
 
-  <!-- Top App Bar (Modern Premium) -->
-  <header class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
-    <div class="flex items-center gap-3">
-      <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0">
-        <i class="fa-solid fa-arrow-left text-sm"></i>
-      </button>
-      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Detail Submission</h1>
+<body class="bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 font-sans antialiased transition-colors duration-300">
+
+    <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
+
+        @@include('../partials/sidebar.html')
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/20 z-40 hidden lg:hidden"></div>
+
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
+
+            @@include('../partials/navbar.html')
+
+            <!-- Content Area -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
+                <div class="flex-1 p-4 md:p-6">
+                    <div class="max-w-screen-2xl mx-auto space-y-6">
+
+                        <!-- Page Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                    Pengaturan
+                                </h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                    Kelola kontak bantuan customer service dan batas nominal penarikan saldo clipper.
+                                </p>
+                            </div>
+                            <!-- Breadcrumb -->
+                            @@include('../partials/breadcrumb.html', {
+                                "crumb1_label": "Dashboard",
+                                "crumb1_url":   "index.html",
+                                "crumb2_label": "Pengaturan",
+                                "crumb2_url":   "",
+                                "crumb3_label": "",
+                                "crumb3_url":   ""
+                            })
+                        </div>
+
+                        <!-- Form Card Utama -->
+                        <form id="settingsForm" action="javascript:void(0)" method="POST">
+                            <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
+                                
+                                <!-- Card Header -->
+                                <div class="pb-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <h3 class="text-base font-semibold text-slate-900 dark:text-white">Pengaturan Umum & Bantuan</h3>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Konfigurasi saluran komunikasi clipper dan batasan penarikan dana.</p>
+                                    </div>
+                                    <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">* Kolom wajib diisi</span>
+                                </div>
+
+                                <!-- ================= GRUP 1: CUSTOMER SERVICE ================= -->
+                                <div class="space-y-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm shrink-0">
+                                            <i class="fa-solid fa-headset"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-slate-900 dark:text-white">Customer Service</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2 Input: CS WhatsApp & CS Telegram (Kiri & Kanan) -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        
+                                        <!-- CS WhatsApp (Kiri) -->
+                                        <div class="space-y-1.5">
+                                            <label for="csWhatsapp" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                                CS WhatsApp <span class="text-rose-500">*</span>
+                                            </label>
+                                            <div class="flex">
+                                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                                    62
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    id="csWhatsapp" 
+                                                    name="cs_whatsapp"
+                                                    value="81234567890"
+                                                    placeholder="81234567890" 
+                                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10"
+                                                    required
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <!-- CS Telegram (Kanan) -->
+                                        <div class="space-y-1.5">
+                                            <label for="csTelegram" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                                CS Telegram <span class="text-rose-500">*</span>
+                                            </label>
+                                            <div class="flex">
+                                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                                    @
+                                                </span>
+                                                <input 
+                                                    type="text" 
+                                                    id="csTelegram" 
+                                                    name="cs_telegram"
+                                                    value="clipper_support"
+                                                    placeholder="clipper_support" 
+                                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10"
+                                                    required
+                                                >
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <hr class="border-slate-100 dark:border-[#2e2e2e]">
+
+                                <!-- ================= GRUP 2: BATAS PENARIKAN (MINIMAL WITHDRAW) ================= -->
+                                <div class="space-y-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm shrink-0">
+                                            <i class="fa-solid fa-wallet"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-base font-semibold text-slate-900 dark:text-white">Batas Penarikan Saldo (Withdrawal)</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Input Minimal Withdraw -->
+                                    <div class="max-w-md space-y-1.5">
+                                        <label for="minWithdraw" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                            Minimal Withdraw <span class="text-rose-500">*</span>
+                                        </label>
+                                        <div class="flex">
+                                            <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                                Rp
+                                            </span>
+                                            <input 
+                                                type="text" 
+                                                id="minWithdraw" 
+                                                name="min_withdraw"
+                                                value="50.000"
+                                                placeholder="50.000" 
+                                                class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-semibold focus:z-10"
+                                                required
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Form Action Buttons -->
+                                <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
+                                    <button type="button" id="btnCancel" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold">
+                                        Batal
+                                    </button>
+                                    <button type="submit" id="btnSave" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center gap-2">
+                                        <i class="fa-solid fa-save text-xs"></i>
+                                        <span>Simpan Pengaturan</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                @@include('../partials/footer.html')
+            </main>
+        </div>
     </div>
-  </header>
 
-  <!-- Main Content Area -->
-  <main class="px-5 pt-6 space-y-6 pb-8">
-    
-    <!-- Hero / Status Panel -->
-    <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5 overflow-hidden relative">
-      <div class="flex items-center justify-between mb-4">
-        <span class="px-3 py-1 bg-emerald-50 text-emerald-600 font-bold text-[10px] uppercase tracking-wider rounded-lg border border-emerald-100/60 inline-flex items-center gap-1.5">
-          <i class="fa-solid fa-check text-[10px]"></i>
-          Disetujui
-        </span>
-        <span class="text-[11px] font-medium text-slate-400">12 Sep 2026</span>
-      </div>
-      <h2 class="text-lg font-bold text-slate-900 leading-snug tracking-tight mb-1.5">Review Produk Skincare Brightening</h2>
-      <p class="text-xs text-slate-500">Video Promosi TikTok</p>
-    </div>
+    @@include('../partials/vendor-scripts.html')
+    <!-- SweetAlert2 JS -->
+    <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-    <!-- Tautan Video Panel -->
-    <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5">
-      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">Tautan Video Anda</h3>
-      <a href="https://vt.tiktok.com/ZS2q8x1p/" target="_blank" class="flex items-center gap-3 p-3.5 bg-slate-50 border border-slate-100 rounded-[1.25rem] hover:border-indigo-300 hover:bg-indigo-50/30 transition-all group active:scale-[0.99]">
-        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-indigo-500 group-hover:text-indigo-600 transition-colors shrink-0 shadow-sm border border-slate-200/60">
-          <i class="fa-brands fa-tiktok text-sm"></i>
-        </div>
-        <div class="flex-1 min-w-0">
-          <h3 class="text-xs font-bold text-slate-900 group-hover:text-indigo-700 transition-colors truncate">Buka Tautan Video</h3>
-          <p class="text-[10px] text-slate-500 truncate mt-0.5 font-medium group-hover:text-indigo-500/80">https://vt.tiktok.com/ZS2q8x1p/</p>
-        </div>
-        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0 shadow-sm border border-slate-200/60">
-          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-        </div>
-      </a>
-    </div>
+    <!-- Page Interactive Scripts (Ringkas di tag script HTML sesuai brief FE) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('settingsForm');
+            const csWhatsappInput = document.getElementById('csWhatsapp');
+            const csTelegramInput = document.getElementById('csTelegram');
+            const minWithdrawInput = document.getElementById('minWithdraw');
+            const btnCancel = document.getElementById('btnCancel');
 
-    <!-- Performa & Metrik -->
-    <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5">
-      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">Performa & Komisi</h3>
-      
-      <div class="space-y-4">
-        <!-- Views -->
-        <div class="flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-eye text-sm"></i>
-          </div>
-          <div>
-            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Total Penayangan (Valid)</span>
-            <span class="text-sm font-bold text-slate-900">12.500 <span class="text-[10px] font-medium text-slate-400 ml-1">views</span></span>
-          </div>
-        </div>
+            // Format input ribuan untuk Minimal Withdraw
+            if (minWithdrawInput) {
+                minWithdrawInput.addEventListener('input', function (e) {
+                    let val = this.value.replace(/\D/g, '');
+                    if (val) {
+                        this.value = parseInt(val, 10).toLocaleString('id-ID');
+                    } else {
+                        this.value = '';
+                    }
+                });
+            }
 
-        <!-- Divider -->
-        <div class="h-px bg-slate-100 ml-14"></div>
+            // Otomatis hapus awalan 0 atau 62 jika user mengetik atau menempelkan nomor pada CS WhatsApp
+            if (csWhatsappInput) {
+                csWhatsappInput.addEventListener('input', function () {
+                    let val = this.value.replace(/\D/g, '');
+                    if (val.startsWith('62')) {
+                        val = val.substring(2);
+                    }
+                    if (val.startsWith('0')) {
+                        val = val.substring(1);
+                    }
+                    this.value = val;
+                });
+            }
 
-        <!-- Reward -->
-        <div class="flex items-center gap-4">
-          <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-sack-dollar text-sm"></i>
-          </div>
-          <div>
-            <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Estimasi Komisi</span>
-            <span class="text-sm font-bold text-slate-900">Rp60.000</span>
-          </div>
-        </div>
-      </div>
-    </div>
+            // Otomatis hapus simbol @ jika user mengetik atau menempelkan tanda @ pada CS Telegram
+            if (csTelegramInput) {
+                csTelegramInput.addEventListener('input', function () {
+                    if (this.value.includes('@')) {
+                        this.value = this.value.replace(/@+/g, '');
+                    }
+                });
+            }
 
-    <!-- Riwayat Status -->
-    <div class="bg-white border border-slate-200 rounded-[1.5rem] p-5">
-      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-5">Riwayat Status</h3>
-      
-      <div class="relative border-l-2 border-slate-100 ml-[9px] space-y-6">
-        <!-- Step 3 -->
-        <div class="relative pl-6">
-          <div class="absolute w-4 h-4 bg-emerald-500 rounded-full -left-[9px] top-0 border-[3px] border-white ring-1 ring-slate-100"></div>
-          <h4 class="text-[13px] font-bold text-slate-800 leading-none">Submission Disetujui</h4>
-          <p class="text-[10px] text-slate-500 mt-1.5">14 Sep 2026, 09:15</p>
-          <p class="text-[11px] text-slate-600 mt-2 leading-relaxed">Selamat! Tautan video Anda telah divalidasi. Komisi akan terus dihitung berdasarkan pertumbuhan tayangan video Anda.</p>
-        </div>
+            // Simpan snapshot nilai awal untuk fungsi reset/batal
+            const initialValues = {
+                csWhatsapp: csWhatsappInput ? csWhatsappInput.value : '',
+                csTelegram: csTelegramInput ? csTelegramInput.value : '',
+                minWithdraw: minWithdrawInput ? minWithdrawInput.value : ''
+            };
 
-        <!-- Step 2 -->
-        <div class="relative pl-6 opacity-60">
-          <div class="absolute w-4 h-4 bg-slate-300 rounded-full -left-[9px] top-0 border-[3px] border-white ring-1 ring-slate-100"></div>
-          <h4 class="text-[13px] font-bold text-slate-800 leading-none">Sedang Ditinjau</h4>
-          <p class="text-[10px] text-slate-500 mt-1.5">12 Sep 2026, 14:30</p>
-        </div>
-        
-        <!-- Step 1 -->
-        <div class="relative pl-6 opacity-60">
-          <div class="absolute w-4 h-4 bg-slate-300 rounded-full -left-[9px] top-0 border-[3px] border-white ring-1 ring-slate-100"></div>
-          <h4 class="text-[13px] font-bold text-slate-800 leading-none">Video Berhasil Disubmit</h4>
-          <p class="text-[10px] text-slate-500 mt-1.5">12 Sep 2026, 14:28</p>
-        </div>
-      </div>
-    </div>
+            // Event handler tombol Batal
+            if (btnCancel) {
+                btnCancel.addEventListener('click', function () {
+                    if (csWhatsappInput) csWhatsappInput.value = initialValues.csWhatsapp;
+                    if (csTelegramInput) csTelegramInput.value = initialValues.csTelegram;
+                    if (minWithdrawInput) minWithdrawInput.value = initialValues.minWithdraw;
 
-  </main>
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'Dibatalkan',
+                            text: 'Perubahan pengaturan telah dikembalikan ke nilai semula.',
+                            icon: 'info',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            customClass: {
+                                popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]'
+                            }
+                        });
+                    }
+                });
+            }
 
-</div>
+            // Event handler submit form
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
 
-@@include('../partials/vendor-script.html')
+                    const waVal = csWhatsappInput ? csWhatsappInput.value.trim() : '';
+                    const tgVal = csTelegramInput ? csTelegramInput.value.trim() : '';
+                    const minWdVal = minWithdrawInput ? minWithdrawInput.value.trim() : '';
+
+                    if (!waVal || !tgVal || !minWdVal) {
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                title: 'Perhatian',
+                                text: 'Semua kolom bertanda bintang wajib diisi lengkap.',
+                                icon: 'warning',
+                                confirmButtonText: 'Mengerti',
+                                customClass: {
+                                    popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]',
+                                    confirmButton: 'btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm'
+                                },
+                                buttonsStyling: false
+                            });
+                        }
+                        return;
+                    }
+
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'Konfirmasi Simpan',
+                            text: 'Apakah Anda yakin ingin memperbarui konfigurasi pengaturan sistem?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: '<i class="fa-solid fa-check mr-1.5"></i> Ya, Simpan',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true,
+                            customClass: {
+                                popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]',
+                                confirmButton: 'btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm ml-2',
+                                cancelButton: 'btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm'
+                            },
+                            buttonsStyling: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: 'Berhasil Disimpan!',
+                                    text: 'Seluruh konfigurasi pengaturan telah berhasil diperbarui.',
+                                    icon: 'success',
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                    customClass: {
+                                        popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]'
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
