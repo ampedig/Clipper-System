@@ -31,10 +31,43 @@
     height: 64px !important;
     margin: 0 auto 1.25rem auto !important;
     border-radius: 50% !important;
-    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     animation: none !important; /* Disable default shake/scale animations */
+}
+
+.swal2-icon:not([style*="display: none"]):not([style*="display:none"]) {
+    display: flex !important;
+}
+
+.swal2-icon[style*="display: none"],
+.swal2-icon[style*="display:none"],
+.swal2-title[style*="display: none"],
+.swal2-title[style*="display:none"],
+.swal2-title:empty {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+/* Custom SweetAlert Modal with custom HTML content */
+.swal2-popup.custom-swal-popup {
+    padding: 1.5rem !important;
+}
+
+.swal2-popup.custom-swal-popup .swal2-icon,
+.swal2-popup.custom-swal-popup .swal2-title {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+}
+
+.swal2-popup.custom-swal-popup .swal2-html-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
 }
 
 /* Hide all inner nodes and pseudo-elements from default SweetAlert DOM */

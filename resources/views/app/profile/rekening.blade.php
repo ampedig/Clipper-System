@@ -129,6 +129,18 @@
     }
 
     /* Custom SweetAlert width alignment so content width matches actions buttons */
+    .swal2-popup.custom-swal-popup {
+        padding: 1.5rem !important;
+    }
+
+    .swal2-popup.custom-swal-popup .swal2-icon,
+    .swal2-popup.custom-swal-popup .swal2-title {
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+    }
+
     .swal2-popup.custom-swal-popup .swal2-html-container {
         margin: 0 !important;
         padding: 0 !important;
@@ -355,7 +367,7 @@
         if (typeof Swal !== 'undefined') {
             Swal.fire({
                 html: `
-                    <div class="flex flex-col items-center text-center pt-2">
+                    <div class="flex flex-col items-center text-center">
                         <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
                             <i class="fa-solid fa-building-columns"></i>
                         </div>
@@ -406,7 +418,7 @@
         if (typeof Swal !== 'undefined') {
             Swal.fire({
                 html: `
-                    <div class="flex flex-col items-center text-center pt-2">
+                    <div class="flex flex-col items-center text-center">
                         <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
                             <i class="fa-solid fa-check"></i>
                         </div>

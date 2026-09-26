@@ -1,321 +1,183 @@
-<!DOCTYPE html>
-<html lang="id">
+@@include('../partials/head.html', {
+  "title": "Tarik Saldo"
+})
 
-<head>
-    @@include('../partials/head.html', {
-    "title": "Pengaturan Sistem - AMPEDIG Admin",
-    "description": "Konfigurasi Customer Service dan Batas Minimal Withdraw"
-    })
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
-</head>
+<div class="min-h-[100dvh] bg-slate-50 pb-32 relative">
 
-<body class="bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 font-sans antialiased transition-colors duration-300">
-
-    <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
-
-        @@include('../partials/sidebar.html')
-
-        <!-- Mobile Sidebar Overlay -->
-        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/20 z-40 hidden lg:hidden"></div>
-
-        <!-- Main Content Wrapper -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
-
-            @@include('../partials/navbar.html')
-
-            <!-- Content Area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
-                <div class="flex-1 p-4 md:p-6">
-                    <div class="max-w-screen-2xl mx-auto space-y-6">
-
-                        <!-- Page Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
-                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
-                                    Pengaturan
-                                </h2>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                    Kelola kontak bantuan customer service dan batas nominal penarikan saldo clipper.
-                                </p>
-                            </div>
-                            <!-- Breadcrumb -->
-                            @@include('../partials/breadcrumb.html', {
-                                "crumb1_label": "Dashboard",
-                                "crumb1_url":   "index.html",
-                                "crumb2_label": "Pengaturan",
-                                "crumb2_url":   "",
-                                "crumb3_label": "",
-                                "crumb3_url":   ""
-                            })
-                        </div>
-
-                        <!-- Form Card Utama -->
-                        <form id="settingsForm" action="javascript:void(0)" method="POST">
-                            <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-8 transition-colors duration-300">
-                                
-                                <!-- Card Header -->
-                                <div class="pb-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                    <div>
-                                        <h3 class="text-base font-semibold text-slate-900 dark:text-white">Pengaturan Umum & Bantuan</h3>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Konfigurasi saluran komunikasi clipper dan batasan penarikan dana.</p>
-                                    </div>
-                                    <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">* Kolom wajib diisi</span>
-                                </div>
-
-                                <!-- ================= GRUP 1: CUSTOMER SERVICE ================= -->
-                                <div class="space-y-3.5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm shrink-0">
-                                            <i class="fa-solid fa-headset"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-base font-semibold text-slate-900 dark:text-white">Customer Service</h4>
-                                        </div>
-                                    </div>
-
-                                    <!-- 2 Input: CS WhatsApp & CS Telegram (Kiri & Kanan) -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        
-                                        <!-- CS WhatsApp (Kiri) -->
-                                        <div class="space-y-1.5">
-                                            <label for="csWhatsapp" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                                CS WhatsApp <span class="text-rose-500">*</span>
-                                            </label>
-                                            <div class="flex">
-                                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
-                                                    62
-                                                </span>
-                                                <input 
-                                                    type="text" 
-                                                    id="csWhatsapp" 
-                                                    name="cs_whatsapp"
-                                                    value="81234567890"
-                                                    placeholder="81234567890" 
-                                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10"
-                                                    required
-                                                >
-                                            </div>
-                                        </div>
-
-                                        <!-- CS Telegram (Kanan) -->
-                                        <div class="space-y-1.5">
-                                            <label for="csTelegram" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                                CS Telegram <span class="text-rose-500">*</span>
-                                            </label>
-                                            <div class="flex">
-                                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
-                                                    @
-                                                </span>
-                                                <input 
-                                                    type="text" 
-                                                    id="csTelegram" 
-                                                    name="cs_telegram"
-                                                    value="clipper_support"
-                                                    placeholder="clipper_support" 
-                                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10"
-                                                    required
-                                                >
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <hr class="border-slate-100 dark:border-[#2e2e2e]">
-
-                                <!-- ================= GRUP 2: BATAS PENARIKAN (MINIMAL WITHDRAW) ================= -->
-                                <div class="space-y-3.5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm shrink-0">
-                                            <i class="fa-solid fa-wallet"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="text-base font-semibold text-slate-900 dark:text-white">Batas Penarikan Saldo (Withdrawal)</h4>
-                                        </div>
-                                    </div>
-
-                                    <!-- Input Minimal Withdraw -->
-                                    <div class="max-w-md space-y-1.5">
-                                        <label for="minWithdraw" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                            Minimal Withdraw <span class="text-rose-500">*</span>
-                                        </label>
-                                        <div class="flex">
-                                            <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
-                                                Rp
-                                            </span>
-                                            <input 
-                                                type="text" 
-                                                id="minWithdraw" 
-                                                name="min_withdraw"
-                                                value="50.000"
-                                                placeholder="50.000" 
-                                                class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-semibold focus:z-10"
-                                                required
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Form Action Buttons -->
-                                <div class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
-                                    <button type="button" id="btnCancel" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold">
-                                        Batal
-                                    </button>
-                                    <button type="submit" id="btnSave" class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center gap-2">
-                                        <i class="fa-solid fa-save text-xs"></i>
-                                        <span>Simpan Pengaturan</span>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-
-                @@include('../partials/footer.html')
-            </main>
-        </div>
+  <!-- Top App Bar (Modern Premium) -->
+  <header class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
+    <div class="flex items-center gap-3">
+      <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0">
+        <i class="fa-solid fa-arrow-left text-sm"></i>
+      </button>
+      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Tarik Saldo</h1>
     </div>
+  </header>
 
-    @@include('../partials/vendor-scripts.html')
-    <!-- SweetAlert2 JS -->
-    <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+  <div class="p-4 space-y-4">
 
-    <!-- Page Interactive Scripts (Ringkas di tag script HTML sesuai brief FE) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('settingsForm');
-            const csWhatsappInput = document.getElementById('csWhatsapp');
-            const csTelegramInput = document.getElementById('csTelegram');
-            const minWithdrawInput = document.getElementById('minWithdraw');
-            const btnCancel = document.getElementById('btnCancel');
+    <!-- Available Balance -->
+    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200 text-center">
+      <p class="text-xs font-semibold text-slate-500 tracking-wide mb-1">Saldo tersedia</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Rp125.000</h2>
+    </section>
 
-            // Format input ribuan untuk Minimal Withdraw
-            if (minWithdrawInput) {
-                minWithdrawInput.addEventListener('input', function (e) {
-                    let val = this.value.replace(/\D/g, '');
-                    if (val) {
-                        this.value = parseInt(val, 10).toLocaleString('id-ID');
-                    } else {
-                        this.value = '';
-                    }
-                });
+    <!-- Destination Bank -->
+    <a href="rekening.html" class="bg-white rounded-[1.5rem] p-4 border border-slate-200 flex items-center justify-between group cursor-pointer hover:border-indigo-300 transition-colors block">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-xl">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Rekening Tujuan</p>
+          <p class="text-sm font-bold text-slate-900 leading-tight">BCA • Moh Ma'sum</p>
+          <p class="text-xs text-slate-500 font-medium mt-0.5">•••• 1234</p>
+        </div>
+      </div>
+      <div class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full group-hover:bg-indigo-100 transition-colors flex items-center gap-1">
+        Ubah <i class="fa-solid fa-chevron-right text-[8px]"></i>
+      </div>
+    </a>
+
+    <!-- Withdrawal Amount -->
+    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Jumlah Penarikan</h3>
+      
+      <div id="amount-container" class="relative flex items-center transition-colors">
+        <span class="text-xl font-bold text-slate-400 mr-2">Rp</span>
+        <input type="number" id="amount" value="100000" class="w-full text-3xl font-extrabold text-slate-900 bg-transparent focus:outline-none" />
+      </div>
+      
+      <!-- Validation Error -->
+      <div id="error-message" class="hidden mt-3 flex items-center gap-1.5 text-xs font-semibold text-rose-500">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Minimal penarikan Rp50.000</span>
+      </div>
+    </section>
+
+    <!-- Withdrawal Details -->
+    <section class="bg-white rounded-[1.5rem] p-4 border border-slate-200">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Rincian Penarikan</h3>
+      
+      <div class="space-y-3">
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-500 font-medium">Jumlah</span>
+          <span class="font-bold text-slate-900" id="detail-amount">Rp100.000</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="text-slate-500 font-medium">Biaya Admin</span>
+          <span class="font-bold text-rose-500">Rp2.500</span>
+        </div>
+        
+        <div class="border-t border-slate-100 pt-3 mt-1">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-bold text-slate-700">Diterima</span>
+            <span class="text-lg font-extrabold text-indigo-600" id="detail-received">Rp97.500</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bottom Fixed Button (Floating) -->
+  <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-4 pb-6 pt-2 z-40 pb-safe">
+    <button type="button" id="btn-withdraw" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-2xl transition-all active:scale-[0.98] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+      Tarik Saldo
+    </button>
+  </div>
+
+</div>
+
+@@include('../partials/vendor-script.html')
+
+<script>
+  // Simple interaction for the form
+  const amountInput = document.getElementById('amount');
+  const detailAmount = document.getElementById('detail-amount');
+  const detailReceived = document.getElementById('detail-received');
+  const btnWithdraw = document.getElementById('btn-withdraw');
+  const adminFee = 2500;
+  
+  function formatRupiah(number) {
+    return 'Rp' + number.toLocaleString('id-ID');
+  }
+
+  amountInput.addEventListener('input', (e) => {
+    const val = parseInt(e.target.value) || 0;
+    detailAmount.textContent = formatRupiah(val);
+    const received = Math.max(0, val - adminFee);
+    detailReceived.textContent = formatRupiah(received);
+    
+    // Validation for min withdrawal
+    const errorMessage = document.getElementById('error-message');
+    const amountContainer = document.getElementById('amount-container');
+
+    if (val < 50000) {
+      errorMessage.classList.remove('hidden');
+      btnWithdraw.disabled = true;
+      btnWithdraw.classList.add('opacity-50', 'cursor-not-allowed');
+    } else {
+      errorMessage.classList.add('hidden');
+      btnWithdraw.disabled = false;
+      btnWithdraw.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  });
+
+  // Run initial validation
+  amountInput.dispatchEvent(new Event('input'));
+
+  btnWithdraw.addEventListener('click', () => {
+    const val = parseInt(amountInput.value) || 0;
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        html: `
+          <div class="flex flex-col items-center text-center pt-2">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
+              <i class="fa-solid fa-money-bill-transfer"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Penarikan</h3>
+            <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+              Apakah Anda yakin ingin menarik saldo sebesar <span class="font-extrabold text-slate-900">${formatRupiah(val)}</span>?
+            </p>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Lanjutkan',
+        cancelButtonText: 'Batal',
+        buttonsStyling: false,
+        backdrop: 'rgba(15, 23, 42, 0.65)',
+        customClass: {
+          popup: 'custom-swal-popup !rounded-[2.25rem]',
+          actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
+          confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+          cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            html: `
+              <div class="flex flex-col items-center text-center pt-2">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Penarikan Berhasil!</h3>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
+                  Permintaan penarikan saldo sebesar <span class="font-extrabold text-slate-900">${formatRupiah(val)}</span> sedang diproses.
+                </p>
+              </div>
+            `,
+            showConfirmButton: false,
+            timer: 1600,
+            backdrop: 'rgba(15, 23, 42, 0.65)',
+            customClass: {
+              popup: 'custom-swal-popup !rounded-[2.25rem]'
             }
-
-            // Otomatis hapus awalan 0 atau 62 jika user mengetik atau menempelkan nomor pada CS WhatsApp
-            if (csWhatsappInput) {
-                csWhatsappInput.addEventListener('input', function () {
-                    let val = this.value.replace(/\D/g, '');
-                    if (val.startsWith('62')) {
-                        val = val.substring(2);
-                    }
-                    if (val.startsWith('0')) {
-                        val = val.substring(1);
-                    }
-                    this.value = val;
-                });
-            }
-
-            // Otomatis hapus simbol @ jika user mengetik atau menempelkan tanda @ pada CS Telegram
-            if (csTelegramInput) {
-                csTelegramInput.addEventListener('input', function () {
-                    if (this.value.includes('@')) {
-                        this.value = this.value.replace(/@+/g, '');
-                    }
-                });
-            }
-
-            // Simpan snapshot nilai awal untuk fungsi reset/batal
-            const initialValues = {
-                csWhatsapp: csWhatsappInput ? csWhatsappInput.value : '',
-                csTelegram: csTelegramInput ? csTelegramInput.value : '',
-                minWithdraw: minWithdrawInput ? minWithdrawInput.value : ''
-            };
-
-            // Event handler tombol Batal
-            if (btnCancel) {
-                btnCancel.addEventListener('click', function () {
-                    if (csWhatsappInput) csWhatsappInput.value = initialValues.csWhatsapp;
-                    if (csTelegramInput) csTelegramInput.value = initialValues.csTelegram;
-                    if (minWithdrawInput) minWithdrawInput.value = initialValues.minWithdraw;
-
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            title: 'Dibatalkan',
-                            text: 'Perubahan pengaturan telah dikembalikan ke nilai semula.',
-                            icon: 'info',
-                            timer: 1500,
-                            showConfirmButton: false,
-                            customClass: {
-                                popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]'
-                            }
-                        });
-                    }
-                });
-            }
-
-            // Event handler submit form
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-
-                    const waVal = csWhatsappInput ? csWhatsappInput.value.trim() : '';
-                    const tgVal = csTelegramInput ? csTelegramInput.value.trim() : '';
-                    const minWdVal = minWithdrawInput ? minWithdrawInput.value.trim() : '';
-
-                    if (!waVal || !tgVal || !minWdVal) {
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire({
-                                title: 'Perhatian',
-                                text: 'Semua kolom bertanda bintang wajib diisi lengkap.',
-                                icon: 'warning',
-                                confirmButtonText: 'Mengerti',
-                                customClass: {
-                                    popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]',
-                                    confirmButton: 'btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm'
-                                },
-                                buttonsStyling: false
-                            });
-                        }
-                        return;
-                    }
-
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            title: 'Konfirmasi Simpan',
-                            text: 'Apakah Anda yakin ingin memperbarui konfigurasi pengaturan sistem?',
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: '<i class="fa-solid fa-check mr-1.5"></i> Ya, Simpan',
-                            cancelButtonText: 'Batal',
-                            reverseButtons: true,
-                            customClass: {
-                                popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]',
-                                confirmButton: 'btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm ml-2',
-                                cancelButton: 'btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm'
-                            },
-                            buttonsStyling: false
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: 'Berhasil Disimpan!',
-                                    text: 'Seluruh konfigurasi pengaturan telah berhasil diperbarui.',
-                                    icon: 'success',
-                                    timer: 2000,
-                                    showConfirmButton: false,
-                                    customClass: {
-                                        popup: 'rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]'
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-
-</html>
+          }).then(() => {
+            window.location.href = 'wallet.html';
+          });
+        }
+      });
+    }
+  });
+</script>
