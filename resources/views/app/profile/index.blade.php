@@ -121,6 +121,23 @@
                     <i
                         class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
                 </a>
+
+                <!-- Riwayat Penarikan -->
+                <a href="{{ route('app.withdrawals.index') }}"
+                    class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
+                    <div class="flex items-center gap-3.5">
+                        <div
+                            class="w-10 h-10 rounded-full bg-violet-50 text-violet-600 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Riwayat Penarikan</p>
+                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Pantau status pencairan dana</p>
+                        </div>
+                    </div>
+                    <i
+                        class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
+                </a>
             </div>
         </div>
 

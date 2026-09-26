@@ -24,6 +24,7 @@ Route::get('/klip', [AppClipSubmissionController::class, 'index'])->middleware('
 Route::get('/klip/{clipSubmission}', [AppClipSubmissionController::class, 'show'])->middleware('auth')->name('app.submissions.show');
 Route::get('/tarik-saldo', [AppWithdrawalController::class, 'create'])->middleware('auth')->name('app.withdrawals.create');
 Route::post('/tarik-saldo', [AppWithdrawalController::class, 'store'])->middleware('auth')->name('app.withdrawals.store');
+Route::get('/tarik-saldo/riwayat', [AppWithdrawalController::class, 'index'])->middleware('auth')->name('app.withdrawals.index');
 Route::get('/saldo', [AppWalletController::class, 'index'])->middleware('auth')->name('app.wallet.index');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');

@@ -31,6 +31,9 @@
             </button>
             <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Tarik Saldo</h1>
         </div>
+        <a href="{{ route('app.withdrawals.index') }}" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0 cursor-pointer" aria-label="Riwayat Penarikan" title="Riwayat Penarikan">
+            <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+        </a>
     </header>
 
     <div class="p-4 space-y-4">

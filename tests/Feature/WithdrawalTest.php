@@ -205,4 +205,93 @@ class WithdrawalTest extends TestCase
         $response->assertSee('2 Video'); // approved count: 2
         $response->assertSee('/tarik-saldo');
     }
+
+    public function test_withdrawal_history_requires_authentication(): void
+    {
+        $response = $this->get('/tarik-saldo/riwayat');
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_authenticated_user_can_view_withdrawal_history_with_statuses(): void
+    {
+        $user = User::factory()->create();
+
+        // 1. Pending / processing withdrawal
+        Withdrawal::create([
+            'user_id' => $user->id,
+            'amount' => 100000,
+            'fee' => 2500,
+            'net_amount' => 97500,
+            'bank_name' => 'BCA',
+            'account_number' => '1234567890',
+            'account_name' => 'John Doe',
+            'status' => 'pending',
+            'created_at' => now(),
+        ]);
+
+        // 2. Completed withdrawal
+        Withdrawal::create([
+            'user_id' => $user->id,
+            'amount' => 250000,
+            'fee' => 2500,
+            'net_amount' => 247500,
+            'bank_name' => 'Mandiri',
+            'account_number' => '0987654321',
+            'account_name' => 'John Doe',
+            'status' => 'completed',
+            'created_at' => now()->subDay(),
+        ]);
+
+        // 3. Rejected withdrawal
+        Withdrawal::create([
+            'user_id' => $user->id,
+            'amount' => 50000,
+            'fee' => 0,
+            'net_amount' => 50000,
+            'bank_name' => 'BRI',
+            'account_number' => '1122334455',
+            'account_name' => 'John Doe',
+            'status' => 'rejected',
+            'notes' => 'Nomor rekening tidak terdaftar.',
+            'created_at' => now()->subDays(2),
+        ]);
+
+        $response = $this->actingAs($user)->get('/tarik-saldo/riwayat');
+
+        $response->assertStatus(200);
+        $response->assertSee('Riwayat Penarikan');
+        $response->assertSee('Diproses');
+        $response->assertSee('Berhasil');
+        $response->assertSee('Gagal');
+        $response->assertSee('BCA • John Doe');
+        $response->assertSee('Mandiri • John Doe');
+        $response->assertSee('BRI • John Doe');
+        $response->assertSee('-Rp100.000');
+        $response->assertSee('-Rp250.000');
+        $response->assertSee('-Rp50.000');
+    }
+
+    public function test_user_cannot_see_other_users_withdrawals(): void
+    {
+        $userA = User::factory()->create();
+        $userB = User::factory()->create();
+
+        Withdrawal::create([
+            'user_id' => $userB->id,
+            'amount' => 999999,
+            'fee' => 0,
+            'net_amount' => 999999,
+            'bank_name' => 'Secret Bank B',
+            'account_number' => '88888888',
+            'account_name' => 'Secret User B',
+            'status' => 'completed',
+        ]);
+
+        $response = $this->actingAs($userA)->get('/tarik-saldo/riwayat');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Secret Bank B');
+        $response->assertDontSee('Secret User B');
+    }
 }

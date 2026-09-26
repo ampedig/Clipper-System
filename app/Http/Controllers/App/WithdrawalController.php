@@ -14,6 +14,19 @@ use Illuminate\View\View;
 class WithdrawalController extends Controller
 {
     /**
+     * Menampilkan daftar riwayat penarikan dana clipper.
+     */
+    public function index(Request $request): View
+    {
+        $withdrawals = $request->user()
+            ->withdrawals()
+            ->latest('id')
+            ->paginate(20);
+
+        return view('app.withdrawals.index', compact('withdrawals'));
+    }
+
+    /**
      * Menampilkan form penarikan saldo (withdrawal) untuk clipper.
      */
     public function create(Request $request): View
