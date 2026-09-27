@@ -1,257 +1,521 @@
-@@include('../partials/head.html', {
-  "title": "Riwayat Penarikan"
-})
+<!DOCTYPE html>
+<html lang="id">
 
-<div class="min-h-[100dvh] bg-slate-50 relative pb-20">
+<head>
+    @@include('../partials/head.html', {
+    "title": "Riwayat Transaksi Komisi - Masum.xyz",
+    "description": "Pantau dan kelola mutasi saldo komisi para clipper secara transparan."
+    })
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="assets/libs/select2/css/select2.min.css">
+</head>
 
-  <!-- Top App Bar (Modern Minimal) -->
-  <header class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
-    <div class="flex items-center gap-3">
-      <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0">
-        <i class="fa-solid fa-arrow-left text-sm"></i>
-      </button>
-      <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Riwayat Penarikan</h1>
+<body class="bg-slate-50 dark:bg-[#161616] text-slate-600 dark:text-slate-300 font-sans antialiased transition-colors duration-300">
+
+    <div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
+
+        @@include('../partials/sidebar.html')
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/20 z-40 hidden lg:hidden"></div>
+
+        <!-- Main Content Wrapper -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-[#161616] transition-colors duration-300">
+
+            @@include('../partials/navbar.html')
+
+            <!-- Scrollable Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
+                <div class="flex-1 p-4 md:p-6">
+                    <div class="max-w-screen-2xl mx-auto space-y-6">
+
+                        <!-- Page Header -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                    Riwayat Transaksi Komisi
+                                </h2>
+                                <p class="text-xs text-slate-400 mt-1">Log mutasi saldo masuk dan penarikan komisi para clipper</p>
+                            </div>
+                            <!-- Breadcrumb -->
+                            @@include('../partials/breadcrumb.html', {
+                                "crumb1_label": "Dashboard",
+                                "crumb1_url":   "index.html",
+                                "crumb2_label": "Komisi",
+                                "crumb2_url":   "",
+                                "crumb3_label": "Riwayat Transaksi",
+                                "crumb3_url":   ""
+                            })
+                        </div>
+
+                        <!-- Table Container Card -->
+                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors duration-300">
+                            
+                            <!-- Header Table Controls -->
+                            <div class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Show</span>
+                                    <select class="select2-show-entries w-24">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <!-- Filter Tipe Transaksi -->
+                                    <select id="typeFilterSelect" class="select2-filter-type">
+                                        <option value="all">Semua Tipe</option>
+                                        <option value="tambah">Tambah (+)</option>
+                                        <option value="kurang">Kurang (-)</option>
+                                    </select>
+
+                                    <!-- Atur Kolom Dropdown -->
+                                    <div class="relative shrink-0">
+                                        <button id="btnColumns"
+                                            class="px-4 py-2 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-slate-600 dark:text-slate-400 font-medium text-sm hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center justify-center gap-2 whitespace-nowrap">
+                                            <i class="fa-solid fa-table-columns"></i> <span class="whitespace-nowrap">Atur Kolom</span> <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                                        </button>
+
+                                        <!-- Column Dropdown Menu -->
+                                        <div id="columnMenu"
+                                            class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl shadow-lg z-50 p-2">
+                                            <div class="text-xs font-semibold text-slate-400 uppercase px-3 py-2">
+                                                Tampilkan Kolom
+                                            </div>
+                                            <div id="columnListContainer" class="space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                                                <div class="px-3 py-2 text-xs text-slate-400">Loading kolom...</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Data Table -->
+                            <div class="overflow-x-auto">
+                                <table id="walletTable" class="w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
+                                        <tr>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">#</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Tanggal</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Nama</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Type</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Saldo Awal</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Nominal</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Saldo Akhir</th>
+                                            <th class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
+                                        
+                                        <!-- Row 1: Tambah Komisi -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="tambah">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">1</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">16 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">07:45 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Rizky Pratama
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                                                    <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 150.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-emerald-600 dark:text-emerald-400 td-nowrap">
+                                                + Rp 90.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 240.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1042',
+                                                        userName: 'Rizky Pratama',
+                                                        type: 'tambah',
+                                                        badgeClass: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-plus text-[10px]\'></i> Tambah',
+                                                        saldoAwal: 'Rp 150.000',
+                                                        nominal: '+ Rp 90.000',
+                                                        saldoAkhir: 'Rp 240.000',
+                                                        description: 'Pencairan komisi 18.000 Views campaign Review Aplikasi Web Clipper AI.',
+                                                        date: '16 Sep 2026, 07:45 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 2: Penarikan (Kurang) -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="kurang">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">2</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">15 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">18:20 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Sarah Azhari
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400">
+                                                    <i class="fa-solid fa-minus text-[10px]"></i> Kurang
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 530.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-rose-600 dark:text-rose-400 td-nowrap">
+                                                - Rp 250.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 280.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1038',
+                                                        userName: 'Sarah Azhari',
+                                                        type: 'kurang',
+                                                        badgeClass: 'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-minus text-[10px]\'></i> Kurang',
+                                                        saldoAwal: 'Rp 530.000',
+                                                        nominal: '- Rp 250.000',
+                                                        saldoAkhir: 'Rp 280.000',
+                                                        description: 'Penarikan dana komisi via Transfer Bank BCA (No. Rek 7120394812 a.n Sarah Azhari).',
+                                                        date: '15 Sep 2026, 18:20 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 3: Tambah Komisi -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="tambah">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">3</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">14 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">14:15 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Dimas Aditya
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                                                    <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 80.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-emerald-600 dark:text-emerald-400 td-nowrap">
+                                                + Rp 102.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 182.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1029',
+                                                        userName: 'Dimas Aditya',
+                                                        type: 'tambah',
+                                                        badgeClass: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-plus text-[10px]\'></i> Tambah',
+                                                        saldoAwal: 'Rp 80.000',
+                                                        nominal: '+ Rp 102.000',
+                                                        saldoAkhir: 'Rp 182.000',
+                                                        description: 'Pencairan komisi 34.100 Views campaign Podcast Highlight Inspiring Talks.',
+                                                        date: '14 Sep 2026, 14:15 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 4: Penarikan (Kurang) -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="kurang">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">4</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">13 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">11:30 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Reza Pahlevi
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400">
+                                                    <i class="fa-solid fa-minus text-[10px]"></i> Kurang
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 425.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-rose-600 dark:text-rose-400 td-nowrap">
+                                                - Rp 400.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 25.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1021',
+                                                        userName: 'Reza Pahlevi',
+                                                        type: 'kurang',
+                                                        badgeClass: 'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-minus text-[10px]\'></i> Kurang',
+                                                        saldoAwal: 'Rp 425.000',
+                                                        nominal: '- Rp 400.000',
+                                                        saldoAkhir: 'Rp 25.000',
+                                                        description: 'Penarikan saldo komisi via E-Wallet GoPay (081298765432 a.n Reza Pahlevi).',
+                                                        date: '13 Sep 2026, 11:30 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 5: Tambah Komisi -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="tambah">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">5</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">12 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">09:10 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Maya Puspita
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                                                    <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 0
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-emerald-600 dark:text-emerald-400 td-nowrap">
+                                                + Rp 50.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 50.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1015',
+                                                        userName: 'Maya Puspita',
+                                                        type: 'tambah',
+                                                        badgeClass: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-plus text-[10px]\'></i> Tambah',
+                                                        saldoAwal: 'Rp 0',
+                                                        nominal: '+ Rp 50.000',
+                                                        saldoAkhir: 'Rp 50.000',
+                                                        description: 'Bonus awal pendaftaran kreator & verifikasi akun Clipper aktif.',
+                                                        date: '12 Sep 2026, 09:10 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 6: Tambah Komisi -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors" data-type="tambah">
+                                            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">6</td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <div class="font-medium text-slate-800 dark:text-slate-200 text-xs">11 Sep 2026</div>
+                                                <div class="text-[11px] text-slate-400 mt-0.5">16:40 WIB</div>
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                                Budi Santoso
+                                            </td>
+                                            <td class="px-6 py-4 td-nowrap">
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+                                                    <i class="fa-solid fa-plus text-[10px]"></i> Tambah
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
+                                                Rp 120.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-emerald-600 dark:text-emerald-400 td-nowrap">
+                                                + Rp 95.000
+                                            </td>
+                                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
+                                                Rp 215.000
+                                            </td>
+                                            <td class="px-6 py-4 text-center td-nowrap">
+                                                <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                                    onclick="openDetailModal({
+                                                        trxId: '1008',
+                                                        userName: 'Budi Santoso',
+                                                        type: 'tambah',
+                                                        badgeClass: 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
+                                                        badgeHtml: '<i class=\'fa-solid fa-plus text-[10px]\'></i> Tambah',
+                                                        saldoAwal: 'Rp 120.000',
+                                                        nominal: '+ Rp 95.000',
+                                                        saldoAkhir: 'Rp 215.000',
+                                                        description: 'Pencairan komisi 19.800 Views campaign Review Aplikasi Web Clipper AI.',
+                                                        date: '11 Sep 2026, 16:40 WIB'
+                                                    })">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Table Pagination Footer -->
+                            <div class="p-5 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <p class="text-sm text-slate-500 dark:text-slate-400">
+                                    Menampilkan <span class="font-semibold text-slate-700 dark:text-slate-300">1</span> sampai <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">6</span> dari <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">1.428</span> transaksi
+                                </p>
+
+                                <nav aria-label="Table navigation">
+                                    <ul class="inline-flex items-center -space-x-px text-sm">
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 ml-0 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-l-xl hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" aria-current="page"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-white bg-brand-500 border border-brand-500 font-semibold">
+                                                1
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                2
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                3
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <span class="flex items-center justify-center w-9 h-9 leading-tight text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e]">
+                                                ...
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-r-xl hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @@include('../partials/footer.html')
+            </main>
+        </div>
     </div>
-  </header>
 
-  <!-- Main Content Area -->
-  <main class="p-4 space-y-3">
-    
-    <!-- Item 1: Diproses (Pending) -->
-    <div 
-      onclick="openDetailModal('diproses', 'Bank Central Asia (BCA)', 'Moh Ma\'sum', '1234567890', 'Rp100.000', '24 Okt 2026, 14:30', 'Sedang diverifikasi oleh sistem antrean pencairan dana.')"
-      class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col"
-    >
-      <div class="p-4 flex items-center justify-between gap-3">
-        <div>
-          <h3 class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">
-            BCA • Moh Ma'sum
-          </h3>
-          <p class="text-xs text-slate-400 font-medium mt-1">
-            Rek. 1234567890
-          </p>
+    <!-- Modal Detail Transaksi Komisi -->
+    <div id="modalDetailTransaction" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 transition-opacity duration-300">
+        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl max-w-lg w-full p-6 space-y-5 transition-all">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#2e2e2e]">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-900 dark:text-white">Detail Transaksi Komisi</h3>
+                </div>
+                <button type="button" onclick="closeDetailModal()" class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <!-- Info User & ID Transaksi -->
+                <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                    <div>
+                        <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Nama Clipper / Pengguna</p>
+                        <p id="modalUserName" class="font-semibold text-slate-900 dark:text-white text-sm mt-0.5">Rizky Pratama</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">ID Riwayat</p>
+                        <p id="modalTrxId" class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mt-0.5">1042</p>
+                    </div>
+                </div>
+
+                <!-- Financial Movement Breakdown -->
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                        <span class="text-slate-400 block mb-1">Saldo Awal</span>
+                        <p id="modalSaldoAwal" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rp 150.000</p>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                        <span class="text-slate-400 block mb-1">Nominal Mutasi</span>
+                        <p id="modalNominal" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">+ Rp 90.000</p>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                        <span class="text-slate-400 block mb-1">Saldo Akhir</span>
+                        <p id="modalSaldoAkhir" class="text-sm font-semibold text-slate-900 dark:text-white">Rp 240.000</p>
+                    </div>
+                </div>
+
+                <!-- Deskripsi / Keterangan Mutasi -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Keterangan Transaksi</label>
+                    <p id="modalDescription" class="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-[#161616] p-3.5 rounded-xl border border-slate-100 dark:border-[#2e2e2e]">
+                        Pencairan komisi 18.000 Views campaign Review Aplikasi Web Clipper AI.
+                    </p>
+                </div>
+
+                <!-- Audit Meta (Waktu & Status) -->
+                <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e] space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-clock text-slate-400"></i> Waktu Transaksi
+                        </span>
+                        <span id="modalDate" class="font-semibold text-slate-700 dark:text-slate-300">16 Sep 2026, 07:45 WIB</span>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-100 dark:border-[#242424] pt-2">
+                        <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-circle-check text-emerald-500"></i> Status Mutasi
+                        </span>
+                        <span class="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                            Berhasil
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex justify-end">
+                <button type="button" onclick="closeDetailModal()" class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold">
+                    Tutup
+                </button>
+            </div>
         </div>
-        <div class="text-right shrink-0">
-          <span class="text-base font-extrabold text-slate-900 tracking-tight">-Rp100.000</span>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-2.5 px-4 bg-slate-50/50 flex items-center justify-between">
-        <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-          <i class="fa-regular fa-clock text-[10px]"></i>
-          <span>24 Okt 2026, 14:30</span>
-        </div>
-        <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50">
-          <i class="fa-solid fa-clock-rotate-left text-[9px]"></i>
-          <span>Diproses</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Item 2: Berhasil (Success) -->
-    <div 
-      onclick="openDetailModal('berhasil', 'Bank Central Asia (BCA)', 'Moh Ma\'sum', '1234567890', 'Rp250.000', '12 Okt 2026, 09:15', 'Penarikan saldo telah berhasil ditransfer ke rekening tujuan.')"
-      class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col"
-    >
-      <div class="p-4 flex items-center justify-between gap-3">
-        <div>
-          <h3 class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">
-            BCA • Moh Ma'sum
-          </h3>
-          <p class="text-xs text-slate-400 font-medium mt-1">
-            Rek. 1234567890
-          </p>
-        </div>
-        <div class="text-right shrink-0">
-          <span class="text-base font-extrabold text-slate-900 tracking-tight">-Rp250.000</span>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-2.5 px-4 bg-slate-50/50 flex items-center justify-between">
-        <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-          <i class="fa-regular fa-clock text-[10px]"></i>
-          <span>12 Okt 2026, 09:15</span>
-        </div>
-        <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200/50">
-          <i class="fa-solid fa-check text-[9px]"></i>
-          <span>Berhasil</span>
-        </div>
-      </div>
-    </div>
+    @@include('../partials/vendor-scripts.html')
+    <script src="assets/libs/select2/js/select2.min.js"></script>
+    <script src="assets/js/wallet-transactions.page.js"></script>
+</body>
 
-    <!-- Item 3: Gagal (Failed) -->
-    <div 
-      onclick="openDetailModal('gagal', 'Bank Central Asia (BCA)', 'Moh Ma\'sum', '1234567890', 'Rp50.000', '01 Okt 2026, 11:20', 'Rekening tujuan tidak valid atau telah ditutup oleh bank penerima.')"
-      class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col"
-    >
-      <div class="p-4 flex items-center justify-between gap-3">
-        <div>
-          <h3 class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">
-            BCA • Moh Ma'sum
-          </h3>
-          <p class="text-xs text-slate-400 font-medium mt-1">
-            Rek. 1234567890
-          </p>
-        </div>
-        <div class="text-right shrink-0">
-          <span class="text-base font-extrabold text-slate-900 tracking-tight">-Rp50.000</span>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-2.5 px-4 bg-slate-50/50 flex items-center justify-between">
-        <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-          <i class="fa-regular fa-clock text-[10px]"></i>
-          <span>01 Okt 2026, 11:20</span>
-        </div>
-        <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/50">
-          <i class="fa-solid fa-xmark text-[9px]"></i>
-          <span>Gagal</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Item 4: Berhasil Lainnya -->
-    <div 
-      onclick="openDetailModal('berhasil', 'Bank Central Asia (BCA)', 'Moh Ma\'sum', '1234567890', 'Rp150.000', '20 Sep 2026, 16:45', 'Penarikan saldo telah berhasil ditransfer ke rekening tujuan.')"
-      class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col"
-    >
-      <div class="p-4 flex items-center justify-between gap-3">
-        <div>
-          <h3 class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">
-            BCA • Moh Ma'sum
-          </h3>
-          <p class="text-xs text-slate-400 font-medium mt-1">
-            Rek. 1234567890
-          </p>
-        </div>
-        <div class="text-right shrink-0">
-          <span class="text-base font-extrabold text-slate-900 tracking-tight">-Rp150.000</span>
-        </div>
-      </div>
-      <div class="border-t border-slate-100"></div>
-      <div class="py-2.5 px-4 bg-slate-50/50 flex items-center justify-between">
-        <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-          <i class="fa-regular fa-clock text-[10px]"></i>
-          <span>20 Sep 2026, 16:45</span>
-        </div>
-        <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200/50">
-          <i class="fa-solid fa-check text-[9px]"></i>
-          <span>Berhasil</span>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-</div>
-
-<!-- Mobile Native Bottom Sheet Modal (Detail Penarikan) -->
-<div id="wdDetailModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">
-  <!-- Backdrop -->
-  <div id="wdBackdrop" onclick="closeDetailModal()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
-
-  <!-- Sheet Container -->
-  <div id="wdSheet" class="relative w-full max-w-[480px] bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto">
-    
-    <!-- Drag Handle Indicator -->
-    <div id="wdDragHandle" class="w-12 h-1.5 bg-slate-200 hover:bg-slate-300 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors"></div>
-
-    <!-- Modal Content -->
-    <div class="flex flex-col items-center text-center">
-      <div id="wdIconContainer" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-amber-50 text-amber-600">
-        <i id="wdIcon" class="fa-solid fa-clock-rotate-left"></i>
-      </div>
-      <h2 class="text-base font-bold text-slate-900 mb-0.5">Detail Penarikan</h2>
-      <p id="wdAmount" class="text-2xl font-extrabold text-slate-900 tracking-tight mb-5">-Rp0</p>
-      
-      <div class="w-full bg-slate-50 rounded-2xl p-4 space-y-3 text-left border border-slate-100 mb-5">
-        <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
-          <span class="text-xs font-semibold text-slate-500">Status</span>
-          <span id="wdStatusBadge" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50">
-            Diproses
-          </span>
-        </div>
-        <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
-          <span class="text-xs font-semibold text-slate-500">Bank Tujuan</span>
-          <span id="wdBank" class="text-xs font-bold text-slate-800">Bank BCA</span>
-        </div>
-        <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
-          <span class="text-xs font-semibold text-slate-500">Nama Penerima</span>
-          <span id="wdAccountName" class="text-xs font-bold text-slate-800">Moh Ma'sum</span>
-        </div>
-        <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
-          <span class="text-xs font-semibold text-slate-500">No. Rekening</span>
-          <span id="wdAccountNumber" class="text-xs font-mono font-bold text-slate-800">1234567890</span>
-        </div>
-        <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
-          <span class="text-xs font-semibold text-slate-500">Waktu Pengajuan</span>
-          <span id="wdDate" class="text-xs font-bold text-slate-800">24 Okt 2026, 14:30</span>
-        </div>
-        <div class="flex flex-col gap-1.5 pt-0.5">
-          <span class="text-xs font-semibold text-slate-500">Keterangan</span>
-          <div class="p-3 bg-white rounded-xl border border-slate-200/80 text-left">
-            <p id="wdNotes" class="text-xs text-slate-600 leading-relaxed font-medium">-</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Button -->
-      <button type="button" onclick="closeDetailModal()" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
-        Tutup
-      </button>
-    </div>
-  </div>
-</div>
-
-@@include('../partials/vendor-script.html')
-
-<!-- Interactive Script for Native Bottom Sheet -->
-<script>
-  const modal = document.getElementById('wdDetailModal');
-  const backdrop = document.getElementById('wdBackdrop');
-  const sheet = document.getElementById('wdSheet');
-
-  function openDetailModal(status, bank, accountName, accountNumber, amount, date, notes) {
-    const iconContainer = document.getElementById('wdIconContainer');
-    const icon = document.getElementById('wdIcon');
-    const badge = document.getElementById('wdStatusBadge');
-
-    document.getElementById('wdBank').textContent = bank;
-    document.getElementById('wdAccountName').textContent = accountName;
-    document.getElementById('wdAccountNumber').textContent = accountNumber;
-    document.getElementById('wdAmount').textContent = '-' + amount.replace('-', '');
-    document.getElementById('wdDate').textContent = date;
-    document.getElementById('wdNotes').textContent = notes;
-
-    if (status === 'diproses') {
-      iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-amber-50 text-amber-600';
-      icon.className = 'fa-solid fa-clock-rotate-left';
-      badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50';
-      badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left text-[9px]"></i><span>Diproses</span>';
-    } else if (status === 'berhasil') {
-      iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-emerald-50 text-emerald-600';
-      icon.className = 'fa-solid fa-check';
-      badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200/50';
-      badge.innerHTML = '<i class="fa-solid fa-check text-[9px]"></i><span>Berhasil</span>';
-    } else {
-      iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-rose-50 text-rose-600';
-      icon.className = 'fa-solid fa-xmark';
-      badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/50';
-      badge.innerHTML = '<i class="fa-solid fa-xmark text-[9px]"></i><span>Gagal</span>';
-    }
-
-    modal.classList.remove('invisible', 'pointer-events-none');
-    requestAnimationFrame(() => {
-      backdrop.classList.remove('opacity-0');
-      sheet.classList.remove('translate-y-full');
-    });
-  }
-
-  function closeDetailModal() {
-    backdrop.classList.add('opacity-0');
-    sheet.classList.add('translate-y-full');
-    setTimeout(() => {
-      modal.classList.add('invisible', 'pointer-events-none');
-    }, 300);
-  }
-</script>
+</html>

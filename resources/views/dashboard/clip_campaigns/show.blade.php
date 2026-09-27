@@ -434,174 +434,206 @@
                                 Daftar video yang baru saja diajukan clipper untuk campaign ini
                             </p>
                         </div>
-                        <a href="#" class="btn btn-secondary rounded-xl px-3.5 py-2 text-xs font-semibold flex items-center gap-2">
-                            <span>Lihat Semua (74)</span>
+                        <a href="{{ route('admin.clip-campaigns.submissions', $clip_campaign) }}" class="btn btn-secondary rounded-xl px-3.5 py-2 text-xs font-semibold flex items-center gap-2">
+                            <span>Lihat Semua ({{ $clip_campaign->clipSubmissions()->count() }})</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </a>
                     </div>
 
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="border-b border-slate-200 dark:border-[#2e2e2e] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold">
-                                    <th class="py-2.5 px-3">Clipper</th>
-                                    <th class="py-2.5 px-3">Link Video TikTok</th>
-                                    <th class="py-2.5 px-3 text-right">Views Saat Ini</th>
-                                    <th class="py-2.5 px-3 text-right">Komisi</th>
-                                    <th class="py-2.5 px-3 text-center">Status</th>
+                        <table id="submissionTable" class="w-full text-left border-collapse">
+                            <thead
+                                class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Tanggal</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Clipper</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Link Video TikTok</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-right font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Views Saat Ini</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-right font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Komisi</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e]">
-                                <!-- Row 1: Approved -->
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
-                                    <td class="py-3 px-3">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-brand-50 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 flex items-center justify-center font-semibold text-xs">
-                                                RP
-                                            </div>
+                            <tbody id="submissionTableBody" class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
+                                @forelse ($recent_submissions as $submission)
+                                    @php
+                                        $statusClass = '';
+                                        $statusIcon = '';
+                                        $statusText = ucfirst($submission->status);
+
+                                        switch ($submission->status) {
+                                            case 'pending':
+                                                $statusClass =
+                                                    'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400';
+                                                $statusIcon = 'fa-regular fa-clock';
+                                                break;
+                                            case 'approved':
+                                            case 'active':
+                                            case 'completed':
+                                                $statusClass =
+                                                    'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
+                                                $statusIcon = 'fa-solid fa-check';
+                                                break;
+                                            case 'rejected':
+                                                $statusClass =
+                                                    'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400';
+                                                $statusIcon = 'fa-solid fa-xmark';
+                                                break;
+                                            default:
+                                                $statusClass =
+                                                    'bg-slate-100 dark:bg-slate-500/10 text-slate-700 dark:text-slate-400';
+                                                $statusIcon = 'fa-solid fa-circle-info';
+                                                break;
+                                        }
+
+                                        $displayUrl = preg_replace('#^https?://#', '', $submission->submitted_url);
+                                        $displayUrl = Str::limit($displayUrl, 25);
+                                        $clipperName = $submission->user->name ?? 'Unknown User';
+                                        $clipperEmail = $submission->user->email ?? '-';
+                                    @endphp
+                                    <tr id="submission-row-{{ $submission->id }}"
+                                        class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors submission-row">
+                                        <td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs td-nowrap">
+                                            {{ $submission->created_at->translatedFormat('d M Y, H:i') }}
+                                        </td>
+                                        <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
                                             <div>
-                                                <div class="font-semibold text-slate-800 dark:text-slate-200">Rizky Pratama</div>
-                                                <div class="text-[11px] text-slate-400">@rizkyclips</div>
+                                                <div class="font-semibold text-slate-800 dark:text-slate-200 clipper-name">
+                                                    {{ $clipperName }}</div>
+                                                <div class="text-xs text-slate-400 font-normal clipper-handle">
+                                                    {{ $clipperEmail }}</div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <a href="https://vt.tiktok.com/ZS2xY98a1" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-mono">
-                                            vt.tiktok.com/ZS2xY98a1
-                                        </a>
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                        28.450
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-emerald-600 dark:text-emerald-400">
-                                        Rp 100.000
-                                    </td>
-                                    <td class="py-3 px-3 text-center">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
-                                            <i class="fa-solid fa-check text-[9px]"></i> Approved
-                                        </span>
-                                    </td>
-                                </tr>
-                                <!-- Row 2: Pending -->
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
-                                    <td class="py-3 px-3">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center font-semibold text-xs">
-                                                DS
+                                        </td>
+                                        <td class="px-6 py-4 td-nowrap">
+                                            <div class="flex items-center gap-1.5">
+                                                <a href="{{ $submission->submitted_url }}" target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-[#161616] dark:hover:bg-[#252525] text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-[#2e2e2e] transition">
+                                                    <i class="fa-brands fa-tiktok text-slate-900 dark:text-white"></i> Tonton
+                                                </a>
+                                                <button type="button" onclick="copyLink('{{ $submission->submitted_url }}')"
+                                                    class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"
+                                                    title="Salin Link">
+                                                    <i class="fa-regular fa-copy text-xs"></i>
+                                                </button>
                                             </div>
-                                            <div>
-                                                <div class="font-semibold text-slate-800 dark:text-slate-200">Dinda Safitri</div>
-                                                <div class="text-[11px] text-slate-400">@dindacreator</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right td-nowrap">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
+                                                <i class="fa-regular fa-eye text-xs text-slate-400"></i> <span
+                                                    class="views-num">{{ number_format($submission->current_views, 0, ',', '.') }}</span>
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right td-nowrap">
+                                            <span
+                                                class="font-semibold total-earned-val {{ $submission->total_earned > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400' }}">
+                                                {{ $submission->total_earned > 0 ? 'Rp ' . number_format($submission->total_earned, 0, ',', '.') : '-' }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center td-nowrap">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold {{ $statusClass }}">
+                                                <i class="{{ $statusIcon }} text-[10px]"></i> {{ $statusText }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center td-nowrap">
+                                            <div class="flex items-center justify-center gap-1.5">
+                                                @php
+                                                    $modalData = [
+                                                        'clipperName' => $clipperName,
+                                                        'clipperHandle' => $clipperEmail,
+                                                        'clipTitle' => $clip_campaign->title ?? '-',
+                                                        'views' =>
+                                                            number_format($submission->current_views, 0, ',', '.') .
+                                                            ' Views',
+                                                        'pendapatan' =>
+                                                            'Rp ' . number_format($submission->total_earned, 0, ',', '.'),
+                                                        'submittedAt' => $submission->submitted_at
+                                                            ? $submission->submitted_at->translatedFormat('d M Y, H:i') .
+                                                                ' WIB'
+                                                            : ($submission->created_at
+                                                                ? $submission->created_at->translatedFormat('d M Y, H:i') .
+                                                                    ' WIB'
+                                                                : '-'),
+                                                        'approvedAt' => $submission->approved_at
+                                                            ? $submission->approved_at->translatedFormat('d M Y, H:i') .
+                                                                ' WIB'
+                                                            : null,
+                                                        'rejectedAt' => $submission->rejected_at
+                                                            ? $submission->rejected_at->translatedFormat('d M Y, H:i') .
+                                                                ' WIB'
+                                                            : null,
+                                                        'rejectedReason' => $submission->rejection_reason,
+                                                        'videoUrl' => $submission->submitted_url,
+                                                        'badgeClass' => $statusClass,
+                                                        'badgeHtml' =>
+                                                            '<i class="' .
+                                                            $statusIcon .
+                                                            ' text-[10px]"></i> ' .
+                                                            $statusText,
+                                                        'id' => $submission->id,
+                                                        'status' => $submission->status,
+                                                        'checkViewsUrl' => route(
+                                                            'admin.clip-submissions.check-views',
+                                                            $submission,
+                                                        ),
+                                                    ];
+                                                @endphp
+                                                <button type="button"
+                                                    class="btn btn-secondary btn-icon btn-detail-submission"
+                                                    title="Detail Pengajuan"
+                                                    data-submission="{{ json_encode($modalData) }}">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                                @if ($submission->status === 'active')
+                                                    <button type="button"
+                                                        class="btn btn-icon bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 dark:text-indigo-400 btn-check-views"
+                                                        title="Cek Views & Hitung Komisi"
+                                                        data-url="{{ route('admin.clip-submissions.check-views', $submission) }}"
+                                                        data-id="{{ $submission->id }}"
+                                                        data-title="{{ $clip_campaign->title ?? '' }}"
+                                                        data-clipper="{{ $clipperName }}">
+                                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                                    </button>
+                                                @endif
+                                                @if (!in_array($submission->status, ['active', 'approved', 'completed']))
+                                                    <button type="button" class="btn btn-primary btn-icon"
+                                                        title="Setujui Pengajuan"
+                                                        onclick="confirmApprove('{{ route('admin.clip-submissions.update-status', $submission) }}', '{{ addslashes($clipperName) }}')">
+                                                        <i class="fa-solid fa-check"></i>
+                                                    </button>
+                                                @endif
+                                                <button type="button" class="btn btn-danger btn-icon"
+                                                    title="Tolak Pengajuan"
+                                                    onclick="confirmReject('{{ route('admin.clip-submissions.update-status', $submission) }}', '{{ addslashes($clipperName) }}')">
+                                                    <i class="fa-solid fa-xmark"></i>
+                                                </button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <a href="https://vt.tiktok.com/ZS2mK47b2" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-mono">
-                                            vt.tiktok.com/ZS2mK47b2
-                                        </a>
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                        14.200
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-400 dark:text-slate-500">
-                                        -
-                                    </td>
-                                    <td class="py-3 px-3 text-center">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400">
-                                            <i class="fa-regular fa-clock text-[9px]"></i> Pending
-                                        </span>
-                                    </td>
-                                </tr>
-                                <!-- Row 3: Approved -->
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
-                                    <td class="py-3 px-3">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-semibold text-xs">
-                                                KS
-                                            </div>
-                                            <div>
-                                                <div class="font-semibold text-slate-800 dark:text-slate-200">Kevin Sanjaya</div>
-                                                <div class="text-[11px] text-slate-400">@kevin.shorts</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <a href="https://vt.tiktok.com/ZS2hK91p8" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-mono">
-                                            vt.tiktok.com/ZS2hK91p8
-                                        </a>
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                        108.300
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-emerald-600 dark:text-emerald-400">
-                                        Rp 500.000
-                                    </td>
-                                    <td class="py-3 px-3 text-center">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
-                                            <i class="fa-solid fa-check text-[9px]"></i> Approved
-                                        </span>
-                                    </td>
-                                </tr>
-                                <!-- Row 4: Pending -->
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
-                                    <td class="py-3 px-3">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-rose-50 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center font-semibold text-xs">
-                                                SN
-                                            </div>
-                                            <div>
-                                                <div class="font-semibold text-slate-800 dark:text-slate-200">Siti Nurhaliza</div>
-                                                <div class="text-[11px] text-slate-400">@siticlips</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <a href="https://vt.tiktok.com/ZS2qM55f4" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-mono">
-                                            vt.tiktok.com/ZS2qM55f4
-                                        </a>
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                        52.600
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-400 dark:text-slate-500">
-                                        -
-                                    </td>
-                                    <td class="py-3 px-3 text-center">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400">
-                                            <i class="fa-regular fa-clock text-[9px]"></i> Pending
-                                        </span>
-                                    </td>
-                                </tr>
-                                <!-- Row 5: Rejected -->
-                                <tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a1a] transition-colors">
-                                    <td class="py-3 px-3">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-7 h-7 rounded-full bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-semibold text-xs">
-                                                BW
-                                            </div>
-                                            <div>
-                                                <div class="font-semibold text-slate-800 dark:text-slate-200">Budi Wicaksono</div>
-                                                <div class="text-[11px] text-slate-400">@buditech</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="py-3 px-3">
-                                        <a href="https://vt.tiktok.com/ZS2pL19c3" target="_blank" rel="noopener noreferrer" class="text-brand-600 dark:text-brand-400 hover:underline font-mono">
-                                            vt.tiktok.com/ZS2pL19c3
-                                        </a>
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                        6.800
-                                    </td>
-                                    <td class="py-3 px-3 text-right font-semibold text-slate-400 dark:text-slate-500">
-                                        -
-                                    </td>
-                                    <td class="py-3 px-3 text-center">
-                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400">
-                                            <i class="fa-solid fa-xmark text-[9px]"></i> Rejected
-                                        </span>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7"
+                                            class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
+                                            Belum ada submisi clip terbaru untuk campaign ini.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -632,16 +664,400 @@
 
         </div>
     </div>
+
+    <!-- Modal Detail Pengajuan -->
+    <div id="modalDetailSubmission"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 transition-opacity duration-300">
+        <div
+            class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl max-w-lg w-full p-6 space-y-6 transition-all">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#2e2e2e]">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-900 dark:text-white">Detail Pengajuan Video</h3>
+                </div>
+                <button type="button" onclick="closeDetailModal()"
+                    class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Info Clipper & Status -->
+                <div
+                    class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                    <div>
+                        <p id="modalClipperName" class="font-semibold text-slate-900 dark:text-white text-sm">-</p>
+                        <p id="modalClipperHandle" class="text-xs text-slate-400 font-normal">-</p>
+                    </div>
+                    <span id="modalStatusBadge"
+                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400">
+                        <i class="fa-solid fa-clock text-[10px]"></i> Pending
+                    </span>
+                </div>
+
+                <!-- Detail Metadata -->
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div
+                        class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                        <span class="text-slate-400 block mb-1">Total Views</span>
+                        <p id="modalViewsCount" class="text-sm font-semibold text-slate-800 dark:text-slate-200">0 Views
+                        </p>
+                    </div>
+
+                    <div
+                        class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                        <span class="text-slate-400 block mb-1">Pendapatan</span>
+                        <p id="modalPendapatan" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Rp 0
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Judul
+                        Clip Campaign</label>
+                    <p id="modalClipTitle"
+                        class="text-sm font-medium text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-[#161616] p-3 rounded-xl border border-slate-100 dark:border-[#2e2e2e]">
+                        -
+                    </p>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Tautan
+                        Video TikTok</label>
+                    <a id="modalVideoLink" href="#" target="_blank"
+                        class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-2 truncate bg-slate-50 dark:bg-[#161616] p-3 rounded-xl border border-slate-100 dark:border-[#2e2e2e]">
+                        <i class="fa-brands fa-tiktok text-sm"></i> #
+                    </a>
+                </div>
+
+                <!-- Riwayat Waktu (submitted_at, approved_at, rejected_at) -->
+                <div
+                    class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e] space-y-2 text-xs">
+                    <!-- submitted_at -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-paper-plane text-[11px] text-slate-400"></i> Diajukan (Submitted)
+                        </span>
+                        <span id="modalSubmittedAt" class="font-semibold text-slate-700 dark:text-slate-300">-</span>
+                    </div>
+
+                    <!-- approved_at -->
+                    <div id="modalApprovedRow"
+                        class="hidden flex items-center justify-between border-t border-slate-100 dark:border-[#242424] pt-2">
+                        <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-circle-check text-[11px] text-emerald-500"></i> Disetujui (Approved)
+                        </span>
+                        <span id="modalApprovedAt" class="font-semibold text-emerald-600 dark:text-emerald-400">-</span>
+                    </div>
+
+                    <!-- rejected_at -->
+                    <div id="modalRejectedRow"
+                        class="hidden flex items-center justify-between border-t border-slate-100 dark:border-[#242424] pt-2">
+                        <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+                            <i class="fa-regular fa-circle-xmark text-[11px] text-rose-500"></i> Ditolak (Rejected)
+                        </span>
+                        <span id="modalRejectedAt" class="font-semibold text-rose-600 dark:text-rose-400">-</span>
+                    </div>
+                </div>
+
+                <!-- rejected_reason -->
+                <div id="modalRejectedReasonBox" class="hidden">
+                    <label
+                        class="block text-xs font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-xs"></i> Alasan Penolakan
+                    </label>
+                    <div
+                        class="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/40 text-xs text-rose-700 dark:text-rose-300 leading-relaxed font-normal">
+                        <p id="modalRejectedReason">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between gap-3">
+                <button type="button" id="modalBtnCheckViews"
+                    class="hidden btn btn-primary rounded-xl px-4 py-2.5 text-xs font-semibold items-center gap-2">
+                    <i class="fa-solid fa-arrows-rotate"></i> Cek Views Sekarang
+                </button>
+                <button type="button" onclick="closeDetailModal()"
+                    class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold ml-auto">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
-    <!-- SweetAlert2 JS -->
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('assets/js/clip-submission.page.js') }}"></script>
 
     <script>
+        const csrfToken = "{{ csrf_token() }}";
+        let activeModalSubmission = null;
+
         document.addEventListener("DOMContentLoaded", () => {
             initCampaignDetailInteractions();
         });
+
+        $(document).ready(function() {
+            // Override openDetailModal untuk menangani tombol Cek Views di dalam modal
+            const nativeOpenDetailModal = window.openDetailModal;
+            window.openDetailModal = function(data) {
+                activeModalSubmission = data;
+                if (typeof nativeOpenDetailModal === 'function') {
+                    nativeOpenDetailModal(data);
+                }
+                const $checkBtn = $('#modalBtnCheckViews');
+                if ($checkBtn.length) {
+                    if (data && (data.status === 'active' || data.status === 'approved')) {
+                        $checkBtn.removeClass('hidden').addClass('inline-flex');
+                    } else {
+                        $checkBtn.addClass('hidden').removeClass('inline-flex');
+                    }
+                }
+            };
+
+            // Tombol Cek Views di dalam modal
+            $('#modalBtnCheckViews').on('click', function(e) {
+                e.preventDefault();
+                if (!activeModalSubmission) return;
+                handleCheckViewsAction(
+                    activeModalSubmission.checkViewsUrl,
+                    activeModalSubmission.id,
+                    activeModalSubmission.clipTitle,
+                    activeModalSubmission.clipperName
+                );
+            });
+
+            // Action button delegation for Detail Submission
+            $(document).on('click', '.btn-detail-submission', function(e) {
+                e.preventDefault();
+                let data = $(this).data('submission');
+                if (typeof data === 'string') {
+                    try {
+                        data = JSON.parse(data);
+                    } catch (err) {
+                        console.error('Failed to parse submission data', err);
+                    }
+                }
+                if (!data) {
+                    let raw = $(this).attr('data-submission');
+                    if (raw) {
+                        try {
+                            data = JSON.parse(raw);
+                        } catch (err) {
+                            console.error('Failed to parse raw data-submission', err);
+                        }
+                    }
+                }
+                if (typeof openDetailModal === 'function') {
+                    openDetailModal(data || {});
+                }
+            });
+
+            // Action button delegation for Check Views from table row
+            $(document).on('click', '.btn-check-views', function(e) {
+                e.preventDefault();
+                let url = $(this).data('url');
+                let id = $(this).data('id');
+                let title = $(this).data('title');
+                let clipper = $(this).data('clipper');
+                handleCheckViewsAction(url, id, title, clipper);
+            });
+        });
+
+        function handleCheckViewsAction(url, subId, clipTitle, clipperName) {
+            if (typeof Swal === 'undefined') return;
+
+            Swal.fire({
+                title: "Memeriksa Views...",
+                html: `Mengambil data views terbaru dari TikTok untuk <strong>"${clipTitle}"</strong>...`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                customClass: {
+                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]"
+                }
+            });
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Gagal memeriksa views.');
+                }
+                return data;
+            })
+            .then((res) => {
+                const $row = $(`#submission-row-${subId}`);
+                if ($row.length) {
+                    $row.find('.views-num').text(res.data.current_views_formatted);
+                    $row.find('.total-earned-val').text(res.data.total_earned_formatted);
+                    if (res.data.total_earned > 0) {
+                        $row.find('.total-earned-val').removeClass('text-slate-400').addClass('text-emerald-600 dark:text-emerald-400');
+                    }
+                }
+
+                $('#modalViewsCount').text(`${res.data.current_views_formatted} Views`);
+                $('#modalPendapatan').text(res.data.total_earned_formatted);
+
+                if (res.data.earned_now > 0) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Komisi Baru Dicairkan! 🎉",
+                        html: `
+                            <div class="mt-2 text-left text-xs bg-slate-50 dark:bg-[#161616] p-3.5 rounded-xl border border-slate-200 dark:border-[#2e2e2e] space-y-2">
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Views Saat Ini:</span>
+                                    <strong class="text-slate-900 dark:text-white">${res.data.current_views_formatted} views</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Views Terhitung Komisi:</span>
+                                    <strong class="text-indigo-600 dark:text-indigo-400">+${res.data.delta_views_formatted} views</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300 border-t border-slate-200 dark:border-[#2e2e2e] pt-2">
+                                    <span>Komisi Masuk Saldo:</span>
+                                    <strong class="text-emerald-600 dark:text-emerald-400 font-bold">+${res.data.earned_now_formatted}</strong>
+                                </div>
+                                <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+                                    <span>Total Komisi Klip Ini:</span>
+                                    <strong class="text-slate-900 dark:text-white font-bold">${res.data.total_earned_formatted}</strong>
+                                </div>
+                            </div>
+                        `,
+                        confirmButtonText: "Selesai",
+                        customClass: {
+                            popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                            confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                        },
+                        buttonsStyling: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Views Diperbarui",
+                        html: `Views TikTok saat ini: <strong>${res.data.current_views_formatted} views</strong>.<br><span class="text-xs text-slate-400 mt-1 block">Belum mencapai kelipatan threshold baru untuk pencairan komisi.</span>`,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                            confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Gagal Cek Views",
+                    text: err.message || "Terjadi kesalahan saat memeriksa views dari TikTok.",
+                    confirmButtonText: "Tutup",
+                    customClass: {
+                        popup: "rounded-2xl dark:bg-[#222222] dark:text-white border border-slate-200 dark:border-[#2e2e2e]",
+                        confirmButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                    },
+                    buttonsStyling: false
+                });
+            });
+        }
+
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Link berhasil disalin!',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
+        }
+
+        // Action Approval
+        function confirmApprove(submitUrl, clipperName) {
+            Swal.fire({
+                title: 'Setujui Pengajuan?',
+                html: `Anda akan menyetujui submisi video dari <strong>${clipperName}</strong>.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Setujui',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]",
+                    confirmButton: "btn btn-primary rounded-xl px-5 py-2.5 font-semibold text-sm ml-2",
+                    cancelButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitStatusForm(submitUrl, 'active');
+                }
+            });
+        }
+
+        // Action Rejection
+        function confirmReject(submitUrl, clipperName) {
+            Swal.fire({
+                title: 'Tolak Pengajuan',
+                html: `Masukkan alasan penolakan untuk <strong>${clipperName}</strong>:`,
+                input: 'textarea',
+                inputPlaceholder: 'Tuliskan alasan spesifik...',
+                showCancelButton: true,
+                confirmButtonText: 'Tolak Submisi',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]",
+                    input: "!w-full !max-w-full !box-border !mx-0 !mt-3 p-3 text-sm bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-slate-800 dark:text-slate-200",
+                    confirmButton: "btn btn-danger rounded-xl px-5 py-2.5 font-semibold text-sm ml-2",
+                    cancelButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
+                },
+                buttonsStyling: false,
+                preConfirm: (reason) => {
+                    if (!reason || !reason.trim()) {
+                        Swal.showValidationMessage("Alasan penolakan wajib diisi!");
+                        return false;
+                    }
+                    return reason.trim();
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitStatusForm(submitUrl, 'rejected', result.value);
+                }
+            });
+        }
+
+        function submitStatusForm(url, status, reason = '') {
+            let form = document.createElement('form');
+            form.action = url;
+            form.method = 'POST';
+            
+            form.innerHTML = `
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="status" value="${status}">
+                <input type="hidden" name="rejection_reason" value="${reason.replace(/"/g, '&quot;')}">
+            `;
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
 
         function initCampaignDetailInteractions() {
             const btnCopySource = document.getElementById("btnCopySourceUrl");
@@ -714,5 +1130,16 @@
                 alert(message);
             }
         }
+
+        @if(session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
     </script>
 @endpush

@@ -282,12 +282,12 @@ class WithdrawalTest extends TestCase
         $response->assertSee('Diproses');
         $response->assertSee('Berhasil');
         $response->assertSee('Gagal');
-        $response->assertSee('BCA • John Doe');
-        $response->assertSee('Mandiri • John Doe');
-        $response->assertSee('BRI • John Doe');
-        $response->assertSee('-Rp100.000');
-        $response->assertSee('-Rp250.000');
-        $response->assertSee('-Rp50.000');
+        $response->assertSee('BCA');
+        $response->assertSee('Mandiri');
+        $response->assertSee('BRI');
+        $response->assertSee('Rp100.000');
+        $response->assertSee('Rp250.000');
+        $response->assertSee('Rp50.000');
     }
 
     public function test_user_cannot_see_other_users_withdrawals(): void

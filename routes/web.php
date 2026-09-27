@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ClipCampaignController;
 use App\Http\Controllers\Admin\ClipSubmissionController as AdminClipSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\WalletTransactionController;
 use App\Http\Controllers\Admin\WithdrawChannelController;
 use App\Http\Controllers\App\CampaignController;
 use App\Http\Controllers\App\ClipSubmissionController as AppClipSubmissionController;
@@ -40,6 +41,7 @@ Route::put('/akun/rekening', [AppProfileController::class, 'updateRekening'])->m
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/clip-campaigns/{clip_campaign}/submissions', [ClipCampaignController::class, 'submissions'])->name('clip-campaigns.submissions');
     Route::resource('clip-campaigns', ClipCampaignController::class);
 
     Route::patch('/clip-submissions/{clip_submission}/status', [AdminClipSubmissionController::class, 'updateStatus'])->name('clip-submissions.update-status');
@@ -54,6 +56,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/riwayat-saldo', [WalletTransactionController::class, 'index'])->name('riwayat-saldo.index');
 });
 // Shared / Clipper Routes
 Route::middleware('auth')->group(function () {

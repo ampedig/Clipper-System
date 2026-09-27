@@ -5,9 +5,12 @@
 <div class="min-h-[100dvh] bg-slate-50 relative pb-20">
 
     <!-- Top App Bar (Modern Minimal) -->
-    <header class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
+    <header
+        class="flex items-center justify-between px-5 py-2.5 bg-white/80 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
         <div class="flex items-center gap-3">
-            <button type="button" onclick="window.history.back()" class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0 cursor-pointer" aria-label="Kembali">
+            <button type="button" onclick="window.history.back()"
+                class="w-10 h-10 bg-white border border-slate-200 flex items-center justify-center text-indigo-600 hover:bg-slate-50 transition-colors rounded-full active:scale-95 shrink-0 cursor-pointer"
+                aria-label="Kembali">
                 <i class="fa-solid fa-arrow-left text-sm"></i>
             </button>
             <h1 class="text-[17px] font-bold text-slate-900 tracking-tight leading-none">Riwayat Penarikan</h1>
@@ -15,7 +18,7 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="p-4 space-y-3">
+    <main class="p-4 space-y-2.5">
         @forelse ($withdrawals as $wd)
             @php
                 $isPending = in_array($wd->status, ['pending', 'processing']);
@@ -47,39 +50,37 @@
                 $noteText = $wd->notes ?: $defaultNote;
             @endphp
 
-            <!-- Card Item Penarikan -->
-            <div 
-                onclick="openDetailModal('{{ $statusKey }}', '{{ addslashes($wd->bank_name) }}', '{{ addslashes($wd->account_name) }}', '{{ $wd->account_number }}', '{{ $formattedAmount }}', '{{ $dateStr }}', '{{ addslashes($noteText) }}')"
-                class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex flex-col shadow-xs"
-            >
-                <div class="p-4 flex items-center justify-between gap-3">
-                    <div class="min-w-0 flex-1">
-                        <h3 class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight truncate">
-                            {{ $wd->bank_name }} • {{ $wd->account_name }}
-                        </h3>
-                        <p class="text-xs text-slate-400 font-medium mt-1 truncate">
-                            Rek. {{ $wd->account_number }}
-                        </p>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <span class="text-base font-extrabold text-slate-900 tracking-tight">-{{ $formattedAmount }}</span>
-                    </div>
+            <!-- Card Item Penarikan (Compact) -->
+            <div onclick="openDetailModal('{{ $statusKey }}', '{{ addslashes($wd->bank_name) }}', '{{ addslashes($wd->account_name) }}', '{{ $wd->account_number }}', '{{ $formattedAmount }}', '{{ $dateStr }}', '{{ addslashes($noteText) }}')"
+                class="bg-white border border-slate-200 rounded-2xl p-3 hover:border-indigo-300 transition-all cursor-pointer group active:scale-[0.99] flex items-center gap-3 shadow-xs">
+                <div
+                    class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 border border-indigo-100/60">
+                    <i class="fa-solid fa-money-bill-transfer text-sm"></i>
                 </div>
-                <div class="border-t border-slate-100"></div>
-                <div class="py-2.5 px-4 bg-slate-50/50 flex items-center justify-between">
-                    <div class="flex items-center gap-1.5 text-slate-400 text-[11px] font-medium">
-                        <i class="fa-regular fa-clock text-[10px]"></i>
-                        <span>{{ $dateStr }}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-2">
+                        <h3
+                            class="font-bold text-sm text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight truncate">
+                            {{ $wd->bank_name }}
+                        </h3>
+                        <span
+                            class="text-sm font-extrabold text-slate-900 tracking-tight shrink-0">{{ $formattedAmount }}</span>
                     </div>
-                    <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider {{ $badgeBg }}">
-                        <i class="fa-solid {{ $badgeIcon }} text-[9px]"></i>
-                        <span>{{ $statusLabel }}</span>
+                    <div class="flex items-center justify-between gap-2 mt-1">
+                        <p class="text-[11px] text-slate-400 font-medium truncate">
+                            {{ $dateStr }}
+                        </p>
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider {{ $badgeBg }} shrink-0">
+                            {{ $statusLabel }}
+                        </span>
                     </div>
                 </div>
             </div>
         @empty
             <div class="bg-white border border-slate-200 rounded-3xl p-8 text-center space-y-4 my-6">
-                <div class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-2xl">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-2xl">
                     <i class="fa-solid fa-money-bill-transfer"></i>
                 </div>
                 <div class="space-y-1">
@@ -108,28 +109,33 @@
 </div>
 
 <!-- Mobile Native Bottom Sheet Modal (Detail Penarikan) -->
-<div id="wdDetailModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">
+<div id="wdDetailModal"
+    class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300"
+    aria-modal="true" role="dialog">
     <!-- Backdrop -->
-    <div id="wdBackdrop" onclick="closeDetailModal()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer"></div>
+    <div id="wdBackdrop" onclick="closeDetailModal()"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-[2px] opacity-0 transition-opacity duration-300 pointer-events-auto cursor-pointer">
+    </div>
 
     <!-- Sheet Container -->
-    <div id="wdSheet" class="relative w-full max-w-[480px] bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto">
-        
+    <div id="wdSheet"
+        class="relative w-full max-w-[480px] bg-white rounded-t-[28px] border-t border-slate-100 p-6 pb-8 transition-transform duration-300 ease-out transform translate-y-full z-10 select-none touch-pan-y pointer-events-auto">
+
         <!-- Drag Handle Indicator -->
-        <div id="wdDragHandle" class="w-12 h-1.5 bg-slate-200 hover:bg-slate-300 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors"></div>
+        <div id="wdDragHandle"
+            class="w-12 h-1.5 bg-slate-200 hover:bg-slate-300 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors">
+        </div>
 
         <!-- Modal Content -->
         <div class="flex flex-col items-center text-center">
-            <div id="wdIconContainer" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-amber-50 text-amber-600">
-                <i id="wdIcon" class="fa-solid fa-clock-rotate-left"></i>
-            </div>
             <h2 class="text-base font-bold text-slate-900 mb-0.5">Detail Penarikan</h2>
-            <p id="wdAmount" class="text-2xl font-extrabold text-slate-900 tracking-tight mb-5">-Rp0</p>
-            
+            <p id="wdAmount" class="text-2xl font-extrabold text-slate-900 tracking-tight mb-5">Rp0</p>
+
             <div class="w-full bg-slate-50 rounded-2xl p-4 space-y-3 text-left border border-slate-100 mb-5">
                 <div class="flex justify-between items-center border-b border-slate-200/80 pb-2.5">
                     <span class="text-xs font-semibold text-slate-500">Status</span>
-                    <span id="wdStatusBadge" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50">
+                    <span id="wdStatusBadge"
+                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50">
                         Diproses
                     </span>
                 </div>
@@ -158,7 +164,8 @@
             </div>
 
             <!-- Action Button -->
-            <button type="button" onclick="closeDetailModal()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer shadow-sm">
+            <button type="button" onclick="closeDetailModal()"
+                class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer shadow-sm">
                 Tutup
             </button>
         </div>
@@ -174,31 +181,26 @@
     const sheet = document.getElementById('wdSheet');
 
     function openDetailModal(status, bank, accountName, accountNumber, amount, date, notes) {
-        const iconContainer = document.getElementById('wdIconContainer');
-        const icon = document.getElementById('wdIcon');
         const badge = document.getElementById('wdStatusBadge');
 
         document.getElementById('wdBank').textContent = bank;
         document.getElementById('wdAccountName').textContent = accountName;
         document.getElementById('wdAccountNumber').textContent = accountNumber;
-        document.getElementById('wdAmount').textContent = '-' + amount.replace('-', '');
+        document.getElementById('wdAmount').textContent = amount.replace('-', '');
         document.getElementById('wdDate').textContent = date;
         document.getElementById('wdNotes').textContent = notes;
 
         if (status === 'diproses') {
-            iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-amber-50 text-amber-600';
-            icon.className = 'fa-solid fa-clock-rotate-left';
-            badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50';
+            badge.className =
+                'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200/50';
             badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left text-[9px]"></i><span>Diproses</span>';
         } else if (status === 'berhasil') {
-            iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-emerald-50 text-emerald-600';
-            icon.className = 'fa-solid fa-check';
-            badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200/50';
+            badge.className =
+                'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200/50';
             badge.innerHTML = '<i class="fa-solid fa-check text-[9px]"></i><span>Berhasil</span>';
         } else {
-            iconContainer.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-rose-50 text-rose-600 border border-rose-200/50';
-            icon.className = 'fa-solid fa-xmark';
-            badge.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/50';
+            badge.className =
+                'inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-600 border border-rose-200/50';
             badge.innerHTML = '<i class="fa-solid fa-xmark text-[9px]"></i><span>Gagal</span>';
         }
 

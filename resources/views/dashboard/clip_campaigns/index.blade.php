@@ -142,16 +142,22 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-3.5 td-nowrap">
+                                        @php
+                                            $used = $campaign->approved_submissions_count ?? 0;
+                                            $limit = $campaign->clipper_limit;
+                                            $percentage = $limit && $limit > 0 ? min(100, ($used / $limit) * 100) : 0;
+                                            $remaining = $limit ? max(0, $limit - $used) : '∞';
+                                        @endphp
                                         <div class="flex items-center gap-2">
-                                            <span class="font-semibold text-slate-800 dark:text-slate-200">0</span>
-                                            <span class="text-xs text-slate-400 dark:text-slate-500">/ {{ $campaign->clipper_limit ? number_format($campaign->clipper_limit, 0, ',', '.') : '∞' }}</span>
+                                            <span class="font-semibold text-slate-800 dark:text-slate-200" title="Sisa Kuota: {{ $remaining }}">{{ number_format($used, 0, ',', '.') }}</span>
+                                            <span class="text-xs text-slate-400 dark:text-slate-500">/ {{ $limit ? number_format($limit, 0, ',', '.') : '∞' }}</span>
                                         </div>
                                         <div class="w-24 h-1.5 bg-slate-100 dark:bg-[#1a1a1a] rounded-full mt-1.5 overflow-hidden">
-                                            <div class="h-full bg-brand-500 rounded-full" style="width: 0%"></div>
+                                            <div class="h-full bg-brand-500 rounded-full" style="width: {{ $percentage }}%"></div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-3.5 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
-                                        0
+                                        {{ $campaign->total_submissions_count ?? 0 }}
                                     </td>
                                     <td class="px-6 py-3.5 text-slate-600 dark:text-slate-400 text-xs td-nowrap">
                                         <span class="inline-flex items-center gap-1.5">

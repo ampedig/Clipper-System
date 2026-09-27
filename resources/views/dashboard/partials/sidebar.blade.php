@@ -35,7 +35,8 @@
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Komisi</p>
 
-            <a href="wallet-transactions.html" class="sb-item t-sidebar">
+            <a href="{{ route('admin.riwayat-saldo.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.riwayat-saldo.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-cash-register sb-icon"></i> <span>Riwayat</span>
             </a>
 
