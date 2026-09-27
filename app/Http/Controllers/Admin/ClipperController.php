@@ -70,6 +70,35 @@ class ClipperController extends Controller
     }
 
     /**
+     * Menampilkan detail informasi akun, saldo, dan riwayat clipper.
+     */
+    public function show(User $clipper): View|RedirectResponse
+    {
+        $clipper->load([
+            'withdrawChannel',
+            'walletTransactions' => fn ($q) => $q->latest()->take(5),
+            'clipSubmissions' => fn ($q) => $q->with('clipCampaign')->latest()->take(5),
+        ]);
+
+        $approvedSubmissionsCount = $clipper->clipSubmissions()
+            ->whereIn('status', ['approved', 'active', 'completed'])
+            ->count();
+
+        $totalSubmissionsCount = $clipper->clipSubmissions()->count();
+
+        $approvalRate = $totalSubmissionsCount > 0
+            ? (int) round(($approvedSubmissionsCount / $totalSubmissionsCount) * 100)
+            : 0;
+
+        return view('dashboard.clippers.show', compact(
+            'clipper',
+            'approvedSubmissionsCount',
+            'totalSubmissionsCount',
+            'approvalRate'
+        ));
+    }
+
+    /**
      * Menampilkan formulir edit data clipper.
      */
     public function edit(User $clipper): View|RedirectResponse

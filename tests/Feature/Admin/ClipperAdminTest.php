@@ -2,7 +2,11 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\ClipCampaign;
+use App\Models\ClipSubmission;
 use App\Models\User;
+use App\Models\WalletTransaction;
+use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -148,5 +152,56 @@ class ClipperAdminTest extends TestCase
         $response->assertRedirect(route('admin.clippers.index'));
         $this->assertEquals('admin', $this->clipper->fresh()->role);
         $this->assertEquals('Budi Diubah', $this->clipper->fresh()->name);
+    }
+
+    public function test_admin_can_view_clipper_detail_page(): void
+    {
+        $channel = WithdrawChannel::factory()->create([
+            'name' => 'BCA',
+            'code' => 'BCA',
+        ]);
+
+        $this->clipper->update([
+            'withdraw_channel_id' => $channel->id,
+            'account_number' => '1234567890',
+            'account_name' => 'Budi Clipper Santoso',
+        ]);
+
+        WalletTransaction::factory()->create([
+            'user_id' => $this->clipper->id,
+            'type' => 'credit',
+            'amount' => 50000,
+            'balance_after' => 50000,
+            'notes' => 'Bonus Submission Klip',
+        ]);
+
+        $campaign = ClipCampaign::factory()->create([
+            'title' => 'Kempen Ramadhan Seru',
+        ]);
+
+        ClipSubmission::create([
+            'clip_campaign_id' => $campaign->id,
+            'user_id' => $this->clipper->id,
+            'submitted_url' => 'https://www.tiktok.com/@budi/video/99887766',
+            'video_id' => '99887766',
+            'status' => 'approved',
+            'current_views' => 5000,
+            'credited_views' => 5000,
+            'total_earned' => 50000,
+            'submitted_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('admin.clippers.show', $this->clipper));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('dashboard.clippers.show');
+        $response->assertSee('Budi Clipper');
+        $response->assertSee('budi@clipper.com');
+        $response->assertSee('BCA');
+        $response->assertSee('1234567890');
+        $response->assertSee('Budi Clipper Santoso');
+        $response->assertSee('Bonus Submission Klip');
+        $response->assertSee('Kempen Ramadhan Seru');
+        $response->assertSee('100%');
     }
 }

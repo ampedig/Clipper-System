@@ -93,21 +93,6 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
                             @forelse ($clippers as $clipper)
-                                @php
-                                    $detailPayload = [
-                                        'name' => $clipper->name,
-                                        'email' => $clipper->email,
-                                        'whatsapp' => $clipper->whatsapp ?? '-',
-                                        'balance' => 'Rp ' . number_format($clipper->balance, 0, ',', '.'),
-                                        'status' => $clipper->is_active ? 'Aktif' : 'Nonaktif',
-                                        'is_active' => (bool) $clipper->is_active,
-                                        'bank_name' => $clipper->withdrawChannel ? $clipper->withdrawChannel->name : '-',
-                                        'account_name' => $clipper->account_name ?? '-',
-                                        'account_number' => $clipper->account_number ?? '-',
-                                        'submissions_count' => $clipper->clip_submissions_count ?? 0,
-                                        'created_at' => $clipper->created_at ? $clipper->created_at->translatedFormat('d F Y, H:i') . ' WIB' : '-',
-                                    ];
-                                @endphp
                                 <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
                                     <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
                                         {{ $loop->iteration + ($clippers->currentPage() - 1) * $clippers->perPage() }}
@@ -136,10 +121,10 @@
                                     </td>
                                     <td class="px-6 py-3 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
-                                            <button type="button" class="btn btn-secondary btn-icon" title="Detail"
-                                                onclick="openDetailModal({{ json_encode($detailPayload) }})">
+                                            <a href="{{ route('admin.clippers.show', $clipper->id) }}"
+                                                class="btn btn-secondary btn-icon" title="Detail">
                                                 <i class="fa-solid fa-eye"></i>
-                                            </button>
+                                            </a>
                                             <a href="{{ route('admin.clippers.edit', $clipper->id) }}"
                                                 class="btn btn-primary btn-icon" title="Edit">
                                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -175,102 +160,6 @@
         </div>
     </div>
 
-    <!-- Modal Detail Clipper -->
-    <div id="modalDetailClipper"
-        class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 transition-opacity duration-300">
-        <div
-            class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl max-w-lg w-full p-6 space-y-5 transition-all">
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-[#2e2e2e]">
-                <div class="flex items-center gap-2.5">
-                    <div
-                        class="w-8 h-8 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <h3 class="text-base font-semibold text-slate-900 dark:text-white">Detail Pengguna Clipper</h3>
-                </div>
-                <button type="button" onclick="closeDetailModal()"
-                    class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-xmark text-sm"></i>
-                </button>
-            </div>
-
-            <div class="space-y-4 text-xs">
-                <!-- Profil Header -->
-                <div
-                    class="p-4 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Nama Lengkap</p>
-                        <p id="modalClipperName" class="font-semibold text-slate-900 dark:text-white text-sm mt-0.5">-</p>
-                    </div>
-                    <div class="text-right">
-                        <span id="modalClipperStatusBadge"
-                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
-                            Aktif
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Kontak & Saldo Info Grid -->
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
-                        <span class="text-slate-400 block mb-1 text-[11px] uppercase tracking-wider">Email</span>
-                        <p id="modalClipperEmail" class="text-xs font-semibold text-slate-800 dark:text-slate-200 break-all">-</p>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
-                        <span class="text-slate-400 block mb-1 text-[11px] uppercase tracking-wider">No. WhatsApp</span>
-                        <p id="modalClipperWhatsapp" class="text-xs font-semibold text-slate-800 dark:text-slate-200">-</p>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
-                        <span class="text-slate-400 block mb-1 text-[11px] uppercase tracking-wider">Saldo Tersedia</span>
-                        <p id="modalClipperBalance" class="text-sm font-bold text-slate-900 dark:text-white">Rp 0</p>
-                    </div>
-
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
-                        <span class="text-slate-400 block mb-1 text-[11px] uppercase tracking-wider">Total Video Klip</span>
-                        <p id="modalClipperSubmissions" class="text-sm font-semibold text-brand-600 dark:text-brand-400">0 Video</p>
-                    </div>
-                </div>
-
-                <!-- Rekening Penarikan -->
-                <div class="p-4 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e] space-y-2">
-                    <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
-                        Rekening / E-Wallet Penarikan
-                    </span>
-                    <div class="flex items-center justify-between text-xs">
-                        <span class="text-slate-500 dark:text-slate-400">Bank / Channel</span>
-                        <span id="modalClipperBank" class="font-semibold text-slate-800 dark:text-slate-200">-</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs border-t border-slate-100 dark:border-[#242424] pt-2">
-                        <span class="text-slate-500 dark:text-slate-400">Nomor Rekening / HP</span>
-                        <span id="modalClipperAccountNumber" class="font-mono font-semibold text-slate-800 dark:text-slate-200">-</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs border-t border-slate-100 dark:border-[#242424] pt-2">
-                        <span class="text-slate-500 dark:text-slate-400">Atas Nama</span>
-                        <span id="modalClipperAccountName" class="font-semibold text-slate-800 dark:text-slate-200">-</span>
-                    </div>
-                </div>
-
-                <!-- Tanggal Bergabung -->
-                <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between">
-                    <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                        <i class="fa-regular fa-calendar-check text-slate-400"></i> Bergabung Sejak
-                    </span>
-                    <span id="modalClipperCreatedAt" class="font-semibold text-slate-700 dark:text-slate-300">-</span>
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="pt-4 border-t border-slate-100 dark:border-[#2e2e2e] flex justify-end">
-                <button type="button" onclick="closeDetailModal()"
-                    class="btn btn-secondary rounded-xl px-5 py-2.5 text-sm font-semibold">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
@@ -305,36 +194,6 @@
             });
         @endif
 
-        function openDetailModal(data) {
-            document.getElementById('modalClipperName').textContent = data.name || '-';
-            document.getElementById('modalClipperEmail').textContent = data.email || '-';
-            document.getElementById('modalClipperWhatsapp').textContent = data.whatsapp || '-';
-            document.getElementById('modalClipperBalance').textContent = data.balance || 'Rp 0';
-            document.getElementById('modalClipperSubmissions').textContent = (data.submissions_count || 0) + ' Video';
-            document.getElementById('modalClipperBank').textContent = data.bank_name || '-';
-            document.getElementById('modalClipperAccountNumber').textContent = data.account_number || '-';
-            document.getElementById('modalClipperAccountName').textContent = data.account_name || '-';
-            document.getElementById('modalClipperCreatedAt').textContent = data.created_at || '-';
-
-            const statusBadge = document.getElementById('modalClipperStatusBadge');
-            if (data.is_active) {
-                statusBadge.textContent = 'Aktif';
-                statusBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400';
-            } else {
-                statusBadge.textContent = 'Nonaktif';
-                statusBadge.className = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400';
-            }
-
-            const modal = document.getElementById('modalDetailClipper');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeDetailModal() {
-            const modal = document.getElementById('modalDetailClipper');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
 
         function confirmDelete(name, deleteUrl) {
             Swal.fire({
