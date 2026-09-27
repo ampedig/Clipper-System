@@ -18,27 +18,35 @@ class ClipCampaignController extends Controller
      */
     public function index(Request $request): View
     {
-        $perPage = (int) $request->get('per_page', 10);
-        $search = $request->get('search');
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
 
-        $campaigns = ClipCampaign::with('creator')
+        $query = ClipCampaign::with('creator')
             ->withCount([
                 'clipSubmissions as approved_submissions_count' => function ($query) {
                     $query->whereIn('status', ['approved', 'active', 'completed']);
                 },
                 'clipSubmissions as total_submissions_count',
-            ])
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                });
-            })
-            ->latest()
+            ]);
+
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('creator', function ($creatorQuery) use ($search) {
+                        $creatorQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $campaigns = $query->latest()
             ->paginate($perPage)
             ->withQueryString();
 
-        return view('dashboard.clip_campaigns.index', compact('campaigns', 'perPage', 'search'));
+        return view('dashboard.clip_campaigns.index', compact('campaigns', 'perPage'));
     }
 
     /**

@@ -17,12 +17,34 @@ class ClipSubmissionController extends Controller
     public function index(Request $request)
     {
         $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
+
         $status = $request->input('status', 'all');
 
         $query = ClipSubmission::with(['user', 'clipCampaign'])->latest();
 
         if ($status && $status !== 'all') {
             $query->where('status', $status);
+        }
+
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                // 1. Nama & Email User / Clipper
+                $q->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                })
+                // 2. Title Clip Campaign
+                    ->orWhereHas('clipCampaign', function ($campaignQuery) use ($search) {
+                        $campaignQuery->where('title', 'like', "%{$search}%");
+                    })
+                // 3. Submitted URL / Video ID
+                    ->orWhere('submitted_url', 'like', "%{$search}%")
+                    ->orWhere('video_id', 'like', "%{$search}%");
+            });
         }
 
         $submissions = $query->paginate($perPage)->withQueryString();

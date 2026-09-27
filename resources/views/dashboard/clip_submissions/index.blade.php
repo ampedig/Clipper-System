@@ -136,6 +136,18 @@
                     </div>
                 </div>
 
+                @if (request('search'))
+                    <div class="px-5 py-2.5 bg-brand-50/50 dark:bg-brand-950/20 border-b border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between text-xs">
+                        <span class="text-slate-600 dark:text-slate-300">
+                            Menampilkan hasil pencarian untuk: <strong class="text-brand-600 dark:text-brand-400 font-semibold">"{{ request('search') }}"</strong>
+                        </span>
+                        <a href="{{ request()->fullUrlWithQuery(['search' => null, 'page' => null]) }}"
+                            class="text-rose-500 hover:text-rose-600 dark:text-rose-400 font-medium inline-flex items-center gap-1.5 hover:underline">
+                            <i class="fa-solid fa-xmark"></i> Hapus Filter
+                        </a>
+                    </div>
+                @endif
+
                 <!-- Main Data Table -->
                 <div class="overflow-x-auto">
                     <table id="submissionTable" class="w-full text-left border-collapse">
@@ -370,7 +382,12 @@
                                     <td colspan="8" class="px-6 py-10 text-center text-slate-500 dark:text-slate-400">
                                         <div class="flex flex-col items-center justify-center gap-2">
                                             <i class="fa-solid fa-film text-3xl text-slate-300 dark:text-slate-600"></i>
-                                            <p class="font-medium text-sm">Belum ada pengajuan video yang sesuai kriteria.
+                                            <p class="font-medium text-sm">
+                                                @if (request('search'))
+                                                    Tidak ada pengajuan video yang cocok dengan pencarian "{{ request('search') }}".
+                                                @else
+                                                    Belum ada pengajuan video yang sesuai kriteria.
+                                                @endif
                                             </p>
                                         </div>
                                     </td>

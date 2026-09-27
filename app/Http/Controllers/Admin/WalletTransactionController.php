@@ -29,14 +29,13 @@ class WalletTransactionController extends Controller
             $query->where('type', 'debit');
         }
 
-        $search = trim((string) $request->input('search', ''));
-        if ($search !== '') {
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
             $query->where(function ($q) use ($search) {
-                $q->where('notes', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($userQuery) use ($search) {
-                        $userQuery->where('name', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%");
-                    });
+                $q->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                })->orWhere('notes', 'like', "%{$search}%");
             });
         }
 
