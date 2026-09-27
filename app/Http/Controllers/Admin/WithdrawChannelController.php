@@ -5,13 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\WithdrawChannel;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class WithdrawChannelController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
-        $perPage = $request->get('per_page', 10);
-        $withdrawChannels = WithdrawChannel::paginate($perPage);
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
+
+        $query = WithdrawChannel::query();
+
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
+        }
+
+        $withdrawChannels = $query->latest()->paginate($perPage)->withQueryString();
 
         return view('dashboard.withdraw_channels.index', compact('withdrawChannels'));
     }

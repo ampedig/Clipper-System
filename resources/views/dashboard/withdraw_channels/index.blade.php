@@ -50,6 +50,18 @@
                     </a>
                 </div>
 
+                @if (request('search'))
+                    <div class="px-5 py-2.5 bg-brand-50/50 dark:bg-brand-950/20 border-b border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between text-xs">
+                        <span class="text-slate-600 dark:text-slate-300">
+                            Menampilkan hasil pencarian untuk: <strong class="text-brand-600 dark:text-brand-400 font-semibold">"{{ request('search') }}"</strong>
+                        </span>
+                        <a href="{{ request()->fullUrlWithQuery(['search' => null, 'page' => null]) }}"
+                            class="text-rose-500 hover:text-rose-600 dark:text-rose-400 font-medium inline-flex items-center gap-1.5 hover:underline">
+                            <i class="fa-solid fa-xmark"></i> Hapus Filter
+                        </a>
+                    </div>
+                @endif
+
                 <!-- Main Data Table -->
                 <div class="overflow-x-auto">
                     <table id="channelTable" class="w-full text-left border-collapse">
@@ -124,7 +136,13 @@
                                         <div class="flex flex-col items-center justify-center space-y-2">
                                             <i
                                                 class="fa-regular fa-folder-open text-3xl mb-2 text-slate-300 dark:text-slate-600"></i>
-                                            <p class="text-sm font-medium">Belum ada data metode penarikan</p>
+                                            <p class="text-sm font-medium">
+                                                @if (request('search'))
+                                                    Tidak ada data metode penarikan yang cocok dengan pencarian "{{ request('search') }}".
+                                                @else
+                                                    Belum ada data metode penarikan
+                                                @endif
+                                            </p>
                                         </div>
                                     </td>
                                 </tr>
@@ -183,14 +201,19 @@
                 }).on('change', function() {
                     let url = new URL(window.location.href);
                     url.searchParams.set('per_page', $(this).val());
+                    url.searchParams.set('page', 1);
                     window.location.href = url.href;
                 });
             } else {
-                document.querySelector('.select2-show-entries').addEventListener('change', function() {
-                    let url = new URL(window.location.href);
-                    url.searchParams.set('per_page', this.value);
-                    window.location.href = url.href;
-                });
+                const select = document.querySelector('.select2-show-entries');
+                if (select) {
+                    select.addEventListener('change', function() {
+                        let url = new URL(window.location.href);
+                        url.searchParams.set('per_page', this.value);
+                        url.searchParams.set('page', 1);
+                        window.location.href = url.href;
+                    });
+                }
             }
         });
 

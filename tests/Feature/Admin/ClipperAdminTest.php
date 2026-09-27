@@ -60,11 +60,12 @@ class ClipperAdminTest extends TestCase
         $this->assertFalse($this->clipper->fresh()->is_active);
     }
 
-    public function test_admin_can_search_clippers(): void
+    public function test_admin_can_search_clippers_by_name(): void
     {
         User::factory()->create([
             'name' => 'Siti Nurhaliza',
             'email' => 'siti@example.com',
+            'whatsapp' => '081233334444',
             'role' => 'clipper',
         ]);
 
@@ -73,6 +74,56 @@ class ClipperAdminTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Siti Nurhaliza');
         $response->assertDontSee('Budi Clipper');
+    }
+
+    public function test_admin_can_search_clippers_by_email(): void
+    {
+        User::factory()->create([
+            'name' => 'Dewi Lestari',
+            'email' => 'dewi.lestari@creator.com',
+            'whatsapp' => '081255556666',
+            'role' => 'clipper',
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('admin.clippers.index', ['search' => 'creator.com']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Dewi Lestari');
+        $response->assertDontSee('Budi Clipper');
+    }
+
+    public function test_admin_can_search_clippers_by_whatsapp(): void
+    {
+        User::factory()->create([
+            'name' => 'Eko Prasetyo',
+            'email' => 'eko@example.com',
+            'whatsapp' => '089876543210',
+            'role' => 'clipper',
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('admin.clippers.index', ['search' => '089876543210']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Eko Prasetyo');
+        $response->assertDontSee('Budi Clipper');
+    }
+
+    public function test_clipper_search_and_per_page_parameters_are_preserved(): void
+    {
+        User::factory()->count(25)->create([
+            'role' => 'clipper',
+            'name' => 'Multi Page Clipper',
+        ]);
+
+        $response = $this->actingAs($this->admin)->get(route('admin.clippers.index', [
+            'search' => 'Multi Page',
+            'per_page' => 10,
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertSee('Multi Page Clipper');
+        $response->assertSee('Menampilkan hasil pencarian untuk:');
+        $response->assertSee('per_page=10');
     }
 
     public function test_admin_can_delete_clipper(): void

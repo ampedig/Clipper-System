@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Withdrawal;
 use App\Services\TelegramService;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,13 +19,51 @@ class WithdrawalController extends Controller
      */
     public function index(Request $request): View
     {
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
+
         $query = Withdrawal::with('user')->latest('id');
 
-        if ($request->has('status') && $request->status !== 'all') {
+        if ($request->filled('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        $perPage = request('per_page', 10);
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                // 1. Nama & Email User
+                $q->whereHas('user', function ($uq) use ($search) {
+                    $uq->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                })
+                // 2. Bank & Rekening
+                    ->orWhere('bank_name', 'like', "%{$search}%")
+                    ->orWhere('account_number', 'like', "%{$search}%")
+                    ->orWhere('account_name', 'like', "%{$search}%")
+                // 3. Tanggal (created_at)
+                    ->orWhere('created_at', 'like', "%{$search}%");
+
+                // Format tanggal misal DD-MM-YYYY atau DD/MM/YYYY
+                if (preg_match('/^\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4}$/', $search)) {
+                    try {
+                        $parsedDate = Carbon::parse($search)->format('Y-m-d');
+                        $q->orWhereDate('created_at', $parsedDate);
+                    } catch (\Throwable $e) {
+                        // Abaikan jika gagal parse
+                    }
+                }
+
+                // 4. Nominal (Angka utuh / format seperti 50.000)
+                $cleanAmount = preg_replace('/[^0-9]/', '', $search);
+                if ($cleanAmount !== '') {
+                    $q->orWhere('amount', 'like', "%{$cleanAmount}%")
+                        ->orWhere('net_amount', 'like', "%{$cleanAmount}%");
+                }
+            });
+        }
+
         $withdrawals = $query->paginate($perPage)->withQueryString();
 
         return view('dashboard.withdrawals.index', compact('withdrawals'));
