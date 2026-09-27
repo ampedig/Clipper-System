@@ -40,7 +40,8 @@
                 <i class="fa-solid fa-cash-register sb-icon"></i> <span>Riwayat</span>
             </a>
 
-            <a href="withdraw.html" class="sb-item t-sidebar">
+            <a href="{{ route('admin.withdrawals.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.withdrawals.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-money-bill-transfer sb-icon"></i> <span>Withdraw</span>
             </a>
 

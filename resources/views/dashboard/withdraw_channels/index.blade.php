@@ -107,7 +107,7 @@
                                     <td class="px-6 py-4 text-center td-nowrap">
                                         <div class="flex items-center justify-center gap-2">
                                             <a href="{{ route('admin.withdraw-channels.edit', $channel->id) }}"
-                                                class="btn btn-secondary btn-icon" title="Edit Data">
+                                                class="btn btn-primary btn-icon" title="Edit Data">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <button type="button" class="btn btn-danger btn-icon btn-delete"

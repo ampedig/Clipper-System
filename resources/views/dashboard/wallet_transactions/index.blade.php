@@ -14,12 +14,9 @@
 
             <!-- Page Header -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
-                        Riwayat Transaksi Komisi
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">Log mutasi saldo masuk dan penarikan komisi para clipper</p>
-                </div>
+                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                    Riwayat Transaksi Komisi
+                </h2>
                 <!-- Breadcrumb -->
                 @include('dashboard.partials.breadcrumb', [
                     'crumb1_label' => 'Dashboard',
@@ -51,17 +48,22 @@
                     <div class="flex items-center gap-3">
                         <!-- Filter Tipe Transaksi -->
                         <select id="typeFilterSelect" class="select2-filter-type">
-                            <option value="all" {{ !request('type') || request('type') == 'all' ? 'selected' : '' }}>Semua Tipe</option>
-                            <option value="tambah" {{ request('type') == 'tambah' || request('type') == 'credit' ? 'selected' : '' }}>Tambah (+)</option>
-                            <option value="kurang" {{ request('type') == 'kurang' || request('type') == 'debit' ? 'selected' : '' }}>Kurang (-)</option>
+                            <option value="all" {{ !request('type') || request('type') == 'all' ? 'selected' : '' }}>
+                                Semua Tipe</option>
+                            <option value="tambah"
+                                {{ request('type') == 'tambah' || request('type') == 'credit' ? 'selected' : '' }}>Tambah
+                                (+)</option>
+                            <option value="kurang"
+                                {{ request('type') == 'kurang' || request('type') == 'debit' ? 'selected' : '' }}>Kurang (-)
+                            </option>
                         </select>
 
                         <!-- Atur Kolom Dropdown -->
                         <div class="relative shrink-0">
                             <button id="btnColumns"
                                 class="px-4 py-2 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-slate-600 dark:text-slate-400 font-medium text-sm hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition flex items-center justify-center gap-2 whitespace-nowrap">
-                                <i class="fa-solid fa-table-columns"></i> <span class="whitespace-nowrap">Atur Kolom</span> <i
-                                    class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                                <i class="fa-solid fa-table-columns"></i> <span class="whitespace-nowrap">Atur Kolom</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
                             </button>
 
                             <!-- Column Dropdown Menu -->
@@ -70,8 +72,7 @@
                                 <div class="text-xs font-semibold text-slate-400 uppercase px-3 py-2">
                                     Tampilkan Kolom
                                 </div>
-                                <div id="columnListContainer"
-                                    class="space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                                <div id="columnListContainer" class="space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
                                     <div class="px-3 py-2 text-xs text-slate-400">Loading kolom...</div>
                                 </div>
                             </div>
@@ -131,10 +132,13 @@
                                         'badgeClass' => $badgeClass,
                                         'badgeHtml' => $badgeHtml,
                                         'saldoAwal' => 'Rp ' . number_format($tx->balance_before, 0, ',', '.'),
-                                        'nominal' => ($isCredit ? '+ ' : '- ') . 'Rp ' . number_format($tx->amount, 0, ',', '.'),
+                                        'nominal' =>
+                                            ($isCredit ? '+ ' : '- ') . 'Rp ' . number_format($tx->amount, 0, ',', '.'),
                                         'saldoAkhir' => 'Rp ' . number_format($tx->balance_after, 0, ',', '.'),
                                         'description' => $tx->notes ?? 'Tidak ada keterangan mutasi.',
-                                        'date' => $tx->created_at ? $tx->created_at->translatedFormat('d M Y, H:i') . ' WIB' : '-',
+                                        'date' => $tx->created_at
+                                            ? $tx->created_at->translatedFormat('d M Y, H:i') . ' WIB'
+                                            : '-',
                                     ];
                                 @endphp
                                 <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors"
@@ -152,26 +156,30 @@
                                     </td>
                                     <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
                                         <div>
-                                            <div class="font-semibold text-slate-800 dark:text-slate-200">{{ $clipperName }}</div>
+                                            <div class="font-semibold text-slate-800 dark:text-slate-200">
+                                                {{ $clipperName }}</div>
                                             <div class="text-xs text-slate-400 font-normal">{{ $clipperEmail }}</div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 td-nowrap">
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold {{ $badgeClass }}">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold {{ $badgeClass }}">
                                             {!! $badgeHtml !!}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-slate-600 dark:text-slate-400 td-nowrap">
                                         Rp {{ number_format($tx->balance_before, 0, ',', '.') }}
                                     </td>
-                                    <td class="px-6 py-4 font-semibold {{ $isCredit ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }} td-nowrap">
+                                    <td
+                                        class="px-6 py-4 font-semibold {{ $isCredit ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }} td-nowrap">
                                         {{ $isCredit ? '+ ' : '- ' }}Rp {{ number_format($tx->amount, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white td-nowrap">
                                         Rp {{ number_format($tx->balance_after, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 text-center td-nowrap">
-                                        <button type="button" class="btn btn-secondary btn-icon" title="Lihat Detail Transaksi"
+                                        <button type="button" class="btn btn-primary btn-icon"
+                                            title="Lihat Detail Transaksi"
                                             onclick="openDetailModal({{ json_encode($detailPayload) }})">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
@@ -223,25 +231,25 @@
                 <div
                     class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
                     <div>
-                        <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Nama Clipper / Pengguna</p>
+                        <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">Nama Clipper / Pengguna
+                        </p>
                         <p id="modalUserName" class="font-semibold text-slate-900 dark:text-white text-sm mt-0.5">-</p>
                     </div>
                     <div class="text-right">
                         <p class="text-[11px] text-slate-400 font-medium uppercase tracking-wider">ID Riwayat</p>
-                        <p id="modalTrxId" class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mt-0.5">-</p>
+                        <p id="modalTrxId"
+                            class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 mt-0.5">-</p>
                     </div>
                 </div>
 
                 <!-- Financial Movement Breakdown -->
                 <div class="grid grid-cols-3 gap-3">
-                    <div
-                        class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
                         <span class="text-slate-400 block mb-1">Saldo Awal</span>
                         <p id="modalSaldoAwal" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rp 0</p>
                     </div>
 
-                    <div
-                        class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-100 dark:border-[#2e2e2e]">
                         <span class="text-slate-400 block mb-1">Nominal Mutasi</span>
                         <p id="modalNominal" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Rp 0</p>
                     </div>
