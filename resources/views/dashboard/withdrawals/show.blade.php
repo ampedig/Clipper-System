@@ -73,52 +73,44 @@
                 </div>
 
                 <!-- Baris 1: Informasi Pengguna -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 bg-slate-50 dark:bg-[#161616] p-4 sm:p-5 rounded-2xl border border-slate-100 dark:border-[#2e2e2e]">
                     <!-- Nama Pengguna -->
                     <div>
-                        <label
-                            class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                            Nama Pengguna
-                        </label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i class="fa-regular fa-user text-xs"></i>
-                            </div>
-                            <input type="text" value="{{ $withdrawal->user->name }}" readonly
-                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                            <i class="fa-regular fa-user mr-1"></i> Nama Pengguna
+                        </span>
+                        <div class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                            {{ $withdrawal->user->name }}
                         </div>
                     </div>
 
                     <!-- Email Pengguna -->
                     <div>
-                        <label
-                            class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                            Email
-                        </label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i class="fa-regular fa-envelope text-xs"></i>
-                            </div>
-                            <input type="text" value="{{ $withdrawal->user->email }}" readonly
-                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                            <i class="fa-regular fa-envelope mr-1"></i> Email
+                        </span>
+                        <div class="text-sm font-medium text-slate-800 dark:text-slate-200 break-all">
+                            {{ $withdrawal->user->email }}
+                        </div>
+                    </div>
+
+                    <!-- Sisa Saldo -->
+                    <div>
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                            <i class="fa-solid fa-wallet mr-1"></i> Sisa Saldo
+                        </span>
+                        <div class="text-sm font-bold text-slate-800 dark:text-slate-200">
+                            Rp {{ number_format($withdrawal->user->balance, 0, ',', '.') }}
                         </div>
                     </div>
 
                     <!-- Waktu Pengajuan -->
-                    <div class="sm:col-span-2 md:col-span-1">
-                        <label
-                            class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                            Waktu Pengajuan
-                        </label>
-                        <div class="relative">
-                            <div
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i class="fa-regular fa-calendar text-xs"></i>
-                            </div>
-                            <input type="text" value="{{ $withdrawal->created_at->format('d M Y, H:i') }} WIB" readonly
-                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
+                    <div>
+                        <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                            <i class="fa-regular fa-calendar mr-1"></i> Waktu Pengajuan
+                        </span>
+                        <div class="text-sm font-medium text-slate-800 dark:text-slate-200">
+                            {{ $withdrawal->created_at->format('d M Y, H:i') }} WIB
                         </div>
                     </div>
                 </div>

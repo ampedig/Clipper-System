@@ -35,7 +35,7 @@ class WithdrawalAdminTest extends TestCase
         $response = $this->actingAs($this->admin)->get(route('admin.withdrawals.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Daftar Pengajuan Withdrawal');
+        $response->assertSee('Penarikan Dana (Withdraw)');
     }
 
     public function test_non_admin_cannot_view_withdrawals_list()

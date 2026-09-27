@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdministratorController;
 use App\Http\Controllers\Admin\ClipCampaignController;
+use App\Http\Controllers\Admin\ClipperController;
 use App\Http\Controllers\Admin\ClipSubmissionController as AdminClipSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
@@ -48,6 +49,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::patch('/clip-submissions/{clip_submission}/status', [AdminClipSubmissionController::class, 'updateStatus'])->name('clip-submissions.update-status');
     Route::post('/clip-submissions/{clip_submission}/check-views', [AdminClipSubmissionController::class, 'checkViews'])->name('clip-submissions.check-views');
     Route::resource('clip-submissions', AdminClipSubmissionController::class)->only(['index', 'destroy']);
+
+    Route::patch('/clippers/{clipper}/status', [ClipperController::class, 'toggleStatus'])->name('clippers.status');
+    Route::resource('clippers', ClipperController::class)->parameters(['clippers' => 'clipper']);
 
     Route::patch('/administrators/{administrator}/status', [AdministratorController::class, 'toggleStatus'])->name('administrators.status');
     Route::resource('administrators', AdministratorController::class);

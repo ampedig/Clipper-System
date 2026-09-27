@@ -46,6 +46,18 @@
                     </a>
                 </div>
 
+                @if (request('search'))
+                    <div class="px-5 py-2.5 bg-brand-50/50 dark:bg-brand-950/20 border-b border-slate-100 dark:border-[#2e2e2e] flex items-center justify-between text-xs">
+                        <span class="text-slate-600 dark:text-slate-300">
+                            Menampilkan hasil pencarian untuk: <strong class="text-brand-600 dark:text-brand-400 font-semibold">"{{ request('search') }}"</strong>
+                        </span>
+                        <a href="{{ request()->fullUrlWithQuery(['search' => null, 'page' => null]) }}"
+                            class="text-rose-500 hover:text-rose-600 dark:text-rose-400 font-medium inline-flex items-center gap-1.5 hover:underline">
+                            <i class="fa-solid fa-xmark"></i> Hapus Filter
+                        </a>
+                    </div>
+                @endif
+
                 <!-- Main Table -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -65,6 +77,9 @@
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
                                     Email</th>
                                 <th
+                                    class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                    Saldo</th>
+                                <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
                                     Status</th>
                                 <th
@@ -82,6 +97,9 @@
                                     <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">
                                         {{ $admin->whatsapp ?? '-' }}</td>
                                     <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">{{ $admin->email }}
+                                    </td>
+                                    <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">
+                                        Rp {{ number_format($admin->balance ?? 0, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-3 text-center td-nowrap">
                                         <label class="relative inline-flex items-center cursor-pointer">
@@ -108,7 +126,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-slate-500 dark:text-slate-400">
+                                    <td colspan="7" class="px-6 py-4 text-center text-slate-500 dark:text-slate-400">
                                         Belum ada data administrator.
                                     </td>
                                 </tr>
@@ -242,14 +260,19 @@
             }).on('change', function() {
                 let url = new URL(window.location.href);
                 url.searchParams.set('per_page', $(this).val());
+                url.searchParams.set('page', '1');
                 window.location.href = url.href;
             });
         } else {
-            document.querySelector('.select2-show-entries').addEventListener('change', function() {
-                let url = new URL(window.location.href);
-                url.searchParams.set('per_page', this.value);
-                window.location.href = url.href;
-            });
+            const selectEl = document.querySelector('.select2-show-entries');
+            if (selectEl) {
+                selectEl.addEventListener('change', function() {
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('per_page', this.value);
+                    url.searchParams.set('page', '1');
+                    window.location.href = url.href;
+                });
+            }
         }
     </script>
 @endpush

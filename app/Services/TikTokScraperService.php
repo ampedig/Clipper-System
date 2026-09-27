@@ -35,8 +35,8 @@ class TikTokScraperService
 
             if (json_last_error() === JSON_ERROR_NONE && isset($data['view_count'])) {
                 return [
-                    'views'    => $data['view_count'] ?? 0,
-                    'likes'    => $data['like_count'] ?? 0,
+                    'views' => $data['view_count'] ?? 0,
+                    'likes' => $data['like_count'] ?? 0,
                     'comments' => $data['comment_count'] ?? 0,
                     'uploader' => $data['uploader'] ?? null,
                 ];

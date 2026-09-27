@@ -8,9 +8,6 @@ class TikTokUrlService
 {
     /**
      * Resolve short URL and extract TikTok Video ID.
-     *
-     * @param string $url
-     * @return string|null
      */
     public function extractVideoId(string $url): ?string
     {
@@ -23,7 +20,7 @@ class TikTokUrlService
         if (preg_match('/\/video\/(\d+)/', $url, $matches)) {
             return $matches[1];
         }
-        
+
         // Some mobile shares might use /v/ format
         if (preg_match('/\/v\/(\d+)/', $url, $matches)) {
             return $matches[1];
@@ -34,9 +31,6 @@ class TikTokUrlService
 
     /**
      * Follow HTTP redirects to get the final long URL.
-     *
-     * @param string $url
-     * @return string
      */
     protected function resolveRedirect(string $url): string
     {
@@ -44,7 +38,7 @@ class TikTokUrlService
             // We use withoutRedirecting() to catch the 301/302 Location header
             $response = Http::withoutRedirecting()
                 ->withHeaders([
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
                 ])
                 ->get($url);
 

@@ -6,12 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
 class AdministratorController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
-        $administrators = User::where('role', 'admin')->paginate(10);
+        $perPage = (int) $request->input('per_page', 10);
+        if (! in_array($perPage, [10, 25, 50, 100], true)) {
+            $perPage = 10;
+        }
+
+        $query = User::where('role', 'admin');
+
+        if ($request->filled('search')) {
+            $search = trim((string) $request->input('search'));
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('whatsapp', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $administrators = $query->latest()->paginate($perPage)->withQueryString();
 
         return view('dashboard.administrators.index', compact('administrators'));
     }

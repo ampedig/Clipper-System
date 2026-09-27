@@ -1,4 +1,5 @@
 <?php
+
 $url = 'https://www.tiktok.com/@scout2015/video/6718335390845095173';
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -3,9 +3,11 @@
 
 <head>
     @@include('../partials/head.html', {
-    "title": "Detail Penarikan #WD-20260916-0081 - AMPEDIG Admin",
-    "description": "Rincian pengajuan penarikan dana clipper dan aksi persetujuan admin."
+    "title": "Data Clipper - Masum.xyz",
+    "description": "Halaman Data Clipper"
     })
+    <link rel="stylesheet" href="assets/libs/select2/css/select2.min.css">
+    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="assets/libs/sweetalert2/sweetalert2.min.css">
 </head>
 
@@ -23,407 +25,308 @@
 
             @@include('../partials/navbar.html')
 
-            <!-- Scrollable Content Area -->
             <main class="flex-1 overflow-x-hidden overflow-y-auto flex flex-col">
-
-                <!-- Content Wrapper -->
                 <div class="flex-1 p-4 md:p-6">
-                    <div class="max-w-screen-2xl mx-auto space-y-6">
+                    <div class="max-w-screen-2xl mx-auto">
 
                         <!-- Page Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
-                                <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
-                                    Detail Penarikan Dana
-                                </h2>
-                            </div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                            <h2 class="text-xl font-semibold text-slate-900 dark:text-white tracking-tight">
+                                Data Clipper
+                            </h2>
                             <!-- Breadcrumb -->
                             @@include('../partials/breadcrumb.html', {
                                 "crumb1_label": "Dashboard",
                                 "crumb1_url":   "index.html",
-                                "crumb2_label": "Withdraw",
-                                "crumb2_url":   "withdraw.html",
-                                "crumb3_label": "Detail",
+                                "crumb2_label": "Data Clipper",
+                                "crumb2_url":   "",
+                                "crumb3_label": "",
                                 "crumb3_url":   ""
                             })
                         </div>
 
-                        <!-- Card Panel Utama (1 Panel Bersih & Konsisten) -->
-                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl p-6 sm:p-8 space-y-6 transition-colors duration-300">
-
-                            <!-- Header Bar: ID & Status Transaksi -->
-                            <div class="pb-4 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                <div class="flex items-center gap-2.5">
-                                    <h3 class="text-base font-semibold text-slate-800 dark:text-slate-200">
-                                        Data Pengajuan
-                                    </h3>
-                                    <span class="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] text-slate-800 dark:text-slate-200">
-                                        #WD-20260916-0081
-                                    </span>
+                        <!-- Table Container -->
+                        <div class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors duration-300">
+                            <!-- Header Table -->
+                            <div
+                                class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Show</span>
+                                    <select class="select2-show-entries w-24">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
                                 </div>
-                                <span id="detailStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 w-fit">
-                                    <i class="fa-solid fa-clock text-[10px]"></i> Diproses
-                                </span>
+
+                                <a class="btn btn-primary" href="create-administrator.html">
+                                    <i class="fa-solid fa-plus"></i> Tambah
+                                </a>
                             </div>
 
-                            <!-- Baris 1: Informasi Pengguna -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                <!-- Nama Pengguna -->
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                        Nama Pengguna
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                            <i class="fa-regular fa-user text-xs"></i>
-                                        </div>
-                                        <input type="text" value="Rizky Pratama" readonly
-                                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                    </div>
-                                </div>
+                            <!-- Main Table -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead
+                                        class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
+                                        <tr>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                #</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Nama</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Whatsapp</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Email</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Saldo</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Status</th>
+                                            <th
+                                                class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center t-title-data font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                                Aksi
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
+                                        <!-- Row 1 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">1</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Ahmad Fauzi
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0812-3456-7890</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">ahmad.fauzi@example.com</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">Rp 1.450.000</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <a href="clipper-detail.html" class="btn btn-secondary btn-icon" title="Detail">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Ahmad Fauzi')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                <!-- Email Pengguna -->
-                                <div>
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                        Email
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                            <i class="fa-regular fa-envelope text-xs"></i>
-                                        </div>
-                                        <input type="text" value="rizky.pratama@example.com" readonly
-                                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                    </div>
-                                </div>
+                                        <!-- Row 2 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">2</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Dina Mariana
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0857-1231-1231</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">dina.mariana@example.com</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">Rp 820.000</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <a href="clipper-detail.html" class="btn btn-secondary btn-icon" title="Detail">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Dina Mariana')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                <!-- Waktu Pengajuan -->
-                                <div class="sm:col-span-2 md:col-span-1">
-                                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                        Waktu Pengajuan
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                            <i class="fa-regular fa-calendar text-xs"></i>
-                                        </div>
-                                        <input type="text" value="16 Sep 2026, 09:15 WIB" readonly
-                                            class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-medium text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                    </div>
-                                </div>
+                                        <!-- Row 3 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">3</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Reza Pahlevi
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-8765-4321</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">reza.pahlevi@example.com</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">Rp 2.100.000</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <a href="clipper-detail.html" class="btn btn-secondary btn-icon" title="Detail">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Reza Pahlevi')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 4 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">4</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Bima Sena
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0819-2233-4455</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">bima.sena@example.com</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">Rp 350.000</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer">
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <a href="clipper-detail.html" class="btn btn-secondary btn-icon" title="Detail">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Bima Sena')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Row 5 -->
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">5</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                                Sinta Lestari
+                                            </td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">0821-5555-6666</td>
+                                            <td class="px-6 py-3 text-slate-700 dark:text-slate-400 td-nowrap">sinta.lestari@example.com</td>
+                                            <td class="px-6 py-3 font-semibold text-slate-800 dark:text-slate-200 td-nowrap">Rp 0</td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" class="sr-only peer" checked>
+                                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                                </label>
+                                            </td>
+                                            <td class="px-6 py-3 text-center td-nowrap">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <a href="clipper-detail.html" class="btn btn-secondary btn-icon" title="Detail">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                    <button class="btn btn-primary btn-icon" title="Edit">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-icon"
+                                                        title="Hapus"
+                                                        onclick="confirmDelete(this, 'Sinta Lestari')">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <!-- Baris 2: Rekening Tujuan -->
-                            <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
-                                <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                                    Rekening Tujuan
-                                </h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <!-- Bank Tujuan -->
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                            Metode / Bank
-                                        </label>
-                                        <div class="relative">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                                <i class="fa-solid fa-building-columns text-xs"></i>
-                                            </div>
-                                            <input type="text" value="Bank Central Asia (BCA)" readonly
-                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                        </div>
-                                    </div>
+                            <!-- Pagination Rapi Presisi -->
+                            <div
+                                class="p-5 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Menampilkan <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">1-10</span> dari <span
+                                        class="font-semibold text-slate-700 dark:text-slate-300">88</span> data</span>
 
-                                    <!-- Nomor Rekening -->
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                            Nomor Rekening / No. HP
-                                        </label>
-                                        <div class="relative flex items-center">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                                <i class="fa-regular fa-credit-card text-xs"></i>
-                                            </div>
-                                            <input type="text" id="targetAccountNumber" value="8291039121" readonly
-                                                class="w-full pl-9 pr-20 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-mono font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                            <button type="button" onclick="copyText('8291039121', 'Nomor Rekening')"
-                                                class="absolute right-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200/80 dark:bg-[#282828] hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-brand-950/40 dark:hover:text-brand-400 text-slate-700 dark:text-slate-300 transition-colors inline-flex items-center gap-1.5">
-                                                <i class="fa-regular fa-copy"></i>
-                                                <span>Salin</span>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Nama Pemilik Rekening -->
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                            Nama Pemilik Rekening
-                                        </label>
-                                        <div class="relative flex items-center">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                                <i class="fa-regular fa-id-badge text-xs"></i>
-                                            </div>
-                                            <input type="text" id="targetAccountName" value="Rizky Pratama" readonly
-                                                class="w-full pl-9 pr-20 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                            <button type="button" onclick="copyText('Rizky Pratama', 'Nama Pemilik')"
-                                                class="absolute right-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200/80 dark:bg-[#282828] hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-brand-950/40 dark:hover:text-brand-400 text-slate-700 dark:text-slate-300 transition-colors inline-flex items-center gap-1.5">
-                                                <i class="fa-regular fa-copy"></i>
-                                                <span>Salin</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="inline-flex items-center -space-x-px">
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 ml-0 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-l-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-white bg-brand-500 border border-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:border-brand-600 font-semibold z-10 transition">1</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">2</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">3</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                class="flex items-center justify-center w-9 h-9 leading-tight text-slate-500 dark:text-slate-400 bg-white dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-r-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                                                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
-
-                            <!-- Baris 3: Rincian Nominal -->
-                            <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
-                                <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                                    Rincian Nominal
-                                </h4>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                    <!-- Nominal Bruto -->
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                            Nominal Penarikan
-                                        </label>
-                                        <div class="relative">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                                <i class="fa-solid fa-coins text-xs"></i>
-                                            </div>
-                                            <input type="text" value="Rp 500.000" readonly
-                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-default">
-                                        </div>
-                                    </div>
-
-                                    <!-- Biaya Transaksi -->
-                                    <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                            Biaya Transaksi (Fee)
-                                        </label>
-                                        <div class="relative">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                                <i class="fa-solid fa-receipt text-xs"></i>
-                                            </div>
-                                            <input type="text" value="Rp 2.500" readonly
-                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 focus:outline-none cursor-default">
-                                        </div>
-                                    </div>
-
-                                    <!-- Total Bersih Wajib Ditransfer + Tombol Salin -->
-                                    <div class="sm:col-span-2 md:col-span-1">
-                                        <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5">
-                                            Total Bersih Ditransfer
-                                        </label>
-                                        <div class="relative flex items-center">
-                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-emerald-600 dark:text-emerald-400">
-                                                <i class="fa-solid fa-money-bill-wave text-xs"></i>
-                                            </div>
-                                            <input type="text" id="targetTransferAmount" value="Rp 497.500" readonly
-                                                class="w-full pl-9 pr-20 py-2.5 bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-300 dark:border-emerald-800/50 rounded-xl text-sm font-semibold text-emerald-600 dark:text-emerald-400 focus:outline-none cursor-default">
-                                            <button type="button" onclick="copyText('497500', 'Nominal Transfer')"
-                                                class="absolute right-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors inline-flex items-center gap-1.5">
-                                                <i class="fa-regular fa-copy"></i>
-                                                <span>Salin</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Baris 4: Catatan Penarikan -->
-                            <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                                    Catatan Penarikan
-                                </label>
-                                <textarea rows="2" readonly
-                                    class="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm text-slate-700 dark:text-slate-300 leading-relaxed cursor-default resize-none focus:outline-none">Pencairan komisi penarikan reward campaign clipper periode 1-15 September 2026 via BI-FAST / transfer bank.</textarea>
-                            </div>
-
-                            <!-- Status Alert Banner -->
-                            <div id="actionStatusBanner" class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 flex items-center justify-between text-xs text-amber-800 dark:text-amber-300 transition-all duration-200">
-                                <div class="flex items-center gap-2.5">
-                                    <i class="fa-solid fa-circle-info text-amber-600 dark:text-amber-400"></i>
-                                    <span>Status: <strong>Menunggu Transfer</strong>. Pastikan dana telah ditransfer ke rekening tujuan sebelum konfirmasi selesai.</span>
-                                </div>
-                            </div>
-
-                            <!-- Rejection Note Alert (Hidden by default) -->
-                            <div id="rejectionNoteBox" class="hidden p-4 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/40 space-y-1 text-xs">
-                                <span class="font-semibold text-rose-800 dark:text-rose-300 block">Alasan Penolakan:</span>
-                                <p id="rejectionNoteText" class="text-rose-700 dark:text-rose-400"></p>
-                            </div>
-
-                            <!-- Tombol Aksi Bawah -->
-                            <div class="pt-6 border-t border-slate-100 dark:border-[#2e2e2e] flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3">
-                                <div>
-                                    <a href="withdraw.html" class="btn btn-secondary rounded-xl px-6 py-2.5 text-sm font-semibold inline-flex items-center justify-center gap-2 text-center w-full sm:w-auto">
-                                        <i class="fa-solid fa-arrow-left"></i>
-                                        <span>Kembali</span>
-                                    </a>
-                                </div>
-                                <div id="actionButtonsContainer" class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                                    <!-- Reject Button -->
-                                    <button type="button" id="btnReject" onclick="confirmReject()"
-                                        class="btn bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:hover:bg-rose-900/40 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50 rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2 transition-all w-full sm:w-auto">
-                                        <i class="fa-solid fa-circle-xmark"></i>
-                                        <span>Tolak Pengajuan</span>
-                                    </button>
-
-                                    <!-- Approve Button -->
-                                    <button type="button" id="btnApprove" onclick="confirmApprove()"
-                                        class="btn bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-sm w-full sm:w-auto">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span>Konfirmasi Telah Ditransfer</span>
-                                    </button>
-                                </div>
-                            </div>
-
                         </div>
 
                     </div>
                 </div>
 
                 @@include('../partials/footer.html')
-
             </main>
-
         </div>
-
     </div>
 
+
+
     @@include('../partials/vendor-scripts.html')
+
+
+    <!-- SweetAlert2 JS -->
     <script src="assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
-
     <script>
-        // 1-Click Copy to Clipboard with SweetAlert Toast
-        function copyText(text, label) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).then(function () {
-                    showCopyToast(label);
-                });
-            } else {
-                const tempInput = document.createElement('textarea');
-                tempInput.value = text;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                showCopyToast(label);
-            }
-        }
-
-        function showCopyToast(label) {
+        function confirmDelete(button, name) {
             Swal.fire({
-                toast: true,
-                position: 'top-end',
-                icon: 'success',
-                title: label + ' berhasil disalin!',
-                showConfirmButton: false,
-                timer: 1800,
-                timerProgressBar: true
-            });
-        }
-
-        // Approve Confirmation Handler
-        function confirmApprove() {
-            Swal.fire({
-                title: 'Konfirmasi Telah Ditransfer?',
-                html: 'Pastikan dana bersih sebesar <b>Rp 497.500</b> telah berhasil Anda transfer ke rekening tujuan:<br><br><span class="font-mono bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">BCA - 8291039121 a/n Rizky Pratama</span>',
-                icon: 'question',
+                title: 'Apakah Anda yakin?',
+                text: `Data clipper ${name} akan dihapus secara permanen!`,
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Tandai Selesai',
+                confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-5 py-2.5 mx-1.5',
-                    cancelButton: 'btn btn-secondary font-semibold rounded-xl px-5 py-2.5 mx-1.5'
-                }
+                reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Update badge status
-                    const badge = document.getElementById('detailStatusBadge');
-                    badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400';
-                    badge.innerHTML = '<i class="fa-solid fa-circle-check text-[10px]"></i> Selesai';
-
-                    // Update action banner
-                    const banner = document.getElementById('actionStatusBanner');
-                    banner.className = 'p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/40 text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed flex items-start gap-2.5';
-                    banner.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400 mt-0.5"></i> <span>Penarikan ini telah <strong>Berhasil Disetujui & Selesai</strong> ditransfer.</span>';
-
-                    // Hide buttons container
-                    document.getElementById('actionButtonsContainer').innerHTML = `
-                        <div class="px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] text-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                            Transaksi ini sudah selesai diproses.
-                        </div>
-                    `;
-
-                    Swal.fire({
-                        title: 'Berhasil Dikonfirmasi!',
-                        text: 'Status penarikan telah diperbarui menjadi Selesai.',
-                        icon: 'success',
-                        buttonsStyling: false,
-                        customClass: {
-                            confirmButton: 'btn bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-5 py-2.5'
-                        }
-                    });
-                }
-            });
-        }
-
-        // Reject Confirmation Handler
-        function confirmReject() {
-            Swal.fire({
-                title: 'Tolak Pengajuan Penarikan?',
-                text: 'Silakan masukkan alasan penolakan agar pemohon dapat mengetahuinya:',
-                input: 'textarea',
-                inputPlaceholder: 'Misal: Nomor rekening tidak aktif / nama rekening tidak sesuai dengan akun.',
-                inputAttributes: {
-                    'aria-label': 'Tulis alasan penolakan'
-                },
-                showCancelButton: true,
-                confirmButtonText: 'Tolak Pengajuan',
-                cancelButtonText: 'Batal',
-                buttonsStyling: false,
-                customClass: {
-                    confirmButton: 'btn bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl px-5 py-2.5 mx-1.5',
-                    cancelButton: 'btn btn-secondary font-semibold rounded-xl px-5 py-2.5 mx-1.5'
-                },
-                inputValidator: (value) => {
-                    if (!value || !value.trim()) {
-                        return 'Alasan penolakan wajib diisi!';
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const reason = result.value;
-
-                    // Update badge status
-                    const badge = document.getElementById('detailStatusBadge');
-                    badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400';
-                    badge.innerHTML = '<i class="fa-solid fa-circle-xmark text-[10px]"></i> Ditolak';
-
-                    // Update action banner
-                    const banner = document.getElementById('actionStatusBanner');
-                    banner.className = 'p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/40 text-xs text-rose-800 dark:text-rose-300 leading-relaxed flex items-start gap-2.5';
-                    banner.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-600 dark:text-rose-400 mt-0.5"></i> <span>Pengajuan penarikan ini telah <strong>Ditolak</strong>.</span>';
-
-                    // Show rejection note box
-                    const noteBox = document.getElementById('rejectionNoteBox');
-                    document.getElementById('rejectionNoteText').textContent = reason;
-                    noteBox.classList.remove('hidden');
-
-                    // Hide buttons container
-                    document.getElementById('actionButtonsContainer').innerHTML = `
-                        <div class="px-4 py-2 rounded-xl bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] text-center text-xs font-medium text-slate-500 dark:text-slate-400">
-                            Transaksi ini telah ditolak.
-                        </div>
-                    `;
-
-                    Swal.fire({
-                        title: 'Pengajuan Ditolak',
-                        text: 'Status penarikan telah diperbarui menjadi Ditolak.',
-                        icon: 'info',
-                        buttonsStyling: false,
-                        customClass: {
-                            confirmButton: 'btn bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl px-5 py-2.5'
-                        }
-                    });
+                    // Logic Backend Delete Route
+                    // window.location.href = '/delete/' + id;
+                    console.log('Delete confirmed for:', name);
                 }
             });
         }

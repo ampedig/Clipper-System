@@ -53,8 +53,9 @@
 
             <p class="sb-title sb-title--spaced t-sidebar-title">Pengguna</p>
 
-            <a href="clipper.html" class="sb-item t-sidebar">
-                <i class="fa-solid fa-user-cog sb-icon"></i> <span>Clipper</span>
+            <a href="{{ route('admin.clippers.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.clippers.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-users sb-icon"></i> <span>Clipper</span>
             </a>
 
             <a href="{{ route('admin.administrators.index') }}"

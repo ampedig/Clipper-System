@@ -6,12 +6,29 @@
             <i class="fa-solid fa-bars-staggered text-xl"></i>
         </button>
 
-        <div class="flex items-center relative group">
+        <form method="GET" action="{{ url()->current() }}" class="flex items-center relative group">
+            @foreach(request()->except(['search', 'page']) as $key => $value)
+                @if(is_array($value))
+                    @foreach($value as $v)
+                        <input type="hidden" name="{{ $key }}[]" value="{{ $v }}">
+                    @endforeach
+                @else
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endif
+            @endforeach
+
             <i
-                class="fa-solid fa-magnifying-glass absolute left-3.5 md:left-4 text-slate-400 dark:text-slate-500 text-lg group-focus-within:text-brand-500 transition-colors"></i>
-            <input type="text" placeholder="Cari..."
-                class="pl-10 md:pl-12 pr-4 py-2.5 md:py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] focus:bg-white dark:focus:bg-[#1f1f1f] focus:border-brand-500 focus:ring-0 focus:outline-none rounded-full text-sm text-slate-700 dark:text-slate-200 w-48 sm:w-64 md:w-80 transition-all placeholder-slate-400 dark:placeholder-slate-500 font-medium">
-        </div>
+                class="fa-solid fa-magnifying-glass absolute left-3.5 md:left-4 text-slate-400 dark:text-slate-500 text-lg group-focus-within:text-brand-500 transition-colors pointer-events-none"></i>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari..."
+                class="pl-10 md:pl-12 @if(request('search')) pr-9 @else pr-4 @endif py-2.5 md:py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] focus:bg-white dark:focus:bg-[#1f1f1f] focus:border-brand-500 focus:ring-0 focus:outline-none rounded-full text-sm text-slate-700 dark:text-slate-200 w-48 sm:w-64 md:w-80 transition-all placeholder-slate-400 dark:placeholder-slate-500 font-medium">
+            @if(request('search'))
+                <a href="{{ request()->fullUrlWithQuery(['search' => null, 'page' => null]) }}"
+                    class="absolute right-3.5 text-slate-400 hover:text-rose-500 transition-colors text-xs"
+                    title="Hapus pencarian">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            @endif
+        </form>
     </div>
 
     <div class="flex items-center gap-1.5 sm:gap-3">
