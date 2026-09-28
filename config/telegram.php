@@ -9,5 +9,6 @@ return [
         'commission' => env('TELEGRAM_TOPIC_COMMISSION', 4),
         'activity' => env('TELEGRAM_TOPIC_ACTIVITY', 15),
         'withdraw' => env('TELEGRAM_TOPIC_WITHDRAW', 3),
+        'user' => env('TELEGRAM_TOPIC_USER', 2),
     ],
 ];

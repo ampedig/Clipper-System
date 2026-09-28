@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -45,6 +46,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'clipper',
         ]);
+
+        $text = "👤 <b>Member Baru Terdaftar</b>\n\n";
+        $text .= "<b>Nama:</b> {$user->name}\n";
+        $text .= "<b>Email:</b> {$user->email}\n";
+        $text .= "<b>WhatsApp:</b> {$user->whatsapp}";
+
+        SendTelegramMessageJob::dispatch($text, config('telegram.topics.user'));
 
         event(new Registered($user));
 

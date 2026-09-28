@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Scheduler untuk mengecek views TikTok setiap jam 12 malam
 Schedule::command('clip:check-views')->dailyAt('00:00')->withoutOverlapping();
+
+// Scheduler untuk mengirim rekap harian ke Telegram setiap jam 23:55
+Schedule::command('app:daily-recap')->dailyAt('23:55')->withoutOverlapping();
