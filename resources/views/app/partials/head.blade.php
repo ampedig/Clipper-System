@@ -35,4 +35,5 @@
 </head>
 
 <body class="bg-slate-100 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-700 min-h-screen">
-    <div class="mobile-container pb-24">
+    <div class="mobile-container {{ $containerClass ?? 'pb-24' }}">
+

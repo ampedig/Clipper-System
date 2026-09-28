@@ -17,6 +17,12 @@ class PasswordResetTest extends TestCase
         $response = $this->get('/forgot-password');
 
         $response->assertStatus(200);
+        $response->assertSee('Lupa Kata Sandi?');
+        $response->assertSee('assets/images/logo.png');
+        $response->assertSee(route('password.email'));
+        $response->assertSee(route('login'));
+        $response->assertSee('Email Terdaftar');
+        $response->assertSee('Kirim Tautan Reset');
     }
 
     public function test_reset_password_link_can_be_requested(): void

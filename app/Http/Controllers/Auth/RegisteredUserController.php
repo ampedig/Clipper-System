@@ -32,20 +32,24 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'whatsapp' => ['required', 'string', 'min:10', 'max:20', 'regex:/^[0-9+\s\-]{10,20}$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'terms' => ['accepted'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'whatsapp' => $request->whatsapp,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'clipper',
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('app.home', absolute: false));
     }
 }
