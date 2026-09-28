@@ -1,5 +1,6 @@
 @include('app.partials.head', [
     'title' => 'Beranda',
+    'description' => 'Selamat datang di AZCLIP, platform bagi para kreator untuk meraup komisi mudah hanya dari klip TikTok Anda.',
 ])
 
 @php

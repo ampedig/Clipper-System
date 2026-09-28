@@ -1,5 +1,6 @@
 @include('app.partials.head', [
     'title' => 'Daftar Campaign',
+    'description' => 'Eksplorasi berbagai campaign aktif di AZCLIP dan mulai hasilkan uang dari video TikTok Anda hari ini.',
 ])
 
 <div class="px-5 pt-6 space-y-4 pb-28 min-h-[100dvh]">

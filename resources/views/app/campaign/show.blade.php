@@ -1,5 +1,8 @@
 @include('app.partials.head', [
-    'title' => $campaign->title . ' - Detail Campaign',
+    'title' => $campaign->title,
+    'description' => \Illuminate\Support\Str::limit(strip_tags($campaign->description ?: $campaign->brief), 150),
+    'ogImage' => $campaign->thumbnail_url,
+    'ogType' => 'article'
 ])
 
 @push('styles')

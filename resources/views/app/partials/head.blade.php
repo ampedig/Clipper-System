@@ -11,7 +11,19 @@
     <link rel="manifest" href="{{ asset('assets/images/site.webmanifest') }}">
 
     <title>{{ isset($title) ? $title . ' - AZCLIP' : 'AZCLIP' }}</title>
-    <meta name="description" content="{{ $description ?? 'Platform Creator & Clipper Video AZCLIP' }}">
+    <meta name="description" content="{{ $description ?? 'Platform affiliator & clipper TikTok AZCLIP' }}">
+    
+    <!-- SEO & Open Graph Meta Tags -->
+    <meta property="og:title" content="{{ isset($title) ? $title . ' - AZCLIP' : 'AZCLIP' }}">
+    <meta property="og:description" content="{{ $description ?? 'Platform affiliator & clipper TikTok AZCLIP' }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('assets/images/logo.png') }}">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ isset($title) ? $title . ' - AZCLIP' : 'AZCLIP' }}">
+    <meta name="twitter:description" content="{{ $description ?? 'Platform affiliator & clipper TikTok AZCLIP' }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? asset('assets/images/logo.png') }}">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
