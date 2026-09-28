@@ -31,7 +31,7 @@ Route::get('/tarik-saldo/riwayat', [AppWithdrawalController::class, 'index'])->m
 Route::get('/saldo', [AppWalletController::class, 'index'])->middleware('auth')->name('app.wallet.index');
 Route::get('/bantuan', [AppProfileController::class, 'help'])->name('app.help');
 Route::get('/kebijakan-layanan', [AppProfileController::class, 'policy'])->name('app.policy');
-Route::get('/akun', [AppProfileController::class, 'index'])->name('app.profile');
+Route::get('/akun', [AppProfileController::class, 'index'])->middleware('auth')->name('app.profile');
 Route::get('/akun/edit', [AppProfileController::class, 'edit'])->middleware('auth')->name('app.profile.edit');
 Route::put('/akun/edit', [AppProfileController::class, 'update'])->middleware('auth')->name('app.profile.update');
 Route::get('/akun/kata-sandi', [AppPasswordController::class, 'edit'])->middleware('auth')->name('app.password.edit');
