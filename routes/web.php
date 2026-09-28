@@ -20,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
+Route::view('/offline', 'offline')->name('offline');
 Route::get('/campaign', [CampaignController::class, 'index'])->name('app.campaigns');
 Route::get('/campaign/{campaign:slug}', [CampaignController::class, 'show'])->name('app.campaigns.show');
 Route::post('/campaign/{campaign:slug}/submissions', [AppClipSubmissionController::class, 'store'])->middleware('auth')->name('app.campaigns.submissions.store');
