@@ -159,6 +159,9 @@
                                     #</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                    Tanggal</th>
+                                <th
+                                    class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
                                     Clipper</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
@@ -252,6 +255,12 @@
                                     <!-- NO -->
                                     <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
                                         {{ $loop->iteration + ($submissions->currentPage() - 1) * $submissions->perPage() }}
+                                    </td>
+
+                                    <!-- TANGGAL -->
+                                    <td class="px-6 py-4 font-medium text-slate-600 dark:text-slate-400 td-nowrap text-xs">
+                                        {{ $sub->submitted_at ? $sub->submitted_at->translatedFormat('d M Y') : '-' }}<br>
+                                        <span class="text-[10px] text-slate-400">{{ $sub->submitted_at ? $sub->submitted_at->translatedFormat('H:i') . ' WIB' : '' }}</span>
                                     </td>
 
                                     <!-- CLIPPER -->
