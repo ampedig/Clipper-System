@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WithdrawalApprovedMail;
 use App\Models\User;
 use App\Models\Withdrawal;
 use App\Services\TelegramService;
@@ -10,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class WithdrawalController extends Controller
@@ -147,6 +150,18 @@ class WithdrawalController extends Controller
             $msg .= "Diterima: {$netFormatted}\n\n";
             $msg .= 'Dana telah berhasil ditransfer ke rekening tujuan.';
             TelegramService::sendMessage($msg);
+
+            // Kirim notifikasi email konfirmasi ke user clipper
+            if (! empty($withdrawal->user?->email)) {
+                try {
+                    Mail::to($withdrawal->user->email)->send(new WithdrawalApprovedMail($withdrawal));
+                } catch (\Throwable $e) {
+                    Log::error('Gagal mengirim email konfirmasi penarikan disetujui: '.$e->getMessage(), [
+                        'withdrawal_id' => $withdrawal->id,
+                        'user_id' => $withdrawal->user_id,
+                    ]);
+                }
+            }
         } elseif ($newStatus === 'rejected') {
             $msg = "❌ <b>Penarikan Dana Ditolak</b>\n";
             $msg .= "ID: #{$withdrawal->id}\n";

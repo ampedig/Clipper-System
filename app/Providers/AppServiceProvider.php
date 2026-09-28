@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
                 ->subject('Atur Ulang Kata Sandi - AZCLIP')
                 ->view('emails.auth.reset-password', [
                     'url' => $url,
-                    'user' => $notifiable
+                    'user' => $notifiable,
                 ]);
         });
     }
