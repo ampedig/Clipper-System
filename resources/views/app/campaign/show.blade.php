@@ -117,6 +117,23 @@
             <!-- Divider -->
             <div class="h-px bg-slate-100 ml-14"></div>
 
+            <!-- Maks Penonton -->
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-eye text-sm"></i>
+                </div>
+                <div>
+                    <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Batas Komisi (Max Views)</span>
+                    <span class="text-sm font-bold text-slate-900">
+                        {{ $campaign->view_max ? number_format($campaign->view_max, 0, ',', '.') . ' views' : 'Tanpa Batas' }}
+                    </span>
+                    @if($campaign->view_max)
+                    <p class="text-[10px] font-medium text-amber-600/80 mt-0.5 leading-tight">Views setelah angka ini tidak menambah komisi.</p>
+                    @endif
+                </div>
+            </div>
+            <div class="h-px bg-slate-100 ml-14"></div>
+
             <!-- Periode -->
             <div class="flex items-center gap-4">
                 <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
@@ -178,11 +195,20 @@
 </div>
 
 <!-- Bottom Action Bar (Floating) -->
+@if(!isset($isFull) || !$isFull)
 <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-5 pb-6 pt-2 z-40 pb-safe">
     <button type="button" onclick="openSubmissionSheet()" class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-2xl hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center justify-center gap-2 cursor-pointer">
         <i class="fa-solid fa-video text-xs"></i> Submit Video
     </button>
 </div>
+@else
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-5 pb-6 pt-2 z-40 pb-safe">
+    <div class="w-full bg-slate-50 text-slate-400 font-bold text-sm py-3.5 rounded-2xl border-2 border-dashed border-slate-200 flex items-center justify-center gap-2 cursor-not-allowed select-none">
+        <i class="fa-solid fa-lock text-[13px] opacity-80 mt-[-1px]"></i> 
+        <span>Kuota Telah Penuh</span>
+    </div>
+</div>
+@endif
 
 <!-- Modal Bottom Sheet: Submit Video -->
 <div id="submitSheetModal" class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300" aria-modal="true" role="dialog">

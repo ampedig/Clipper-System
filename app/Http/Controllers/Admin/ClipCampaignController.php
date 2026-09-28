@@ -90,6 +90,21 @@ class ClipCampaignController extends Controller
 
         $validated['created_by'] = auth()->id();
 
+        // Validasi Status Otomatis Berdasarkan Tanggal
+        $startAt = \Carbon\Carbon::parse($validated['start_at']);
+        $endAt = \Carbon\Carbon::parse($validated['end_at']);
+        
+        if ($endAt->isPast()) {
+            $validated['status'] = CampaignStatus::Completed->value;
+        } elseif ($startAt->isFuture()) {
+            $validated['status'] = CampaignStatus::Upcoming->value;
+        } else {
+            // Jika di masa aktif tapi admin memilih upcoming/completed, paksa ke active. Inactive tetap dihormati.
+            if (in_array($validated['status'], [CampaignStatus::Upcoming->value, CampaignStatus::Completed->value])) {
+                $validated['status'] = CampaignStatus::Active->value;
+            }
+        }
+
         ClipCampaign::create($validated);
 
         return redirect()->route('admin.clip-campaigns.index')->with('success', 'Campaign clipper berhasil ditambahkan.');
@@ -158,6 +173,21 @@ class ClipCampaignController extends Controller
                 Storage::disk('public')->delete($clip_campaign->thumbnail);
             }
             $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails/campaigns', 'public');
+        }
+
+        // Validasi Status Otomatis Berdasarkan Tanggal
+        $startAt = \Carbon\Carbon::parse($validated['start_at']);
+        $endAt = \Carbon\Carbon::parse($validated['end_at']);
+        
+        if ($endAt->isPast()) {
+            $validated['status'] = CampaignStatus::Completed->value;
+        } elseif ($startAt->isFuture()) {
+            $validated['status'] = CampaignStatus::Upcoming->value;
+        } else {
+            // Jika di masa aktif tapi admin memilih upcoming/completed, paksa ke active. Inactive tetap dihormati.
+            if (in_array($validated['status'], [CampaignStatus::Upcoming->value, CampaignStatus::Completed->value])) {
+                $validated['status'] = CampaignStatus::Active->value;
+            }
         }
 
         $clip_campaign->update($validated);

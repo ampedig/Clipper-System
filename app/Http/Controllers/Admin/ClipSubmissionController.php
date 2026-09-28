@@ -69,7 +69,33 @@ class ClipSubmissionController extends Controller
             'rejection_reason' => 'nullable|string|max:1000',
         ]);
 
-        $clipSubmission->status = $validated['status'];
+        $clipSubmission->load('clipCampaign');
+        $newStatus = $validated['status'];
+        $oldStatus = $clipSubmission->status;
+
+        // Validasi clipper_limit jika status berubah menjadi active/approved
+        if (in_array($newStatus, ['approved', 'active'], true) && ! in_array($oldStatus, ['approved', 'active', 'completed'], true)) {
+            $campaign = $clipSubmission->clipCampaign;
+
+            if ($campaign && $campaign->clipper_limit > 0) {
+                $activeCount = ClipSubmission::where('clip_campaign_id', $campaign->id)
+                    ->whereIn('status', ['active', 'approved', 'completed'])
+                    ->count();
+
+                if ($activeCount >= $campaign->clipper_limit) {
+                    if ($request->wantsJson()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Batas maksimal clipper (clipper_limit) untuk campaign ini sudah penuh.',
+                        ], 422);
+                    }
+
+                    return back()->with('error', 'Batas maksimal clipper untuk campaign ini sudah penuh.');
+                }
+            }
+        }
+
+        $clipSubmission->status = $newStatus;
 
         if (in_array($validated['status'], ['approved', 'active'], true)) {
             $clipSubmission->approved_at = now();

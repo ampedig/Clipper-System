@@ -7,6 +7,7 @@ use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipSubmission;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ClipViewsSyncService
 {
@@ -24,26 +25,38 @@ class ClipViewsSyncService
      */
     public function sync(ClipSubmission $submission): array
     {
+        Log::info("ClipViewsSyncService: Memulai pengecekan views untuk Submission ID {$submission->id}...");
+
         // 1. Guard Clause: Pastikan status submission aktif
         if (! in_array($submission->status, ['active', 'approved'], true)) {
+            Log::warning("ClipViewsSyncService: Dibatalkan (Status {$submission->status}) - Submission ID {$submission->id}.");
+
             return [
                 'success' => false,
                 'message' => 'Pengecekan views hanya dapat dilakukan pada pengajuan yang berstatus aktif.',
             ];
         }
 
-        // 2. Guard Clause: Pastikan campaign valid, aktif, dan belum berakhir
+        // 2. Guard Clause: Pastikan campaign valid, aktif, sudah dimulai, dan belum berakhir
         $campaign = $submission->clipCampaign;
-        if (! $campaign || $campaign->status !== CampaignStatus::Active || ($campaign->end_at && $campaign->end_at->isPast())) {
+        if (! $campaign
+            || $campaign->status !== CampaignStatus::Active
+            || ($campaign->end_at && $campaign->end_at->isPast())
+            || ($campaign->start_at && $campaign->start_at->isFuture())
+        ) {
+            Log::warning("ClipViewsSyncService: Dibatalkan (Campaign tidak valid/di luar masa tayang) - Submission ID {$submission->id}.");
+
             return [
                 'success' => false,
-                'message' => 'Campaign untuk submission ini sudah tidak aktif atau telah berakhir.',
+                'message' => 'Campaign untuk submission ini sudah tidak aktif atau di luar masa tayang.',
             ];
         }
 
         // 3. Scraping data penayangan video TikTok
         $stats = $this->scraperService->getVideoStats($submission->submitted_url);
         if (! $stats) {
+            Log::error("ClipViewsSyncService: Gagal scraping TikTok URL {$submission->submitted_url} - Submission ID {$submission->id}.");
+
             return [
                 'success' => false,
                 'message' => 'Gagal mengambil data views dari TikTok. Pastikan video berstatus publik dan tautan dapat diakses.',
@@ -51,11 +64,19 @@ class ClipViewsSyncService
         }
 
         $newCurrentViews = (int) ($stats['views'] ?? 0);
+        Log::info("ClipViewsSyncService: Views ditemukan = {$newCurrentViews} untuk Submission ID {$submission->id}.");
 
         // 4. Kalkulasi Effective Views dengan batas atas capping (view_max) jika ditentukan
         $effectiveViews = $campaign->view_max
             ? min($newCurrentViews, (int) $campaign->view_max)
             : $newCurrentViews;
+
+        // Cek apakah mencapai view_max, jika ya set flag completed
+        $isCompleted = false;
+        if ($campaign->view_max && $effectiveViews >= (int) $campaign->view_max) {
+            $isCompleted = true;
+            Log::info("ClipViewsSyncService: Target view_max tercapai ({$effectiveViews}) untuk Submission ID {$submission->id}.");
+        }
 
         // 5. Kalkulasi views yang berhak dicairkan berdasarkan kelipatan threshold
         $threshold = max(1, (int) $campaign->view_threshold);
@@ -66,7 +87,13 @@ class ClipViewsSyncService
 
         // 7. Jika tidak ada kelipatan threshold baru yang tercapai, cukup perbarui current_views
         if ($deltaViews <= 0) {
-            $submission->update(['current_views' => $newCurrentViews]);
+            $updateData = ['current_views' => $newCurrentViews];
+            if ($isCompleted) {
+                $updateData['status'] = 'completed';
+            }
+            $submission->update($updateData);
+
+            Log::info("ClipViewsSyncService: Selesai tanpa komisi baru untuk Submission ID {$submission->id}.");
 
             return [
                 'success' => true,
@@ -84,7 +111,7 @@ class ClipViewsSyncService
         $earnedAmount = (int) (($deltaViews / $threshold) * $commissionRate);
 
         // 9. Eksekusi database transaction dengan lock row user untuk konsistensi finansial
-        DB::transaction(function () use ($submission, $newCurrentViews, $eligibleCreditedViews, $deltaViews, $earnedAmount, $campaign): void {
+        DB::transaction(function () use ($submission, $newCurrentViews, $eligibleCreditedViews, $deltaViews, $earnedAmount, $campaign, $isCompleted): void {
             $user = User::where('id', $submission->user_id)->lockForUpdate()->first();
 
             if (! $user) {
@@ -104,11 +131,17 @@ class ClipViewsSyncService
             $user->increment('balance', $earnedAmount);
 
             // Update data metrik submission
-            $submission->update([
+            $updateData = [
                 'current_views' => $newCurrentViews,
                 'credited_views' => $eligibleCreditedViews,
                 'total_earned' => (int) ($submission->total_earned + $earnedAmount),
-            ]);
+            ];
+
+            if ($isCompleted) {
+                $updateData['status'] = 'completed';
+            }
+
+            $submission->update($updateData);
 
             // Kirim notifikasi pencairan komisi ke topic Telegram
             $formattedAmount = number_format($earnedAmount, 0, ',', '.');
@@ -127,6 +160,8 @@ class ClipViewsSyncService
         });
 
         $submission->refresh();
+
+        Log::info("ClipViewsSyncService: Selesai dengan pencairan Rp{$earnedAmount} untuk Submission ID {$submission->id}.");
 
         return [
             'success' => true,
