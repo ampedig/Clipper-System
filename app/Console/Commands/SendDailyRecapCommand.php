@@ -64,7 +64,7 @@ class SendDailyRecapCommand extends Command
         $text .= '▪️ Penarikan Di-ACC: <b>Rp '.number_format($approvedWithdrawalsAmount, 0, ',', '.')."</b>\n";
         $text .= '▪️ Komisi Diberikan: <b>Rp '.number_format($commissionGiven, 0, ',', '.')."</b>\n";
 
-        $topicId = config('telegram.topics.activity');
+        $topicId = config('telegram.topics.system');
 
         SendTelegramMessageJob::dispatch($text, $topicId);
 
