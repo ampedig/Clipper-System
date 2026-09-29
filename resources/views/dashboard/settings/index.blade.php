@@ -147,6 +147,38 @@
                         </div>
                     </div>
 
+                    <hr class="border-slate-100 dark:border-[#2e2e2e]">
+
+                    <!-- ================= GRUP 3: PEMBERITAHUAN BERANDA ================= -->
+                    <div class="space-y-3.5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-semibold text-slate-900 dark:text-white">Pemberitahuan Beranda</h4>
+                            </div>
+                        </div>
+
+                        <!-- Textarea Home Announcement -->
+                        <div class="space-y-1.5">
+                            <label for="homeAnnouncement" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                Pesan Pengumuman (Opsional)
+                            </label>
+                            <textarea 
+                                id="homeAnnouncement" 
+                                name="home_announcement"
+                                rows="3"
+                                placeholder="Masukkan pesan pengumuman yang akan tampil di halaman depan..." 
+                                class="w-full px-4 py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium resize-none focus:z-10 @error('home_announcement') border-red-500 @enderror"
+                            >{{ old('home_announcement', $settings['home_announcement'] ?? '') }}</textarea>
+                            @error('home_announcement')
+                                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                            @enderror
+                            <p class="text-xs text-slate-500 mt-1.5">Teks ini akan ditampilkan di halaman utama untuk pengguna.</p>
+                        </div>
+                    </div>
+
                     <!-- Form Action Buttons -->
                     <div class="flex items-center justify-end pt-6 border-t border-slate-100 dark:border-[#2e2e2e]">
                         <button type="button" id="btnSave" disabled class="btn btn-primary rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center gap-2 opacity-50 cursor-not-allowed transition-all">
@@ -173,6 +205,7 @@
             const csWhatsappInput = document.getElementById('csWhatsapp');
             const csTelegramInput = document.getElementById('csTelegram');
             const minWithdrawInput = document.getElementById('minWithdraw');
+            const homeAnnouncementInput = document.getElementById('homeAnnouncement');
             const btnCancel = document.getElementById('btnCancel');
             const btnSave = document.getElementById('btnSave');
 
@@ -215,7 +248,8 @@
             const initialValues = {
                 csWhatsapp: csWhatsappInput ? csWhatsappInput.value : '',
                 csTelegram: csTelegramInput ? csTelegramInput.value : '',
-                minWithdraw: minWithdrawInput ? minWithdrawInput.value : ''
+                minWithdraw: minWithdrawInput ? minWithdrawInput.value : '',
+                homeAnnouncement: homeAnnouncementInput ? homeAnnouncementInput.value : ''
             };
 
             // Fungsi untuk memeriksa apakah ada perubahan
@@ -225,8 +259,9 @@
                 const currentWa = csWhatsappInput ? csWhatsappInput.value : '';
                 const currentTg = csTelegramInput ? csTelegramInput.value : '';
                 const currentMin = minWithdrawInput ? minWithdrawInput.value : '';
+                const currentAnnouncement = homeAnnouncementInput ? homeAnnouncementInput.value : '';
 
-                if (currentWa !== initialValues.csWhatsapp || currentTg !== initialValues.csTelegram || currentMin !== initialValues.minWithdraw) {
+                if (currentWa !== initialValues.csWhatsapp || currentTg !== initialValues.csTelegram || currentMin !== initialValues.minWithdraw || currentAnnouncement !== initialValues.homeAnnouncement) {
                     btnSave.removeAttribute('disabled');
                     btnSave.classList.remove('opacity-50', 'cursor-not-allowed');
                 } else {
@@ -236,7 +271,7 @@
             }
 
             // Tambahkan event listener ke setiap input untuk mengecek perubahan setiap kali user mengetik
-            [csWhatsappInput, csTelegramInput, minWithdrawInput].forEach(input => {
+            [csWhatsappInput, csTelegramInput, minWithdrawInput, homeAnnouncementInput].forEach(input => {
                 if (input) {
                     input.addEventListener('input', checkChanges);
                 }

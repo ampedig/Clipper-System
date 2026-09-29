@@ -21,6 +21,7 @@ class SettingController extends Controller
             'cs_whatsapp' => 'nullable|string',
             'cs_telegram' => 'nullable|string',
             'min_withdraw' => 'required|string',
+            'home_announcement' => 'nullable|string',
         ]);
 
         // Clean formatting from numbers
@@ -33,6 +34,7 @@ class SettingController extends Controller
             'cs_whatsapp' => $csWhatsapp,
             'cs_telegram' => $csTelegram,
             'minimal_wd' => (string) $minWithdraw,
+            'home_announcement' => $validated['home_announcement'] ?? null,
         ];
 
         foreach ($dataToSave as $key => $value) {

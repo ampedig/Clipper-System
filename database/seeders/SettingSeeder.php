@@ -16,6 +16,7 @@ class SettingSeeder extends Seeder
             ['key' => 'minimal_wd', 'value' => '50000'],
             ['key' => 'cs_whatsapp', 'value' => '082212345678'],
             ['key' => 'cs_telegram', 'value' => '@cstele'],
+            ['key' => 'home_announcement', 'value' => 'Jumlah view di refresh setiap jam 12 malem, dan proses pencairan komisi'],
         ];
 
         foreach ($settings as $setting) {
