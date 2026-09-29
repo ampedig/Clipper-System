@@ -240,7 +240,7 @@
                                 </div>
                                 <div class="pt-3">
                                     <button type="button" 
-                                        onclick="openVideoPreview('{{ $ref->video_id }}', '{{ $ref->submitted_url }}', '{{ addslashes($ref->user->name ?? 'Clipper') }}', '{{ $viewsFormatted }}', '{{ number_format($ref->total_earned, 0, ',', '.') }}')"
+                                        onclick="openVideoPreview('{{ $ref->video_id }}', '{{ $ref->submitted_url }}')"
                                         class="w-full py-2.5 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition active:scale-[0.98] hover:opacity-95 cursor-pointer" 
                                         style="background-color: #0f172a; color: #ffffff;">
                                         <i class="fa-solid fa-play text-xs text-white"></i> Tonton Video
@@ -449,49 +449,39 @@
     </div>
 </div>
 
-<!-- Video Preview Modal (In-App TikTok Player) -->
+<!-- Video Preview Modal (Clean Minimalist Player) -->
 <div id="videoPreviewModal" 
     class="fixed inset-0 z-50 flex items-center justify-center p-4 invisible pointer-events-none opacity-0 transition-opacity duration-250 ease-out" 
-    style="background-color: rgba(2, 6, 23, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+    style="background-color: rgba(2, 6, 23, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
     
     <!-- Backdrop Click to Close Area -->
     <div class="absolute inset-0 cursor-pointer" onclick="closeVideoPreview()"></div>
 
     <!-- Modal Card Container (Dynamic 9:16 Portrait Canvas) -->
     <div class="video-modal-card relative z-10 flex flex-col items-center justify-center transform scale-95 transition-transform duration-250 ease-out" 
-        style="width: min(92vw, calc(70dvh * 9 / 16)); max-width: 400px;">
+        style="width: min(88vw, calc(76dvh * 9 / 16)); max-width: 380px;">
         
         <!-- Video Player Wrapper (Strict 9:16 Aspect Ratio) -->
-        <div class="relative w-full bg-black rounded-[1.75rem] overflow-hidden shadow-2xl border border-slate-800" 
-            style="aspect-ratio: 9 / 16; width: 100%;">
+        <div class="relative w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10" 
+            style="aspect-ratio: 9 / 16; width: 100%; border-radius: 14px;">
 
-            <!-- Floating Top Bar Overlay -->
-            <div class="absolute top-0 left-0 right-0 z-30 p-3 bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent flex items-center justify-between pointer-events-auto">
-                <div class="flex items-center gap-2 min-w-0 pr-2">
-                    <div class="w-6 h-6 rounded-md bg-slate-900/80 border border-slate-700/60 flex items-center justify-center text-rose-500 shrink-0">
-                        <i class="fa-brands fa-tiktok text-[11px]"></i>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-xs font-bold text-white truncate drop-shadow-sm" id="videoPreviewClipperName">Clipper</p>
-                    </div>
-                </div>
-                <button type="button" 
-                    onclick="closeVideoPreview()" 
-                    class="w-7 h-7 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition active:scale-90 cursor-pointer shrink-0 border border-slate-700/50"
-                    aria-label="Tutup">
-                    <i class="fa-solid fa-xmark text-xs"></i>
-                </button>
-            </div>
+            <!-- Floating Sleek Close Button -->
+            <button type="button" 
+                onclick="closeVideoPreview()" 
+                class="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition active:scale-90 cursor-pointer shadow-lg"
+                aria-label="Tutup Video">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
 
             <!-- Loader Skeleton -->
-            <div id="videoPreviewLoader" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950 text-slate-400 gap-3 z-10">
+            <div id="videoPreviewLoader" class="absolute inset-0 flex flex-col items-center justify-center bg-black text-slate-400 gap-3 z-10">
                 <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
                     <i class="fa-solid fa-circle-notch fa-spin text-indigo-400 text-base"></i>
                 </div>
-                <p class="text-xs font-medium text-slate-400">Memuat video TikTok...</p>
+                <p class="text-xs font-medium text-slate-400">Memuat video...</p>
             </div>
 
-            <!-- Iframe Player (Exact 9:16 Fill) -->
+            <!-- Iframe Player (Strict 9:16 Fill) -->
             <iframe id="videoPreviewIframe"
                 src=""
                 class="w-full h-full border-0 relative z-20"
@@ -499,30 +489,6 @@
                 allowfullscreen
                 onload="document.getElementById('videoPreviewLoader').classList.add('hidden')">
             </iframe>
-        </div>
-
-        <!-- Compact Bottom Bar (Stats & Direct TikTok Link) -->
-        <div class="w-full mt-2.5 bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-2.5 space-y-2 shrink-0">
-            <div class="flex items-center justify-between px-2 text-xs">
-                <div>
-                    <span class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Views</span>
-                    <span class="text-xs font-bold text-slate-100" id="videoPreviewViews">0</span>
-                </div>
-                <div class="text-right">
-                    <span class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Komisi</span>
-                    <span class="text-xs font-bold text-emerald-400" id="videoPreviewKomisi">Rp 0</span>
-                </div>
-            </div>
-
-            <!-- Direct TikTok link fallback -->
-            <a id="videoPreviewDirectLink" 
-                href="#" 
-                target="_blank" 
-                class="w-full py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition active:scale-[0.98] border border-slate-700/60 cursor-pointer">
-                <i class="fa-brands fa-tiktok text-sm"></i>
-                <span>Buka di Aplikasi TikTok</span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
-            </a>
         </div>
     </div>
 </div>
@@ -678,16 +644,12 @@
         }
     });
 
-    // --- Video Preview Modal Logic (In-App TikTok Player) ---
+    // --- Video Preview Modal Logic (Clean Minimalist Player) ---
     const videoModal = document.getElementById('videoPreviewModal');
     const videoIframe = document.getElementById('videoPreviewIframe');
     const videoLoader = document.getElementById('videoPreviewLoader');
-    const videoClipperName = document.getElementById('videoPreviewClipperName');
-    const videoViews = document.getElementById('videoPreviewViews');
-    const videoKomisi = document.getElementById('videoPreviewKomisi');
-    const videoDirectLink = document.getElementById('videoPreviewDirectLink');
 
-    function openVideoPreview(videoId, videoUrl, clipperName, viewsFormatted, komisiFormatted) {
+    function openVideoPreview(videoId, videoUrl) {
         let resolvedId = videoId;
         if ((!resolvedId || resolvedId === '') && videoUrl) {
             const match = videoUrl.match(/\/video\/(\d+)/);
@@ -702,16 +664,12 @@
             return;
         }
 
-        // Reset loader & set info
+        // Reset loader
         if (videoLoader) videoLoader.classList.remove('hidden');
-        if (videoClipperName) videoClipperName.textContent = clipperName || 'Clipper';
-        if (videoViews) videoViews.textContent = viewsFormatted || '0';
-        if (videoKomisi) videoKomisi.textContent = 'Rp ' + (komisiFormatted || '0');
-        if (videoDirectLink) videoDirectLink.href = videoUrl || `https://www.tiktok.com/@user/video/${resolvedId}`;
 
-        // Pasang src player TikTok (bersih tanpa clutter params agar canvas video maksimal)
+        // Pasang embed TikTok Player dengan parameter pembersih (music_info=0 & description=0)
         if (videoIframe) {
-            videoIframe.src = `https://www.tiktok.com/player/v1/${resolvedId}?autoplay=1`;
+            videoIframe.src = `https://www.tiktok.com/player/v1/${resolvedId}?autoplay=1&loop=1&music_info=0&description=0`;
         }
 
         // Tampilkan modal dengan transisi mulus
