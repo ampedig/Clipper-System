@@ -34,6 +34,11 @@
                     <p class="text-2xl font-extrabold tracking-tight mt-0.5">
                         Rp{{ number_format($user->balance ?? 0, 0, ',', '.') }}</p>
                 </div>
+                <a href="{{ route('app.withdrawals.create') }}"
+                    class="w-10 h-10 bg-white text-indigo-700 hover:bg-indigo-50 flex items-center justify-center rounded-full transition-colors shadow-sm shrink-0 cursor-pointer active:scale-95"
+                    aria-label="Tarik Saldo">
+                    <i class="fa-solid fa-arrow-down-to-bracket"></i>
+                </a>
             </div>
 
             <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
@@ -96,50 +101,60 @@
 
 
     <!-- Quick Actions Panel -->
-    <section class="bg-white rounded-3xl p-5 border border-slate-200/80">
-        <div class="grid grid-cols-4 gap-2">
+    {{-- <section class="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs">
+        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+            <!-- 1. Klip Saya -->
             <a href="{{ route('app.submissions.index') }}"
-                class="flex flex-col items-center justify-center gap-2.5 group active:scale-95 transition-transform cursor-pointer">
-                <div
-                    class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
-                    <i class="fa-solid fa-cloud-arrow-up text-[22px]"></i>
+                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
+                    style="background: linear-gradient(135deg, #2563eb, #4f46e5); box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);">
+                    <i class="fa-solid fa-cloud-arrow-up" style="color: #ffffff; font-size: 21px;"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-700">Klip Saya</span>
+                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Klip Saya</span>
             </a>
+
+            <!-- 2. Withdraw -->
             <a href="{{ route('app.withdrawals.create') }}"
-                class="flex flex-col items-center justify-center gap-2.5 group active:scale-95 transition-transform cursor-pointer">
-                <div
-                    class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
-                    <i class="fa-solid fa-money-bill-transfer text-[20px]"></i>
+                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
+                    style="background: linear-gradient(135deg, #10b981, #0d9488); box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.4);">
+                    <i class="fa-solid fa-money-bill-transfer" style="color: #ffffff; font-size: 19px;"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-700">Withdraw</span>
+                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Withdraw</span>
             </a>
+
+            <!-- 3. Campaign (dengan Badge HOT) -->
             <a href="{{ route('app.campaigns') }}"
-                class="flex flex-col items-center justify-center gap-2.5 group active:scale-95 transition-transform cursor-pointer">
-                <div
-                    class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
-                    <i class="fa-solid fa-fire-flame-curved text-[22px]"></i>
+                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
+                <div class="relative">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
+                        style="background: linear-gradient(135deg, #f59e0b, #e11d48); box-shadow: 0 8px 16px -4px rgba(225, 29, 72, 0.4);">
+                        <i class="fa-solid fa-fire-flame-curved" style="color: #ffffff; font-size: 21px;"></i>
+                    </div>
+                    <span class="absolute uppercase tracking-wider font-black animate-pulse pointer-events-none"
+                        style="top: -5px; right: -7px; font-size: 8px; line-height: 1; padding: 2.5px 5.5px; color: #ffffff; background-color: #e11d48; border-radius: 9999px; box-shadow: 0 2px 6px rgba(225, 29, 72, 0.5); z-index: 10;">HOT</span>
                 </div>
-                <span class="text-[10px] font-bold text-slate-700">Campaign</span>
+                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Campaign</span>
             </a>
+
+            <!-- 4. Saldo -->
             <a href="{{ route('app.wallet.index') }}"
-                class="flex flex-col items-center justify-center gap-2.5 group active:scale-95 transition-transform cursor-pointer">
-                <div
-                    class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 group-hover:bg-indigo-100 transition-colors">
-                    <i class="fa-solid fa-wallet text-[20px]"></i>
+                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
+                    style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 16px -4px rgba(124, 58, 237, 0.4);">
+                    <i class="fa-solid fa-wallet" style="color: #ffffff; font-size: 19px;"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-700">Saldo</span>
+                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Saldo</span>
             </a>
         </div>
-    </section>
+    </section> --}}
 
     <!-- 3. Klip Campaign Terbaru -->
     <section class="space-y-3">
         <div class="flex items-center justify-between">
             <h2 class="text-sm font-bold text-slate-900">Klip Campaign Terbaru</h2>
 
-            <a href="{{ route('app.campaigns') }}"
-                class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
+            <a href="{{ route('app.campaigns') }}" class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
                 Lihat Semua
             </a>
         </div>
