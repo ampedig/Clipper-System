@@ -131,6 +131,7 @@
     /* Custom SweetAlert width alignment so content width matches actions buttons */
     .swal2-popup.custom-swal-popup {
         padding: 1.5rem !important;
+        border-radius: 1.75rem !important;
     }
 
     .swal2-popup.custom-swal-popup .swal2-icon,
@@ -145,6 +146,29 @@
         margin: 0 !important;
         padding: 0 !important;
         width: 100% !important;
+    }
+
+    /* Remove outline and box-shadow completely from SweetAlert buttons */
+    .swal2-popup.custom-swal-popup button,
+    .swal2-popup.custom-swal-popup .swal2-styled,
+    .swal2-popup.custom-swal-popup .swal2-confirm,
+    .swal2-popup.custom-swal-popup .swal2-cancel {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .swal2-popup.custom-swal-popup button:focus,
+    .swal2-popup.custom-swal-popup button:focus-visible,
+    .swal2-popup.custom-swal-popup .swal2-styled:focus,
+    .swal2-popup.custom-swal-popup .swal2-styled:focus-visible,
+    .swal2-popup.custom-swal-popup .swal2-confirm:focus,
+    .swal2-popup.custom-swal-popup .swal2-confirm:focus-visible,
+    .swal2-popup.custom-swal-popup .swal2-cancel:focus,
+    .swal2-popup.custom-swal-popup .swal2-cancel:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
     }
 
     /* Modern Detail Rekening Card (Soft subtle border, replaces harsh black outline) */
@@ -183,7 +207,7 @@
             <div>
                 <h4 class="text-xs font-bold text-slate-800 mb-0.5">Pencairan Dana</h4>
                 <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
-                    Penarikan saldo komisi campaign akan otomatis dikirimkan ke rekening atau e-wallet yang Anda simpan
+                    Penarikan saldo komisi campaign akan dikirimkan ke rekening atau e-wallet yang Anda simpan
                     di bawah ini.
                 </p>
             </div>
@@ -290,153 +314,175 @@
 
 </div>
 
-<!-- jQuery & Select2 JS (Local Assets) -->
-<script src="{{ asset('app/assets/libs/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('app/assets/libs/select2/js/select2.min.js') }}"></script>
+@push('scripts')
+    <!-- jQuery & Select2 JS (Local Assets) -->
+    <script src="{{ asset('app/assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('app/assets/libs/select2/js/select2.min.js') }}"></script>
 
-<script>
-    $(document).ready(function() {
-        const $bankSelect = $('#bank_select');
+    <script>
+        $(document).ready(function() {
+            const $bankSelect = $('#bank_select');
 
-        // Inisialisasi Select2 dengan width 100% dan dropdownParent ke parent div
-        $bankSelect.select2({
-            placeholder: 'Pilih Bank / E-Wallet',
-            allowClear: false,
-            width: '100%',
-            dropdownParent: $bankSelect.parent()
+            // Inisialisasi Select2 dengan width 100% dan dropdownParent ke parent div
+            $bankSelect.select2({
+                placeholder: 'Pilih Bank / E-Wallet',
+                allowClear: false,
+                width: '100%',
+                dropdownParent: $bankSelect.parent()
+            });
+
+            // Hilangkan pesan error saat bank dipilih
+            $bankSelect.on('change', function() {
+                $('#bank-error').addClass('hidden');
+            });
         });
 
-        // Hilangkan pesan error saat bank dipilih
-        $bankSelect.on('change', function() {
-            $('#bank-error').addClass('hidden');
-        });
-    });
-
-    // Filter numeric hanya angka pada nomor rekening
-    const accNumInput = document.getElementById('account_number');
-    accNumInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    });
-
-    // Handler Simpan Rekening
-    const btnSave = document.getElementById('btn-save-rekening');
-    const accNameInput = document.getElementById('account_name');
-    const bankError = document.getElementById('bank-error');
-    const numberError = document.getElementById('number-error');
-    const nameError = document.getElementById('name-error');
-    const form = document.getElementById('rekeningForm');
-
-    btnSave.addEventListener('click', () => {
-        const bankVal = $('#bank_select').val();
-        const bankText = $('#bank_select option:selected').text().trim();
-        const numberVal = accNumInput.value.trim();
-        const nameVal = accNameInput.value.trim();
-        let isValid = true;
-
-        // Validasi Bank
-        if (!bankVal) {
-            bankError.classList.remove('hidden');
-            isValid = false;
-        } else {
-            bankError.classList.add('hidden');
+        // Filter numeric hanya angka pada nomor rekening
+        const accNumInput = document.getElementById('account_number');
+        if (accNumInput) {
+            accNumInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
         }
 
-        // Validasi Nomor Rekening
-        if (numberVal.length < 5) {
-            numberError.classList.remove('hidden');
-            accNumInput.classList.add('border-rose-400');
-            isValid = false;
-        } else {
-            numberError.classList.add('hidden');
-            accNumInput.classList.remove('border-rose-400');
-        }
+        // Handler Simpan Rekening
+        const btnSave = document.getElementById('btn-save-rekening');
+        const accNameInput = document.getElementById('account_name');
+        const bankError = document.getElementById('bank-error');
+        const numberError = document.getElementById('number-error');
+        const nameError = document.getElementById('name-error');
+        const form = document.getElementById('rekeningForm');
 
-        // Validasi Nama Pemilik
-        if (nameVal.length < 2) {
-            nameError.classList.remove('hidden');
-            accNameInput.classList.add('border-rose-400');
-            isValid = false;
-        } else {
-            nameError.classList.add('hidden');
-            accNameInput.classList.remove('border-rose-400');
-        }
+        if (btnSave) {
+            btnSave.addEventListener('click', () => {
+                const bankVal = $('#bank_select').val();
+                const bankText = $('#bank_select option:selected').text().trim();
+                const numberVal = accNumInput.value.trim();
+                const nameVal = accNameInput.value.trim();
+                let isValid = true;
 
-        if (!isValid) return;
-
-        // Tampilkan SweetAlert Konfirmasi
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                html: `
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
-                            <i class="fa-solid fa-building-columns"></i>
-                        </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Rekening</h3>
-                        <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px] mb-4">
-                            Pastikan data rekening tujuan pencairan dana Anda sudah sesuai.
-                        </p>
-                        <div class="rekening-detail-box w-full p-4 text-left space-y-2.5 text-xs rounded-2xl" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem;">
-                            <div class="flex justify-between items-center gap-3 text-slate-500">
-                                <span class="shrink-0 font-medium">Bank / E-Wallet:</span>
-                                <span class="font-bold text-slate-800 text-right truncate">${bankText}</span>
-                            </div>
-                            <div class="flex justify-between items-center gap-3 text-slate-500">
-                                <span class="shrink-0 font-medium">No. Rekening:</span>
-                                <span class="font-bold text-slate-800 text-right font-mono">${numberVal}</span>
-                            </div>
-                            <div class="flex justify-between items-center gap-3 text-slate-500">
-                                <span class="shrink-0 font-medium">Nama Pemilik:</span>
-                                <span class="font-bold text-slate-800 text-right truncate">${nameVal}</span>
-                            </div>
-                        </div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Simpan',
-                cancelButtonText: 'Batal',
-                buttonsStyling: false,
-                backdrop: 'rgba(15, 23, 42, 0.65)',
-                customClass: {
-                    popup: 'custom-swal-popup !rounded-[2.25rem]',
-                    htmlContainer: '!m-0 !p-0 !w-full',
-                    actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-                    confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-                    cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                // Validasi Bank
+                if (!bankVal) {
+                    bankError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    bankError.classList.add('hidden');
                 }
-            }).then((result) => {
-                if (result.isConfirmed) {
+
+                // Validasi Nomor Rekening
+                if (numberVal.length < 5) {
+                    numberError.classList.remove('hidden');
+                    accNumInput.classList.add('border-rose-400');
+                    isValid = false;
+                } else {
+                    numberError.classList.add('hidden');
+                    accNumInput.classList.remove('border-rose-400');
+                }
+
+                // Validasi Nama Pemilik
+                if (nameVal.length < 2) {
+                    nameError.classList.remove('hidden');
+                    accNameInput.classList.add('border-rose-400');
+                    isValid = false;
+                } else {
+                    nameError.classList.add('hidden');
+                    accNameInput.classList.remove('border-rose-400');
+                }
+
+                if (!isValid) return;
+
+                // Tampilkan SweetAlert Konfirmasi Modern
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        html: `
+                            <div class="flex flex-col items-center text-center p-1">
+                                <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100/80">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Konfirmasi Rekening</h3>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px] mb-4">
+                                    Pastikan data rekening tujuan pencairan dana Anda sudah sesuai.
+                                </p>
+                                <div class="rekening-detail-box w-full p-4 text-left space-y-2.5 text-xs rounded-2xl" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem;">
+                                    <div class="flex justify-between items-center gap-3 text-slate-500">
+                                        <span class="shrink-0 font-medium">Bank / E-Wallet:</span>
+                                        <span class="font-bold text-slate-800 text-right truncate">${bankText}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center gap-3 text-slate-500">
+                                        <span class="shrink-0 font-medium">No. Rekening:</span>
+                                        <span class="font-bold text-slate-800 text-right font-mono">${numberVal}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center gap-3 text-slate-500">
+                                        <span class="shrink-0 font-medium">Nama Pemilik:</span>
+                                        <span class="font-bold text-slate-800 text-right truncate">${nameVal}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Simpan',
+                        cancelButtonText: 'Batal',
+                        buttonsStyling: false,
+                        backdrop: 'rgba(15, 23, 42, 0.65)',
+                        customClass: {
+                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            htmlContainer: '!m-0 !p-0 !w-full',
+                            actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
+                            confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+                            cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            btnSave.disabled = true;
+                            btnSave.innerHTML =
+                                '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Menyimpan...</span>';
+                            btnSave.classList.add('opacity-80', 'cursor-not-allowed');
+                            form.submit();
+                        }
+                    });
+                } else {
+                    btnSave.disabled = true;
+                    btnSave.innerHTML =
+                        '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Menyimpan...</span>';
                     form.submit();
                 }
             });
-        } else {
-            form.submit();
         }
-    });
 
-    // Alert Sukses setelah redirect
-    @if (session('status') === 'rekening-updated')
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                html: `
-                    <div class="flex flex-col items-center text-center">
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100/80">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Rekening Tersimpan!</h3>
-                        <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[260px]">
-                            Data rekening pencairan dana berhasil diperbarui.
-                        </p>
-                    </div>
-                `,
-                showConfirmButton: false,
-                timer: 1800,
-                backdrop: 'rgba(15, 23, 42, 0.65)',
-                customClass: {
-                    popup: 'custom-swal-popup !rounded-[2.25rem]'
+        // Alert Sukses Modern setelah redirect
+        @if (session('status') === 'rekening-updated' || session('success'))
+            document.addEventListener("DOMContentLoaded", () => {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        html: `
+                            <div class="flex flex-col items-center text-center pt-1 px-1">
+                                <h3 class="text-base font-extrabold text-slate-900 mb-1 tracking-tight">Berhasil Disimpan!</h3>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px] mb-4">
+                                    Rekening pencairan dana Anda berhasil diperbarui dan siap digunakan.
+                                </p>
+                                @if ($user->withdrawChannel && $user->account_number)
+                                <div class="w-full bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 text-left">
+                                    <p class="text-xs font-bold text-slate-800 truncate mb-0.5">{{ $user->withdrawChannel->name }}</p>
+                                    <p class="text-[11px] text-slate-500 font-mono tracking-wide">{{ $user->account_number }} • {{ $user->account_name }}</p>
+                                </div>
+                                @endif
+                            </div>
+                        `,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Oke, Mengerti',
+                        buttonsStyling: false,
+                        backdrop: 'rgba(15, 23, 42, 0.65)',
+                        customClass: {
+                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            htmlContainer: '!m-0 !p-0 !w-full',
+                            actions: 'w-full mt-5 px-0',
+                            confirmButton: 'w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer outline-none focus:outline-none focus:ring-0 shadow-none'
+                        }
+                    });
                 }
             });
-        }
-    @endif
-</script>
+        @endif
+    </script>
+@endpush
 
 @include('app.partials.vendor-script')

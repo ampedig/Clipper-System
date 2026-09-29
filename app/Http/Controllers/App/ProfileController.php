@@ -150,6 +150,8 @@ class ProfileController extends Controller
             'account_name' => $validated['account_name'],
         ]);
 
-        return redirect()->route('app.rekening')->with('status', 'rekening-updated');
+        return redirect()->route('app.rekening')
+            ->with('status', 'rekening-updated')
+            ->with('success', 'Rekening pencairan dana berhasil diperbarui.');
     }
 }
