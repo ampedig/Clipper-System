@@ -180,6 +180,9 @@
                                     Status</th>
                                 <th
                                     class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                    Referensi</th>
+                                <th
+                                    class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-center font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
                                     Aksi</th>
                             </tr>
                         </thead>
@@ -327,6 +330,19 @@
                                             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold {{ $statusData['class'] }}">
                                             <i class="{{ $statusData['icon'] }}"></i> {{ $statusData['label'] }}
                                         </span>
+                                    </td>
+
+                                    <!-- REFERENSI (TOGGLE INSPIRASI) -->
+                                    <td class="px-6 py-4 text-center td-nowrap">
+                                        <label class="relative inline-flex items-center cursor-pointer select-none"
+                                            title="Tampilkan sebagai referensi inspirasi di detail campaign">
+                                            <input type="checkbox" class="sr-only peer toggle-reference-switch"
+                                                {{ $sub->is_reference ? 'checked' : '' }}
+                                                onchange="toggleReferenceStatus(this, '{{ route('admin.clip-submissions.toggle-reference', $sub) }}')">
+                                            <div
+                                                class="w-9 h-5 bg-slate-200 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500">
+                                            </div>
+                                        </label>
                                     </td>
 
                                     <!-- AKSI -->
@@ -670,6 +686,61 @@
                     form.submit();
                 }
             });
+        }
+
+        async function toggleReferenceStatus(checkbox, url) {
+            const isReference = checkbox.checked;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ is_reference: isReference })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    checkbox.checked = !isReference;
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: data.message || 'Terjadi kesalahan.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            } catch (error) {
+                checkbox.checked = !isReference;
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Tidak dapat menghubungi server.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
         }
 
         function handleCheckViewsAction(url, subId, clipTitle, clipperName) {

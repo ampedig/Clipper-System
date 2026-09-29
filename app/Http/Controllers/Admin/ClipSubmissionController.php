@@ -177,6 +177,25 @@ class ClipSubmissionController extends Controller
     }
 
     /**
+     * Toggle status is_reference for inspiration/educational video.
+     */
+    public function toggleReference(Request $request, ClipSubmission $clipSubmission): JsonResponse
+    {
+        $clipSubmission->is_reference = ! $clipSubmission->is_reference;
+        $clipSubmission->save();
+
+        $message = $clipSubmission->is_reference
+            ? 'Video berhasil dijadikan sebagai referensi inspirasi.'
+            : 'Video dihapus dari daftar referensi inspirasi.';
+
+        return response()->json([
+            'success' => true,
+            'is_reference' => (bool) $clipSubmission->is_reference,
+            'message' => $message,
+        ]);
+    }
+
+    /**
      * Remove the specified submission from storage.
      */
     public function destroy(ClipSubmission $clipSubmission)

@@ -22,12 +22,12 @@ class CampaignController extends Controller
         $query = ClipCampaign::active()
             ->where(function ($q) {
                 $q->whereNull('end_at')
-                  ->orWhere('end_at', '>=', now());
+                    ->orWhere('end_at', '>=', now());
             })
             ->where(function ($q) {
                 $q->whereNull('clipper_limit')
-                  ->orWhere('clipper_limit', 0)
-                  ->orWhereRaw('(SELECT COUNT(*) FROM clip_submissions WHERE clip_submissions.clip_campaign_id = clip_campaigns.id AND clip_submissions.status IN ("active", "approved", "completed")) < clip_campaigns.clipper_limit');
+                    ->orWhere('clipper_limit', 0)
+                    ->orWhereRaw('(SELECT COUNT(*) FROM clip_submissions WHERE clip_submissions.clip_campaign_id = clip_campaigns.id AND clip_submissions.status IN ("active", "approved", "completed")) < clip_campaigns.clipper_limit');
             })
             ->select([
                 'id',
@@ -86,6 +86,13 @@ class CampaignController extends Controller
 
         $isFull = $campaign->clipper_limit > 0 && $campaign->approved_submissions_count >= $campaign->clipper_limit;
 
-        return view('app.campaign.show', compact('campaign', 'isFull'));
+        $referenceSubmissions = $campaign->clipSubmissions()
+            ->asReference()
+            ->with('user:id,name,email')
+            ->orderByDesc('current_views')
+            ->take(10)
+            ->get();
+
+        return view('app.campaign.show', compact('campaign', 'isFull', 'referenceSubmissions'));
     }
 }

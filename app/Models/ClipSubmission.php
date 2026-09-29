@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ClipSubmission extends Model
@@ -20,6 +21,7 @@ class ClipSubmission extends Model
         'credited_views',
         'total_earned',
         'status',
+        'is_reference',
         'submitted_at',
         'approved_at',
         'rejected_at',
@@ -34,6 +36,7 @@ class ClipSubmission extends Model
     protected function casts(): array
     {
         return [
+            'is_reference' => 'boolean',
             'current_views' => 'integer',
             'credited_views' => 'integer',
             'total_earned' => 'integer',
@@ -41,6 +44,18 @@ class ClipSubmission extends Model
             'approved_at' => 'datetime',
             'rejected_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Scope a query to only include submissions set as reference with valid status.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeAsReference($query)
+    {
+        return $query->where('is_reference', true)
+            ->whereIn('status', ['approved', 'active', 'completed']);
     }
 
     /**
