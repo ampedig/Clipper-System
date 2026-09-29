@@ -4,6 +4,23 @@
 
 <div class="px-5 pt-6 space-y-6 pb-28 min-h-[100dvh]">
 
+    @if (!empty($homeAnnouncement))
+        <!-- Teks Pengumuman -->
+        <section class="bg-white rounded-3xl p-3 border border-slate-200/80">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
+                    <i class="fa-solid fa-bell text-sm"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs text-slate-700 leading-snug font-medium">
+                        {{ $homeAnnouncement }}
+                    </p>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Navigation Filter Segmented Control -->
     <nav class="bg-white border border-slate-200 p-1.5 rounded-2xl flex items-center gap-1 overflow-x-auto scrollbar-hide">
         <button type="button" onclick="filterSubmissions('all', this)" class="filter-btn flex-1 py-2 px-4 rounded-xl bg-indigo-600 text-white font-bold text-xs text-center transition-all active:scale-95 shadow-sm cursor-pointer whitespace-nowrap">

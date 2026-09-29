@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipCampaign;
 use App\Models\ClipSubmission;
+use App\Models\Setting;
 use App\Services\TikTokUrlService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -49,7 +50,9 @@ class ClipSubmissionController extends Controller
             ]);
         }
 
-        return view('app.submissions.index', compact('submissions', 'status'));
+        $homeAnnouncement = Setting::where('key', 'home_announcement')->value('value');
+
+        return view('app.submissions.index', compact('submissions', 'status', 'homeAnnouncement'));
     }
 
     /**

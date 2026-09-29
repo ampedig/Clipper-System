@@ -1,6 +1,7 @@
 @include('app.partials.head', [
     'title' => 'Beranda',
-    'description' => 'Selamat datang di AZCLIP, platform bagi para kreator untuk meraup komisi mudah hanya dari klip TikTok Anda.',
+    'description' =>
+        'Selamat datang di AZCLIP, platform bagi para kreator untuk meraup komisi mudah hanya dari klip TikTok Anda.',
 ])
 
 @php
@@ -27,7 +28,8 @@
         <div class="flex justify-between items-center mb-3">
             <div>
                 <span class="text-xs font-medium text-indigo-100/80">Saldo Tersedia</span>
-                <p class="text-2xl font-extrabold tracking-tight mt-0.5">Rp{{ number_format($user->balance ?? 0, 0, ',', '.') }}</p>
+                <p class="text-2xl font-extrabold tracking-tight mt-0.5">
+                    Rp{{ number_format($user->balance ?? 0, 0, ',', '.') }}</p>
             </div>
             <a href="{{ route('app.withdrawals.create') }}"
                 class="w-10 h-10 bg-white text-indigo-700 hover:bg-indigo-50 flex items-center justify-center rounded-full transition-colors shadow-sm shrink-0 cursor-pointer active:scale-95"
@@ -39,7 +41,9 @@
         <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/15">
             <div>
                 <span class="text-[11px] text-indigo-200">Total Views Klip</span>
-                <p class="text-base font-bold">{{ ($totalViews ?? 0) >= 1000 ? number_format(floor(($totalViews ?? 0) / 1000), 0, ',', '.') . ' K' : number_format($totalViews ?? 0, 0, ',', '.') }}</p>
+                <p class="text-base font-bold">
+                    {{ ($totalViews ?? 0) >= 1000 ? number_format(floor(($totalViews ?? 0) / 1000), 0, ',', '.') . ' K' : number_format($totalViews ?? 0, 0, ',', '.') }}
+                </p>
             </div>
             <div>
                 <span class="text-[11px] text-indigo-200">Klip Disetujui</span>
@@ -47,6 +51,8 @@
             </div>
         </div>
     </section>
+
+
 
     <!-- Quick Actions Panel -->
     <section class="bg-white rounded-3xl p-5 border border-slate-200/80">
