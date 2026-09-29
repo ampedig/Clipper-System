@@ -10,7 +10,7 @@
             <div class="flex items-center gap-3">
                 <div
                     class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
-                    <i class="fa-solid fa-bell text-sm"></i>
+                    <i class="fa-solid fa-arrows-rotate text-sm"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="text-xs text-slate-700 leading-snug font-medium">

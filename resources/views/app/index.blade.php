@@ -22,32 +22,73 @@
 
     <!-- 2. Wallet & Earning Banner -->
     <section
-        class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-3xl p-4 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden">
+        class="bg-gradient-to-br from-indigo-600 via-indigo-600 to-indigo-800 rounded-3xl p-4 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden">
+        <!-- Ambient Glow Corners -->
         <div class="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="flex justify-between items-center mb-3">
-            <div>
-                <span class="text-xs font-medium text-indigo-100/80">Saldo Tersedia</span>
-                <p class="text-2xl font-extrabold tracking-tight mt-0.5">
-                    Rp{{ number_format($user->balance ?? 0, 0, ',', '.') }}</p>
-            </div>
-            <a href="{{ route('app.withdrawals.create') }}"
-                class="w-10 h-10 bg-white text-indigo-700 hover:bg-indigo-50 flex items-center justify-center rounded-full transition-colors shadow-sm shrink-0 cursor-pointer active:scale-95"
-                aria-label="Tarik Saldo">
-                <i class="fa-solid fa-arrow-down-to-bracket"></i>
-            </a>
-        </div>
 
-        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/15">
-            <div>
-                <span class="text-[11px] text-indigo-200">Total Views Klip</span>
-                <p class="text-base font-bold">
-                    {{ ($totalViews ?? 0) >= 1000 ? number_format(floor(($totalViews ?? 0) / 1000), 0, ',', '.') . ' K' : number_format($totalViews ?? 0, 0, ',', '.') }}
-                </p>
+        <div class="relative z-10">
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <span class="text-xs font-medium text-indigo-100/80">Saldo Tersedia</span>
+                    <p class="text-2xl font-extrabold tracking-tight mt-0.5">
+                        Rp{{ number_format($user->balance ?? 0, 0, ',', '.') }}</p>
+                </div>
             </div>
-            <div>
-                <span class="text-[11px] text-indigo-200">Klip Disetujui</span>
-                <p class="text-base font-bold">{{ number_format($approvedClipsCount ?? 0, 0, ',', '.') }} Video</p>
+
+            <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+                <!-- Stat 1: Total Views Klip (dengan background grafik garis tipis) -->
+                <div class="relative overflow-hidden pr-2">
+                    <svg class="absolute right-0 bottom-0 w-28 h-12 pointer-events-none text-white" viewBox="0 0 120 50"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="viewsChartGrad" x1="0" y1="0" x2="0"
+                                y2="1">
+                                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15" />
+                                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,45 C25,42 45,35 65,22 C85,10 100,18 120,5 L120,50 L0,50 Z"
+                            fill="url(#viewsChartGrad)" />
+                        <path d="M0,45 C25,42 45,35 65,22 C85,10 100,18 120,5" stroke="#ffffff" stroke-width="1.25"
+                            stroke-linecap="round" stroke-opacity="0.3" />
+                        <circle cx="120" cy="5" r="2.5" fill="#ffffff" fill-opacity="0.7" />
+                        <circle cx="120" cy="5" r="5" fill="#ffffff" fill-opacity="0.15" />
+                    </svg>
+                    <div class="relative z-10">
+                        <span class="text-[11px] font-medium text-indigo-200/90">Total Views Klip</span>
+                        <p class="text-base font-bold mt-0.5">
+                            {{ ($totalViews ?? 0) >= 1000 ? number_format(floor(($totalViews ?? 0) / 1000), 0, ',', '.') . ' K' : number_format($totalViews ?? 0, 0, ',', '.') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stat 2: Klip Disetujui (dengan background grafik batang tipis) -->
+                <div class="relative overflow-hidden pr-2">
+                    <svg class="absolute right-0 bottom-0 w-24 h-12 pointer-events-none text-white" viewBox="0 0 90 45"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="28" width="6" height="17" rx="3" fill="#ffffff"
+                            fill-opacity="0.1" />
+                        <rect x="18" y="22" width="6" height="23" rx="3" fill="#ffffff"
+                            fill-opacity="0.14" />
+                        <rect x="31" y="25" width="6" height="20" rx="3" fill="#ffffff"
+                            fill-opacity="0.12" />
+                        <rect x="44" y="15" width="6" height="30" rx="3" fill="#ffffff"
+                            fill-opacity="0.2" />
+                        <rect x="57" y="10" width="6" height="35" rx="3" fill="#ffffff"
+                            fill-opacity="0.25" />
+                        <rect x="70" y="4" width="6" height="41" rx="3" fill="#ffffff"
+                            fill-opacity="0.35" />
+                        <path d="M8,28 C25,23 45,22 73,4" stroke="#ffffff" stroke-width="1" stroke-dasharray="2 2"
+                            stroke-linecap="round" stroke-opacity="0.25" />
+                    </svg>
+                    <div class="relative z-10">
+                        <span class="text-[11px] font-medium text-indigo-200/90">Klip Disetujui</span>
+                        <p class="text-base font-bold mt-0.5">{{ number_format($approvedClipsCount ?? 0, 0, ',', '.') }}
+                            <span class="text-xs font-normal text-indigo-200">Video</span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -97,7 +138,8 @@
         <div class="flex items-center justify-between">
             <h2 class="text-sm font-bold text-slate-900">Klip Campaign Terbaru</h2>
 
-            <a href="{{ route('app.campaigns') }}" class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
+            <a href="{{ route('app.campaigns') }}"
+                class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
                 Lihat Semua
             </a>
         </div>
