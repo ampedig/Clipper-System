@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ClipCampaignController;
 use App\Http\Controllers\Admin\ClipperController;
 use App\Http\Controllers\Admin\ClipSubmissionController as AdminClipSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RejectionTemplateController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\WalletTransactionController;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
@@ -60,6 +61,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
 
     Route::patch('/withdraw-channels/{withdraw_channel}/status', [WithdrawChannelController::class, 'toggleStatus'])->name('withdraw-channels.status');
     Route::resource('withdraw-channels', WithdrawChannelController::class);
+
+    Route::resource('rejection-templates', RejectionTemplateController::class)->except(['show']);
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');

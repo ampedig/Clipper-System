@@ -51,6 +51,14 @@
             </a>
 
 
+            <p class="sb-title sb-title--spaced t-sidebar-title">Template</p>
+
+            <a href="{{ route('admin.rejection-templates.index') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.rejection-templates.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-message sb-icon"></i>
+                <span>Tolak Clip</span>
+            </a>
+
             <p class="sb-title sb-title--spaced t-sidebar-title">Pengguna</p>
 
             <a href="{{ route('admin.clippers.index') }}"
@@ -70,6 +78,7 @@
                 <i class="fa-solid fa-sliders sb-icon"></i>
                 <span>Pengaturan</span>
             </a>
+
 
         </nav>
 
