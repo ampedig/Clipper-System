@@ -14,7 +14,7 @@
         <div class="min-w-0 flex-1">
             <h1
                 class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-800 tracking-tight leading-none">
-                AZCLIP</h1>
+                AZCLIP.COM</h1>
             <p class="text-sm font-semibold text-slate-700 truncate mt-1">
                 Halo, {{ $userName }} 👋</p>
         </div>
