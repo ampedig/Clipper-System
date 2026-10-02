@@ -5,6 +5,136 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/libs/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}">
+    <style>
+        /* Modern Select2 Styling inside SweetAlert2 */
+        .swal2-popup .select2-container {
+            width: 100% !important;
+            text-align: left;
+        }
+        .swal2-popup .select2-container .select2-selection--single {
+            height: 42px !important;
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 0.75rem !important;
+            display: flex !important;
+            align-items: center !important;
+            padding-left: 0.875rem !important;
+            padding-right: 2.25rem !important;
+            box-sizing: border-box !important;
+            transition: all 0.2s ease !important;
+        }
+        .dark .swal2-popup .select2-container .select2-selection--single {
+            background-color: #161616 !important;
+            border-color: #2e2e2e !important;
+        }
+        .swal2-popup .select2-container--default.select2-container--open .select2-selection--single,
+        .swal2-popup .select2-container--default.select2-container--focus .select2-selection--single {
+            border-color: #6366f1 !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+            outline: none !important;
+        }
+        .swal2-popup .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #1e293b !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            padding-left: 0 !important;
+            line-height: normal !important;
+        }
+        .dark .swal2-popup .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #e2e8f0 !important;
+        }
+        .swal2-popup .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+        }
+        .dark .swal2-popup .select2-container--default .select2-selection--single .select2-selection__placeholder {
+            color: #64748b !important;
+        }
+        .swal2-popup .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 42px !important;
+            right: 0.75rem !important;
+            width: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .swal2-popup .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: #64748b transparent transparent transparent !important;
+        }
+        .swal2-popup .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+            border-color: transparent transparent #64748b transparent !important;
+        }
+        .swal2-popup .select2-container--default .select2-selection--single .select2-selection__clear {
+            margin-right: 1.25rem !important;
+            color: #94a3b8 !important;
+            font-size: 1.1rem !important;
+            line-height: 42px !important;
+        }
+        .swal2-popup .select2-dropdown {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 0.75rem !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+            background-color: #ffffff !important;
+            overflow: hidden !important;
+            margin-top: 4px !important;
+            padding: 0.375rem 0 !important;
+            z-index: 10050 !important;
+            text-align: left !important;
+        }
+        .dark .swal2-popup .select2-dropdown {
+            background-color: #222222 !important;
+            border-color: #2e2e2e !important;
+        }
+        .swal2-popup .select2-search--dropdown {
+            padding: 0.5rem 0.625rem !important;
+        }
+        .swal2-popup .select2-search--dropdown .select2-search__field {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 0.5rem !important;
+            padding: 0.45rem 0.75rem !important;
+            font-size: 0.8125rem !important;
+            background-color: #f8fafc !important;
+            color: #1e293b !important;
+            outline: none !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .dark .swal2-popup .select2-search--dropdown .select2-search__field {
+            border-color: #2e2e2e !important;
+            background-color: #161616 !important;
+            color: #e2e8f0 !important;
+        }
+        .swal2-popup .select2-search--dropdown .select2-search__field:focus {
+            border-color: #6366f1 !important;
+        }
+        .swal2-popup .select2-results__option {
+            padding: 0.55rem 0.875rem !important;
+            font-size: 0.8125rem !important;
+            font-weight: 500 !important;
+            color: #334155 !important;
+            transition: all 0.15s ease !important;
+        }
+        .dark .swal2-popup .select2-results__option {
+            color: #cbd5e1 !important;
+        }
+        .swal2-popup .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #eef2ff !important;
+            color: #4f46e5 !important;
+        }
+        .dark .swal2-popup .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #2a2a2a !important;
+            color: #818cf8 !important;
+        }
+        .swal2-popup .select2-container--default .select2-results__option--selected {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+            font-weight: 600 !important;
+        }
+        .dark .swal2-popup .select2-container--default .select2-results__option--selected {
+            background-color: #333333 !important;
+            color: #ffffff !important;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -623,27 +753,97 @@
 
         function confirmRejectAction(url, clipTitle, clipperName) {
             if (typeof Swal === 'undefined') return;
+
+            const rejectionTemplates = @json($rejectionTemplates);
+            let templateOptions = '<option value=""></option>';
+            rejectionTemplates.forEach(t => {
+                const escapedTitle = $('<div>').text(t.title).html();
+                const commandAttr = t.command ? $('<div>').text(t.command).html() : '';
+                templateOptions += `<option value="${t.id}" data-command="${commandAttr}">${escapedTitle}</option>`;
+            });
+
             Swal.fire({
                 title: "Tolak Pengajuan Clip",
-                text: `Berikan alasan penolakan untuk pengajuan "${clipTitle}" oleh ${clipperName}:`,
-                input: "textarea",
-                inputPlaceholder: "Contoh: Video tidak mencantumkan hashtag wajib, watermark kompetitor masih ada, durasi video terlalu pendek...",
+                html: `
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 text-left">
+                        Berikan alasan penolakan untuk pengajuan "<strong>${clipTitle}</strong>" oleh <strong>${clipperName}</strong>:
+                    </p>
+                    <div class="text-left mb-4">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Gunakan Template Penolakan</label>
+                        <select id="swal-template-select" class="w-full">
+                            ${templateOptions}
+                        </select>
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Alasan Penolakan <span class="text-rose-500">*</span></label>
+                        <textarea id="swal-reject-reason" class="w-full box-border px-4 py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200 min-h-[120px] resize-y placeholder:text-slate-400 font-normal leading-relaxed" placeholder="Ketik alasan penolakan atau pilih dari template di atas..."></textarea>
+                    </div>
+                `,
                 showCancelButton: true,
                 confirmButtonText: '<i class="fa-solid fa-xmark mr-1.5"></i> Tolak Pengajuan',
                 cancelButtonText: "Batal",
                 reverseButtons: true,
-                inputAttributes: {
-                    rows: "4",
-                    class: "!w-full !box-border px-4 py-3 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-xl text-sm focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200 mt-3 min-h-[120px] resize-y placeholder:text-slate-400"
-                },
                 customClass: {
-                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e]",
-                    input: "!w-full !max-w-full !box-border !mx-0",
+                    popup: "rounded-2xl dark:bg-[#222222] dark:text-white border dark:border-[#2e2e2e] !overflow-visible",
                     confirmButton: "btn btn-danger rounded-xl px-5 py-2.5 font-semibold text-sm ml-2",
                     cancelButton: "btn btn-secondary rounded-xl px-5 py-2.5 font-semibold text-sm"
                 },
                 buttonsStyling: false,
-                preConfirm: (value) => {
+                didOpen: () => {
+                    const $select = $('#swal-template-select');
+                    const textarea = document.getElementById('swal-reject-reason');
+
+                    if (typeof $ !== 'undefined' && $.fn.select2) {
+                        $select.select2({
+                            placeholder: "Pilih Template Penolakan (Opsional)",
+                            allowClear: true,
+                            width: "100%",
+                            dropdownParent: $(Swal.getPopup()),
+                            matcher: function(params, data) {
+                                if ($.trim(params.term) === '') {
+                                    return data;
+                                }
+                                if (typeof data.text === 'undefined') {
+                                    return null;
+                                }
+                                const term = params.term.toLowerCase();
+                                const text = data.text.toLowerCase();
+                                const command = $(data.element).data('command') ? String($(data.element).data('command')).toLowerCase() : '';
+                                if (text.indexOf(term) > -1 || command.indexOf(term) > -1) {
+                                    return data;
+                                }
+                                return null;
+                            }
+                        });
+
+                        $select.on('change', function() {
+                            const selectedId = $(this).val();
+                            if (selectedId) {
+                                const found = rejectionTemplates.find(t => String(t.id) === String(selectedId));
+                                if (found) {
+                                    textarea.value = found.message;
+                                }
+                            }
+                        });
+                    } else {
+                        $select.on('change', function() {
+                            const selectedId = $(this).val();
+                            if (selectedId) {
+                                const found = rejectionTemplates.find(t => String(t.id) === String(selectedId));
+                                if (found) {
+                                    textarea.value = found.message;
+                                }
+                            }
+                        });
+                    }
+                },
+                willClose: () => {
+                    if (typeof $ !== 'undefined' && $.fn.select2) {
+                        $('#swal-template-select').select2('destroy');
+                    }
+                },
+                preConfirm: () => {
+                    const value = document.getElementById('swal-reject-reason').value;
                     if (!value || !value.trim()) {
                         Swal.showValidationMessage("Alasan penolakan wajib diisi!");
                         return false;

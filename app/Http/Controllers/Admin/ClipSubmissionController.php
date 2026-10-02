@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipSubmission;
+use App\Models\RejectionTemplate;
 use App\Services\ClipViewsSyncService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,7 +57,9 @@ class ClipSubmissionController extends Controller
             'total_commission' => (int) ClipSubmission::sum('total_earned'),
         ];
 
-        return view('dashboard.clip_submissions.index', compact('submissions', 'stats'));
+        $rejectionTemplates = RejectionTemplate::orderBy('title')->get();
+
+        return view('dashboard.clip_submissions.index', compact('submissions', 'stats', 'rejectionTemplates'));
     }
 
     /**
