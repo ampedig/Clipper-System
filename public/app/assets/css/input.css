@@ -846,6 +846,21 @@
   .border-amber-100 {
     border-color: var(--color-amber-100);
   }
+  .border-amber-200 {
+    border-color: #fde68a;
+  }
+  .border-amber-200\/80 {
+    border-color: rgba(253, 230, 138, 0.8);
+  }
+  .border-amber-300 {
+    border-color: #fcd34d;
+  }
+  .border-amber-300\/80 {
+    border-color: rgba(252, 211, 77, 0.8);
+  }
+  .border-emerald-200\/80 {
+    border-color: rgba(167, 243, 208, 0.8);
+  }
   .border-emerald-100 {
     border-color: var(--color-emerald-100);
   }

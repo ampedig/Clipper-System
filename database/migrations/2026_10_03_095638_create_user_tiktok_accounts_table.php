@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('username')->unique();
             $table->string('nickname')->nullable();
-            $table->string('avatar_url')->nullable();
+            $table->text('avatar_url')->nullable();
             $table->string('verification_code', 10)->nullable();
             $table->boolean('is_verified')->default(false);
             $table->timestamp('verified_at')->nullable();
