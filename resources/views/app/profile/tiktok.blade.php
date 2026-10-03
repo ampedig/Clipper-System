@@ -37,7 +37,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 44px;
+        width: 54px;
         flex-shrink: 0;
         color: #94a3b8;
         border-right: 1px solid #e2e8f0;
@@ -65,7 +65,8 @@
     .tiktok-input-field {
         flex: 1;
         min-width: 0;
-        padding: 0.8125rem 1rem;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
         background: transparent;
         border: none;
         outline: none;
@@ -85,6 +86,12 @@
         background-color: #ffffff;
         border: 1px solid #fde68a;
         border-radius: 0.75rem;
+        height: 44px;
+    }
+
+    .tiktok-copy-btn {
+        height: 44px;
+        border: 1px solid #e2e8f0;
     }
 
     .badge-verified {
@@ -196,8 +203,8 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <span class="text-sm font-extrabold text-slate-800">{{ $totalAccounts }} <span
-                            class="text-xs font-medium text-slate-400">/ {{ $maxAccounts }}</span></span>
+                    <span class="text-xl font-extrabold text-slate-800">{{ $totalAccounts }} <span
+                            class="text-sm font-semibold text-slate-400">/ {{ $maxAccounts }}</span></span>
                     <span class="text-[10px] text-slate-400 block font-medium">Akun</span>
                 </div>
             </div>
@@ -274,7 +281,7 @@
                     </div>
 
                     <button type="submit"
-                        class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
+                        class="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
                         <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
                         <span>Lanjutkan & Dapatkan Kode Bio</span>
                     </button>
@@ -291,7 +298,8 @@
             </div>
 
             @forelse ($accounts as $account)
-                <div class="bg-white rounded-[1.25rem] border border-slate-200 p-4 {{ $account->is_verified ? 'space-y-3' : 'space-y-4' }} transition-all">
+                <div
+                    class="bg-white rounded-[1.25rem] border border-slate-200 p-4 {{ $account->is_verified ? 'space-y-3' : 'space-y-4' }} transition-all">
 
                     <!-- Header Kartu Akun -->
                     <div class="flex items-center justify-between gap-3">
@@ -301,7 +309,8 @@
                                 <img src="{{ $account->avatar_url }}" alt="{{ $account->username }}"
                                     class="w-10 h-10 rounded-full object-cover shrink-0 ring-1 ring-slate-100">
                             @else
-                                <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0 ring-1 ring-slate-100">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0 ring-1 ring-slate-100">
                                     <i class="fa-brands fa-tiktok text-slate-800 text-lg"></i>
                                 </div>
                             @endif
@@ -318,12 +327,16 @@
 
                         <!-- Status Badge -->
                         @if ($account->is_verified)
-                            <div class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-emerald-100 text-emerald-600">
-                                <i class="fa-solid fa-check text-[17px]" style="-webkit-text-stroke: 0.5px currentColor;"></i>
+                            <div
+                                class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-emerald-100 text-emerald-600">
+                                <i class="fa-solid fa-check text-[17px]"
+                                    style="-webkit-text-stroke: 0.5px currentColor;"></i>
                             </div>
                         @else
-                            <div class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-amber-100 text-amber-600">
-                                <i class="fa-solid fa-clock-rotate-left text-[17px]" style="-webkit-text-stroke: 0.5px currentColor;"></i>
+                            <div
+                                class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-amber-100 text-amber-600">
+                                <i class="fa-solid fa-clock-rotate-left text-[17px]"
+                                    style="-webkit-text-stroke: 0.5px currentColor;"></i>
                             </div>
                         @endif
                     </div>
@@ -349,18 +362,17 @@
 
                             <!-- Box Kode & Salin -->
                             <div class="flex items-center gap-2">
-                                <div
-                                    class="tiktok-code-box flex-1 py-2.5 px-3 flex items-center justify-center shadow-xs">
+                                <div class="tiktok-code-box flex-1 flex items-center justify-center shadow-xs" style="height: 44px;">
                                     <span
-                                        class="text-base font-extrabold text-slate-900 font-mono custom-code-box tracking-widest select-all">
+                                        class="text-xl font-extrabold text-slate-900 font-mono custom-code-box tracking-widest select-all">
                                         {{ $account->verification_code }}
                                     </span>
                                 </div>
                                 <button type="button"
                                     onclick="copyToClipboard('{{ $account->verification_code }}', this)"
-                                    class="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 shrink-0 cursor-pointer shadow-xs"
-                                    style="border: 1px solid #e2e8f0;">
-                                    <i class="fa-regular fa-copy text-xs"></i>
+                                    class="tiktok-copy-btn px-5 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 cursor-pointer shadow-xs"
+                                    style="height: 44px; border: 1px solid #e2e8f0;">
+                                    <i class="fa-regular fa-copy text-sm"></i>
                                     <span>Salin</span>
                                 </button>
                             </div>
@@ -368,7 +380,7 @@
                             <!-- Tombol Trigger Cek Verifikasi Bio -->
                             <button type="button"
                                 onclick="verifyAccount('{{ route('app.tiktok.verify', $account) }}', '{{ $account->username }}', this)"
-                                class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer">
+                                class="w-full py-4 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer">
                                 <i class="fa-solid fa-circle-check text-xs"></i>
                                 <span>Sudah Pasang Kode, Cek Sekarang</span>
                             </button>
@@ -498,7 +510,7 @@
                             <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #a7f3d0;">
                                 <i class="fa-solid fa-circle-check"></i>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Berhasil Diverifikasi!</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Berhasil Diverifikasi!</h3>
                             <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                                 ${body.message || 'Akun TikTok Anda kini telah terverifikasi dan siap digunakan.'}
                             </p>
@@ -511,7 +523,7 @@
                                 popup: 'custom-swal-popup !rounded-[2.25rem]',
                                 htmlContainer: '!m-0 !p-0 !w-full',
                                 actions: 'w-full mt-6 px-0',
-                                confirmButton: 'w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                                confirmButton: 'w-full py-4 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
                             }
                         }).then(() => {
                             window.location.reload();
@@ -523,7 +535,7 @@
                             <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #fde68a;">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Verifikasi Belum Berhasil</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Verifikasi Belum Berhasil</h3>
                             <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                                 ${body.message || 'Kode belum ditemukan pada bio profil TikTok Anda. Pastikan sudah disimpan dan coba lagi.'}
                             </p>
@@ -536,7 +548,7 @@
                                 popup: 'custom-swal-popup !rounded-[2.25rem]',
                                 htmlContainer: '!m-0 !p-0 !w-full',
                                 actions: 'w-full mt-6 px-0',
-                                confirmButton: 'w-full py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                                confirmButton: 'w-full py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
                             }
                         });
                     }
@@ -552,7 +564,7 @@
                         <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #fecdd3;">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                         </div>
-                        <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Gangguan Koneksi</h3>
+                        <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Gangguan Koneksi</h3>
                         <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                             Terjadi kesalahan saat menghubungi server. Silakan coba beberapa saat lagi.
                         </p>
@@ -565,7 +577,7 @@
                             popup: 'custom-swal-popup !rounded-[2.25rem]',
                             htmlContainer: '!m-0 !p-0 !w-full',
                             actions: 'w-full mt-6 px-0',
-                            confirmButton: 'w-full py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                            confirmButton: 'w-full py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
                         }
                     });
                 });
@@ -588,7 +600,7 @@
                     <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #fecdd3;">
                         <i class="fa-solid fa-trash-can"></i>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Hapus Akun TikTok?</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Hapus Akun TikTok?</h3>
                     <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                         Apakah Anda yakin ingin menghapus akun <span class="font-bold text-slate-800">@${username}</span> dari daftar akun Anda?
                     </p>
@@ -603,8 +615,8 @@
                     popup: 'custom-swal-popup !rounded-[2.25rem]',
                     htmlContainer: '!m-0 !p-0 !w-full',
                     actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-                    confirmButton: 'flex-1 py-3.5 px-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-                    cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                    confirmButton: 'flex-1 py-4 px-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+                    cancelButton: 'flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -625,7 +637,7 @@
                             <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #a7f3d0;">
                                 <i class="fa-solid fa-check"></i>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Berhasil!</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Berhasil!</h3>
                             <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                                 {{ session('success') }}
                             </p>
@@ -652,7 +664,7 @@
                             <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-4" style="border: 1px solid #fecdd3;">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
                             </div>
-                            <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Perhatian</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-1.5 tracking-tight">Perhatian</h3>
                             <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
                                 {{ session('error') }}
                             </p>
@@ -665,7 +677,7 @@
                             popup: 'custom-swal-popup !rounded-[2.25rem]',
                             htmlContainer: '!m-0 !p-0 !w-full',
                             actions: 'w-full mt-6 px-0',
-                            confirmButton: 'w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                            confirmButton: 'w-full py-4 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
                         }
                     });
                 }
