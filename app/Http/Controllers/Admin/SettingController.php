@@ -21,6 +21,7 @@ class SettingController extends Controller
             'cs_whatsapp' => 'nullable|string',
             'cs_telegram' => 'nullable|string',
             'min_withdraw' => 'required|string',
+            'max_tiktok_akun' => 'required|integer|min:1|max:100',
             'home_announcement' => 'nullable|string',
         ]);
 
@@ -34,6 +35,7 @@ class SettingController extends Controller
             'cs_whatsapp' => $csWhatsapp,
             'cs_telegram' => $csTelegram,
             'minimal_wd' => (string) $minWithdraw,
+            'max_tiktok_akun' => (string) max(1, (int) $validated['max_tiktok_akun']),
             'home_announcement' => $validated['home_announcement'] ?? null,
         ];
 

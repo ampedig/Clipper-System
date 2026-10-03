@@ -111,39 +111,76 @@
 
                     <hr class="border-slate-100 dark:border-[#2e2e2e]">
 
-                    <!-- ================= GRUP 2: BATAS PENARIKAN (MINIMAL WITHDRAW) ================= -->
+                    <!-- ================= GRUP 2: BATAS PENARIKAN & AKUN TIKTOK ================= -->
                     <div class="space-y-3.5">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm shrink-0">
-                                <i class="fa-solid fa-wallet"></i>
+                                <i class="fa-solid fa-sliders"></i>
                             </div>
                             <div>
-                                <h4 class="text-base font-semibold text-slate-900 dark:text-white">Batas Penarikan Saldo (Withdrawal)</h4>
+                                <h4 class="text-base font-semibold text-slate-900 dark:text-white">Batasan Saldo & Akun Clipper</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Konfigurasi batas minimal penarikan komisi dan kuota akun TikTok per pengguna.</p>
                             </div>
                         </div>
 
-                        <!-- Input Minimal Withdraw -->
-                        <div class="max-w-md space-y-1.5">
-                            <label for="minWithdraw" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                                Minimal Withdraw <span class="text-rose-500">*</span>
-                            </label>
-                            <div class="flex">
-                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
-                                    Rp
-                                </span>
-                                <input 
-                                    type="text" 
-                                    id="minWithdraw" 
-                                    name="min_withdraw"
-                                    value="{{ old('min_withdraw', number_format($settings['minimal_wd'] ?? 0, 0, ',', '.')) }}"
-                                    placeholder="50.000" 
-                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-semibold focus:z-10 @error('min_withdraw') border-red-500 @enderror"
-                                    required
-                                >
+                        <!-- 2 Input: Minimal Withdraw & Max Akun TikTok (Kiri & Kanan) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                            <!-- Minimal Withdraw (Kiri) -->
+                            <div class="space-y-1.5">
+                                <label for="minWithdraw" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                    Minimal Withdraw <span class="text-rose-500">*</span>
+                                </label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                        Rp
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        id="minWithdraw" 
+                                        name="min_withdraw"
+                                        value="{{ old('min_withdraw', number_format($settings['minimal_wd'] ?? 0, 0, ',', '.')) }}"
+                                        placeholder="50.000" 
+                                        class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-semibold focus:z-10 @error('min_withdraw') border-red-500 @enderror"
+                                        required
+                                    >
+                                </div>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Batas minimum saldo yang harus dicapai clipper untuk melakukan pencairan komisi.</p>
+                                @error('min_withdraw')
+                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('min_withdraw')
-                                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                            @enderror
+
+                            <!-- Max TikTok Akun (Kanan) -->
+                            <div class="space-y-1.5">
+                                <label for="maxTiktokAkun" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                    Maksimal Akun TikTok per Clipper <span class="text-rose-500">*</span>
+                                </label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                        <i class="fa-brands fa-tiktok text-sm"></i>
+                                    </span>
+                                    <input 
+                                        type="number" 
+                                        id="maxTiktokAkun" 
+                                        name="max_tiktok_akun"
+                                        value="{{ old('max_tiktok_akun', $settings['max_tiktok_akun'] ?? 10) }}"
+                                        placeholder="10" 
+                                        min="1"
+                                        max="100"
+                                        class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-semibold focus:z-10 @error('max_tiktok_akun') border-red-500 @enderror"
+                                        required
+                                    >
+                                    <span class="inline-flex items-center px-3.5 rounded-r-xl border border-l-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-500 dark:text-slate-400 text-xs font-medium select-none">
+                                        Akun
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Batas kuota jumlah akun TikTok yang boleh disimpan dan diverifikasi oleh satu clipper.</p>
+                                @error('max_tiktok_akun')
+                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                         </div>
                     </div>
 
@@ -205,8 +242,8 @@
             const csWhatsappInput = document.getElementById('csWhatsapp');
             const csTelegramInput = document.getElementById('csTelegram');
             const minWithdrawInput = document.getElementById('minWithdraw');
+            const maxTiktokAkunInput = document.getElementById('maxTiktokAkun');
             const homeAnnouncementInput = document.getElementById('homeAnnouncement');
-            const btnCancel = document.getElementById('btnCancel');
             const btnSave = document.getElementById('btnSave');
 
             // Format input ribuan untuk Minimal Withdraw
@@ -244,24 +281,36 @@
                 });
             }
 
-            // Simpan snapshot nilai awal untuk perbandingan
-            const initialValues = {
-                csWhatsapp: csWhatsappInput ? csWhatsappInput.value : '',
-                csTelegram: csTelegramInput ? csTelegramInput.value : '',
-                minWithdraw: minWithdrawInput ? minWithdrawInput.value : '',
-                homeAnnouncement: homeAnnouncementInput ? homeAnnouncementInput.value : ''
-            };
+            // Batasi nilai minimal akun TikTok
+            if (maxTiktokAkunInput) {
+                maxTiktokAkunInput.addEventListener('input', function () {
+                    if (this.value !== '' && parseInt(this.value, 10) < 1) {
+                        this.value = 1;
+                    }
+                });
+            }
+
+            // Helper untuk mengambil seluruh nilai form saat ini
+            function getFormValues() {
+                if (!form) return {};
+                const data = {};
+                new FormData(form).forEach((value, key) => {
+                    data[key] = value;
+                });
+                return data;
+            }
+
+            // Simpan snapshot nilai awal form untuk perbandingan
+            const initialValues = getFormValues();
 
             // Fungsi untuk memeriksa apakah ada perubahan
             function checkChanges() {
                 if (!btnSave) return;
                 
-                const currentWa = csWhatsappInput ? csWhatsappInput.value : '';
-                const currentTg = csTelegramInput ? csTelegramInput.value : '';
-                const currentMin = minWithdrawInput ? minWithdrawInput.value : '';
-                const currentAnnouncement = homeAnnouncementInput ? homeAnnouncementInput.value : '';
+                const currentValues = getFormValues();
+                const hasChanged = Object.keys(initialValues).some(key => currentValues[key] !== initialValues[key]);
 
-                if (currentWa !== initialValues.csWhatsapp || currentTg !== initialValues.csTelegram || currentMin !== initialValues.minWithdraw || currentAnnouncement !== initialValues.homeAnnouncement) {
+                if (hasChanged) {
                     btnSave.removeAttribute('disabled');
                     btnSave.classList.remove('opacity-50', 'cursor-not-allowed');
                 } else {
@@ -270,12 +319,11 @@
                 }
             }
 
-            // Tambahkan event listener ke setiap input untuk mengecek perubahan setiap kali user mengetik
-            [csWhatsappInput, csTelegramInput, minWithdrawInput, homeAnnouncementInput].forEach(input => {
-                if (input) {
-                    input.addEventListener('input', checkChanges);
-                }
-            });
+            // Listen pada level form untuk mendeteksi setiap input & change
+            if (form) {
+                form.addEventListener('input', checkChanges);
+                form.addEventListener('change', checkChanges);
+            }
 
             // Event handler submit form (tombol save)
             if (btnSave && form) {
@@ -283,8 +331,9 @@
                     e.preventDefault();
 
                     const minWdVal = minWithdrawInput ? minWithdrawInput.value.trim() : '';
+                    const maxTiktokVal = maxTiktokAkunInput ? maxTiktokAkunInput.value.trim() : '';
 
-                    if (!minWdVal) {
+                    if (!minWdVal || !maxTiktokVal) {
                         if (typeof Swal !== 'undefined') {
                             Swal.fire({
                                 title: 'Perhatian',
@@ -318,7 +367,6 @@
                             buttonsStyling: false
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // Tampilkan state loading atau submit form
                                 form.submit();
                             }
                         });

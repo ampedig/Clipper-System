@@ -97,4 +97,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Withdrawal::class);
     }
+
+    /**
+     * Get the TikTok accounts associated with the user.
+     */
+    public function tiktokAccounts(): HasMany
+    {
+        return $this->hasMany(UserTiktokAccount::class);
+    }
 }
