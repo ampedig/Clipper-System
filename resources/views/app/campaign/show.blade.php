@@ -405,29 +405,69 @@
             class="w-12 h-1.5 bg-slate-300/80 hover:bg-slate-400 rounded-full mx-auto mb-5 cursor-grab active:cursor-grabbing transition-colors shrink-0">
         </div>
 
+        @php
+            $hasVerifiedTiktok = auth()->check() && auth()->user()->tiktokAccounts()->where('is_verified', true)->exists();
+        @endphp
+
         <div class="text-center mb-5">
-            <div
-                class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3 text-indigo-600">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3"
+                style="background-color: rgba(255, 0, 25, 0.08); color: #ff0019;">
                 <i class="fa-solid fa-link text-xl"></i>
             </div>
             <h3 class="text-lg font-bold text-slate-900">Submit URL Video</h3>
-            <p class="text-xs text-slate-500 mt-1">Masukkan link video TikTok, Reels, atau Shorts yang sudah Anda buat.
+            <p class="text-xs text-slate-500 mt-1">Masukkan link video TikTok yang telah Anda unggah.
             </p>
         </div>
+
+        @if(! $hasVerifiedTiktok)
+            <div class="p-4 bg-amber-50/90 border border-amber-200/80 rounded-2xl mb-5 text-left">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                        <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-xs font-bold text-amber-900">Akun TikTok Belum Terverifikasi</h4>
+                        <p class="text-[11px] text-amber-700/90 mt-0.5 leading-relaxed">
+                            Video yang disubmit harus berasal dari akun TikTok terverifikasi milik Anda untuk mencegah penipuan.
+                        </p>
+                        <a href="{{ route('app.tiktok.index') }}" class="inline-flex items-center gap-1.5 font-bold text-xs hover:opacity-80 mt-2.5 transition-opacity"
+                            style="color: #ff0019;">
+                            <span>Verifikasi Akun Sekarang</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @else
+            <!-- Info Note Banner: Warna Primary Merah AZCLIP (#ff0019) -->
+            <div class="rounded-2xl p-3.5 flex items-center gap-3 mb-4 text-left"
+                style="background-color: rgba(255, 0, 25, 0.04); border: 1px solid rgba(255, 0, 25, 0.15);">
+                <div class="w-8 h-8 rounded-xl flex items-center justify-center text-sm shrink-0"
+                    style="background-color: rgba(255, 0, 25, 0.1); color: #ff0019;">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-xs font-bold text-slate-800 mb-0.5">Ketentuan Akun</h4>
+                    <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
+                        Pastikan video yang Anda submit diunggah menggunakan <strong style="color: #ff0019;" class="font-semibold">akun TikTok terverifikasi</strong> milik Anda.
+                    </p>
+                </div>
+            </div>
+        @endif
 
         <form action="{{ route('app.campaigns.submissions.store', $campaign->slug) }}" method="POST">
             @csrf
             <div class="space-y-4">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Link
-                        Video</label>
+                        Video TikTok</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <i class="fa-solid fa-link text-slate-400 text-sm"></i>
                         </div>
                         <input type="url" name="submitted_url" id="videoUrlInput"
-                            class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border @error('submitted_url') border-red-400 @else border-slate-200 @enderror rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                            placeholder="https://tiktok.com/@user/video/..." required>
+                            class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border @error('submitted_url') border-red-400 @else border-slate-200 @enderror rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                            placeholder="https://www.tiktok.com/@username/video/..." required>
                     </div>
                     @error('submitted_url')
                         <p class="mt-1.5 text-xs font-medium text-red-500">{{ $message }}</p>
@@ -440,10 +480,20 @@
                     class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
                     Batal
                 </button>
-                <button type="submit" onclick="showLoadingState(this)"
-                    class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden">
-                    <span class="btn-text">Kirim</span>
-                </button>
+                @if(! $hasVerifiedTiktok)
+                    <a href="{{ route('app.tiktok.index') }}"
+                        class="flex-1 py-3 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xs"
+                        style="background: linear-gradient(135deg, #ff0019 0%, #e60017 100%);">
+                        <span>Verifikasi Akun</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                @else
+                    <button type="submit" onclick="showLoadingState(this)"
+                        class="flex-1 py-3 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden shadow-xs"
+                        style="background: linear-gradient(135deg, #ff0019 0%, #e60017 100%);">
+                        <span class="btn-text">Kirim</span>
+                    </button>
+                @endif
             </div>
         </form>
     </div>

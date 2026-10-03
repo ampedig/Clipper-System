@@ -7,6 +7,7 @@ use App\Jobs\SendTelegramMessageJob;
 use App\Models\ClipCampaign;
 use App\Models\ClipSubmission;
 use App\Models\Setting;
+use App\Services\TikTokScraperService;
 use App\Services\TikTokUrlService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -73,33 +74,70 @@ class ClipSubmissionController extends Controller
     /**
      * Store a newly created clip submission.
      */
-    public function store(Request $request, ClipCampaign $campaign, TikTokUrlService $tiktokService)
-    {
+    public function store(
+        Request $request,
+        ClipCampaign $campaign,
+        TikTokUrlService $tiktokService,
+        TikTokScraperService $scraperService
+    ) {
         $request->validate([
             'submitted_url' => ['required', 'url', 'regex:/tiktok\.com/i'],
         ], [
             'submitted_url.regex' => 'Link yang dimasukkan harus berupa link TikTok.',
         ]);
 
-        // 1. Ekstrak Video ID
-        $videoId = $tiktokService->extractVideoId($request->submitted_url);
+        $user = $request->user();
+
+        // 1. Guard: Pastikan user memiliki setidaknya satu akun TikTok yang sudah berstatus terverifikasi
+        $verifiedAccounts = $user->tiktokAccounts()
+            ->where('is_verified', true)
+            ->pluck('username')
+            ->map(fn ($u) => strtolower(ltrim($u, '@')))
+            ->all();
+
+        if (empty($verifiedAccounts)) {
+            return back()->with('error', 'Anda belum memiliki akun TikTok yang terverifikasi. Silakan daftarkan dan verifikasi akun TikTok Anda terlebih dahulu di menu Profil.');
+        }
+
+        // 2. Ekstrak canonical URL, Video ID, dan username author dari link TikTok
+        $parsed = $tiktokService->parseVideo($request->submitted_url);
+        $videoId = $parsed['video_id'];
+        $authorUsername = $parsed['username'];
 
         if (! $videoId) {
             return back()->with('error', 'Gagal memproses link TikTok. Pastikan link video valid.');
         }
 
-        // 2. Cek apakah video sudah pernah didaftarkan
-        // Bisa di campaign yang sama atau campaign lain (tergantung kebutuhan, kita cek global agar tidak ada kecurangan lintas campaign)
+        // Fallback: Jika username pengunggah tidak terdeteksi dari struktur URL, coba ambil lewat scraper
+        if (! $authorUsername) {
+            $stats = $scraperService->getVideoStats($parsed['url'] ?: $request->submitted_url);
+            if (! empty($stats['uploader'])) {
+                $authorUsername = strtolower(ltrim($stats['uploader'], '@'));
+            }
+        }
+
+        if (! $authorUsername) {
+            return back()->with('error', 'Gagal mendeteksi pemilik video TikTok ini. Pastikan video bersifat publik dan link dapat diakses.');
+        }
+
+        // 3. Guard: Cek apakah video diunggah oleh salah satu akun TikTok terverifikasi milik user
+        if (! in_array(strtolower($authorUsername), $verifiedAccounts, true)) {
+            $verifiedList = implode(', ', array_map(fn ($u) => '@'.$u, $verifiedAccounts));
+
+            return back()->with('error', "Video ini diunggah oleh akun @{$authorUsername}, bukan dari akun TikTok terverifikasi milik Anda ({$verifiedList}). Pastikan mengunggah video dari akun yang telah diverifikasi.");
+        }
+
+        // 4. Guard: Cek apakah video sudah pernah didaftarkan di sistem
         $exists = ClipSubmission::where('video_id', $videoId)->exists();
 
         if ($exists) {
             return back()->with('error', 'Video ini sudah pernah didaftarkan di sistem kami.');
         }
 
-        // 3. Simpan ke database
+        // 5. Simpan ke database
         $submission = $campaign->clipSubmissions()->create([
-            'user_id' => $request->user()->id,
-            'submitted_url' => $request->submitted_url,
+            'user_id' => $user->id,
+            'submitted_url' => $parsed['url'] ?: $request->submitted_url,
             'video_id' => $videoId,
             'status' => 'pending',
             'current_views' => 0,
@@ -109,7 +147,8 @@ class ClipSubmissionController extends Controller
 
         $pesan = "📝 <b>NEW CLIP SUBMISSION</b> 📝\n"
                ."━━━━━━━━━━━━━━━━━━━━\n"
-               ."👤 <b>User:</b> {$request->user()->name}\n"
+               ."👤 <b>User:</b> {$user->name}\n"
+               ."📱 <b>Akun TikTok:</b> @{$authorUsername}\n"
                ."🏷 <b>Campaign:</b> {$campaign->title}\n"
                ."🔗 <b>Link TikTok:</b> <a href=\"{$request->submitted_url}\">Tonton Video</a>\n"
                .'⏳ <b>Status:</b> Pending Check';

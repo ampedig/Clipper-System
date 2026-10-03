@@ -11,22 +11,73 @@ class TikTokUrlService
      */
     public function extractVideoId(string $url): ?string
     {
-        // If it's a short vt.tiktok.com URL, we need to resolve the redirect first
-        if (str_contains($url, 'vt.tiktok.com') || str_contains($url, 'vm.tiktok.com')) {
-            $url = $this->resolveRedirect($url);
-        }
+        $resolvedUrl = $this->resolveIfShortUrl($url);
 
         // Regex to find the video ID (19 or more digits) after /video/
-        if (preg_match('/\/video\/(\d+)/', $url, $matches)) {
+        if (preg_match('/\/video\/(\d+)/', $resolvedUrl, $matches)) {
             return $matches[1];
         }
 
         // Some mobile shares might use /v/ format
-        if (preg_match('/\/v\/(\d+)/', $url, $matches)) {
+        if (preg_match('/\/v\/(\d+)/', $resolvedUrl, $matches)) {
             return $matches[1];
         }
 
         return null;
+    }
+
+    /**
+     * Extract author username handle from TikTok URL.
+     */
+    public function extractUsername(string $url): ?string
+    {
+        $resolvedUrl = $this->resolveIfShortUrl($url);
+
+        if (preg_match('/@([a-zA-Z0-9_.]+)/', $resolvedUrl, $matches)) {
+            return strtolower($matches[1]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve short URL and extract video metadata (canonical URL, video_id, author username).
+     *
+     * @return array{url: string, video_id: ?string, username: ?string}
+     */
+    public function parseVideo(string $url): array
+    {
+        $resolvedUrl = $this->resolveIfShortUrl($url);
+
+        $videoId = null;
+        if (preg_match('/\/video\/(\d+)/', $resolvedUrl, $matches)) {
+            $videoId = $matches[1];
+        } elseif (preg_match('/\/v\/(\d+)/', $resolvedUrl, $matches)) {
+            $videoId = $matches[1];
+        }
+
+        $username = null;
+        if (preg_match('/@([a-zA-Z0-9_.]+)/', $resolvedUrl, $matches)) {
+            $username = strtolower($matches[1]);
+        }
+
+        return [
+            'url' => $resolvedUrl,
+            'video_id' => $videoId,
+            'username' => $username,
+        ];
+    }
+
+    /**
+     * Check if the given URL is a short TikTok URL and resolve its redirect destination.
+     */
+    public function resolveIfShortUrl(string $url): string
+    {
+        if (str_contains($url, 'vt.tiktok.com') || str_contains($url, 'vm.tiktok.com')) {
+            return $this->resolveRedirect($url);
+        }
+
+        return $url;
     }
 
     /**
