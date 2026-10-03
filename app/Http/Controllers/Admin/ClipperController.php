@@ -78,6 +78,7 @@ class ClipperController extends Controller
             'withdrawChannel',
             'walletTransactions' => fn ($q) => $q->latest()->take(5),
             'clipSubmissions' => fn ($q) => $q->with('clipCampaign')->latest()->take(5),
+            'tiktokAccounts' => fn ($q) => $q->latest(),
         ]);
 
         $approvedSubmissionsCount = $clipper->clipSubmissions()

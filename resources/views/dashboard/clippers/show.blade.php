@@ -282,7 +282,137 @@
                     </div>
                 </div>
 
-                <!-- Panel 3: Riwayat Mutasi Saldo Dompet Terbaru -->
+                <!-- Panel 3: Daftar Akun TikTok Clipper -->
+                <div
+                    class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors">
+                    <div
+                        class="p-5 border-b border-slate-100 dark:border-[#2e2e2e] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-base font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <i class="fa-brands fa-tiktok text-slate-900 dark:text-white"></i>
+                                Akun TikTok Terdaftar
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                Akun TikTok yang didaftarkan clipper untuk penugasan campaign
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-[#2e2e2e] text-slate-700 dark:text-slate-300">
+                                <i class="fa-brands fa-tiktok text-[11px]"></i>
+                                {{ $clipper->tiktokAccounts->count() }} Akun
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead
+                                class="bg-slate-50 dark:bg-[#1c1c1c] text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold tracking-wider">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        #</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Nama Akun</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Username</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3.5 border-b border-slate-100 dark:border-[#2e2e2e] text-right font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider td-nowrap">
+                                        Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-[#2e2e2e] text-sm">
+                                @forelse ($clipper->tiktokAccounts as $account)
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-[#2a2a2a]/30 transition-colors">
+                                        <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300 td-nowrap">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-6 py-4 td-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                @if ($account->avatar_url)
+                                                    <img src="{{ $account->avatar_url }}" alt="{{ $account->username }}"
+                                                        class="w-9 h-9 rounded-full object-cover border border-slate-200 dark:border-[#333333] shrink-0"
+                                                        onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode($account->username) }}&background=0f172a&color=fff';">
+                                                @else
+                                                    <div
+                                                        class="w-9 h-9 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center text-xs font-bold shrink-0">
+                                                        <i class="fa-brands fa-tiktok"></i>
+                                                    </div>
+                                                @endif
+                                                <div>
+                                                    <div class="font-semibold text-slate-800 dark:text-slate-200 text-sm">
+                                                        {{ $account->nickname ?: '-' }}
+                                                    </div>
+                                                    <div class="text-[11px] text-slate-400">
+                                                        Daftar: {{ $account->created_at ? $account->created_at->translatedFormat('d M Y') : '-' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 td-nowrap">
+                                            <span
+                                                class="font-mono text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#2a2a2a] px-2.5 py-1 rounded-lg">
+                                                &#64;{{ $account->username }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 td-nowrap">
+                                            @if ($account->is_verified)
+                                                <div>
+                                                    <span
+                                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
+                                                        <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                                        Terverifikasi
+                                                    </span>
+                                                    @if ($account->verified_at)
+                                                        <div class="text-[10px] text-slate-400 mt-1">
+                                                            {{ $account->verified_at->translatedFormat('d M Y, H:i') }} WIB
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div>
+                                                    <span
+                                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60">
+                                                        <i class="fa-solid fa-clock text-[10px]"></i>
+                                                        Belum Verifikasi
+                                                    </span>
+                                                    @if ($account->verification_code)
+                                                        <div class="text-[10px] text-slate-400 mt-1 font-mono">
+                                                            Kode: <strong>{{ $account->verification_code }}</strong>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-right td-nowrap">
+                                            <a href="https://www.tiktok.com/@{{ $account->username }}" target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="btn btn-secondary rounded-xl px-3 py-1.5 text-xs font-semibold inline-flex items-center gap-1.5 hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                                                <span>Buka Profil</span>
+                                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-12 text-center text-slate-400 dark:text-slate-500">
+                                            <i class="fa-brands fa-tiktok text-3xl mb-2 block opacity-30"></i>
+                                            <p class="text-xs font-medium">Clipper ini belum mendaftarkan akun TikTok.</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Panel 4: Riwayat Mutasi Saldo Dompet Terbaru -->
                 <div
                     class="bg-white dark:bg-[#222222] border border-slate-200 dark:border-[#2e2e2e] rounded-2xl overflow-hidden transition-colors">
                     <div
