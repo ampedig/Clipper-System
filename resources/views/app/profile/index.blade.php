@@ -122,6 +122,39 @@
                         class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
                 </a>
 
+                <!-- Akun TikTok Saya -->
+                <a href="{{ route('app.tiktok.index') }}"
+                    class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">
+                    <div class="flex items-center gap-3.5">
+                        <div
+                            class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center text-base group-hover:scale-105 transition-transform shadow-sm"
+                            style="background-color: #0f172a; color: #ffffff;">
+                            <i class="fa-brands fa-tiktok text-base"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <p class="text-xs font-bold text-slate-800">Akun TikTok Saya</p>
+                                @php
+                                    $tiktokCount = $currentUser->tiktokAccounts()->count();
+                                    $verifiedCount = $currentUser->tiktokAccounts()->where('is_verified', true)->count();
+                                @endphp
+                                @if ($verifiedCount > 0)
+                                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                        <i class="fa-solid fa-circle-check text-[8px]"></i> {{ $verifiedCount }}
+                                    </span>
+                                @elseif ($tiktokCount > 0)
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-600 border border-amber-200">
+                                        {{ $tiktokCount }} Pending
+                                    </span>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-medium text-slate-400 mt-0.5">Kelola & verifikasi kepemilikan akun TikTok</p>
+                        </div>
+                    </div>
+                    <i
+                        class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-500 transition-colors"></i>
+                </a>
+
                 <!-- Riwayat Penarikan -->
                 <a href="{{ route('app.withdrawals.index') }}"
                     class="flex items-center justify-between p-3.5 hover:bg-slate-50/80 transition-colors group">

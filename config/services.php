@@ -41,4 +41,8 @@ return [
         'path' => env('YTDLP_PATH', 'yt-dlp'),
     ],
 
+    'tiktok_rapidapi' => [
+        'key' => env('RAPIDAPI_KEY'),
+    ],
+
 ];

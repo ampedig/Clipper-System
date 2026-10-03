@@ -1080,6 +1080,12 @@
       background-color: color-mix(in oklab, var(--color-slate-900) 60%, transparent);
     }
   }
+  .bg-slate-900 {
+    background-color: var(--color-slate-900);
+  }
+  .bg-black {
+    background-color: #000;
+  }
   .bg-transparent {
     background-color: transparent;
   }

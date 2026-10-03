@@ -83,7 +83,7 @@
         <div class="flex items-center justify-between pt-1">
             <label for="remember-me" class="flex items-center gap-2 cursor-pointer select-none group">
                 <input type="checkbox" id="remember-me" name="remember" value="1"
-                    {{ old('remember') ? 'checked' : '' }}
+                    {{ old('remember', true) ? 'checked' : '' }}
                     class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-0 accent-indigo-600 cursor-pointer" />
                 <span class="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors">Ingat saya</span>
             </label>

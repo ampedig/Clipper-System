@@ -15,6 +15,7 @@ use App\Http\Controllers\App\ClipSubmissionController as AppClipSubmissionContro
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\PasswordController as AppPasswordController;
 use App\Http\Controllers\App\ProfileController as AppProfileController;
+use App\Http\Controllers\App\TiktokAccountController as AppTiktokAccountController;
 use App\Http\Controllers\App\WalletController as AppWalletController;
 use App\Http\Controllers\App\WithdrawalController as AppWithdrawalController;
 use App\Http\Controllers\ProfileController;
@@ -40,6 +41,10 @@ Route::get('/akun/kata-sandi', [AppPasswordController::class, 'edit'])->middlewa
 Route::put('/akun/kata-sandi', [AppPasswordController::class, 'update'])->middleware('auth')->name('app.password.update');
 Route::get('/akun/rekening', [AppProfileController::class, 'rekening'])->middleware('auth')->name('app.rekening');
 Route::put('/akun/rekening', [AppProfileController::class, 'updateRekening'])->middleware('auth')->name('app.rekening.update');
+Route::get('/akun/tiktok', [AppTiktokAccountController::class, 'index'])->middleware('auth')->name('app.tiktok.index');
+Route::post('/akun/tiktok', [AppTiktokAccountController::class, 'store'])->middleware('auth')->name('app.tiktok.store');
+Route::post('/akun/tiktok/{account}/verify', [AppTiktokAccountController::class, 'verify'])->middleware('auth')->name('app.tiktok.verify');
+Route::delete('/akun/tiktok/{account}', [AppTiktokAccountController::class, 'destroy'])->middleware('auth')->name('app.tiktok.destroy');
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
