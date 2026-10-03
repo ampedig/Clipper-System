@@ -174,8 +174,7 @@
     <main class="p-4 space-y-4">
 
         <!-- Info Note Banner -->
-        <div class="rounded-2xl p-4 flex items-center gap-3"
-            style="background-color: #eef2ff; border: 1px solid #e0e7ff;">
+        <div class="bg-indigo-50/70 border border-indigo-100/80 rounded-2xl p-4 flex items-center gap-3">
             <div
                 class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shrink-0">
                 <i class="fa-solid fa-circle-info"></i>
@@ -198,14 +197,12 @@
                         <i class="fa-brands fa-tiktok text-sm"></i>
                     </div>
                     <div>
-                        <h4 class="text-xs font-bold text-slate-800">Kuota Akun TikTok</h4>
-                        <p class="text-[11px] text-slate-400 font-medium">Batas maksimal akun terdaftar</p>
+                        <h4 class="text-md font-bold text-slate-800">Kuota Akun TikTok</h4>
                     </div>
                 </div>
                 <div class="text-right">
                     <span class="text-xl font-extrabold text-slate-800">{{ $totalAccounts }} <span
                             class="text-sm font-semibold text-slate-400">/ {{ $maxAccounts }}</span></span>
-                    <span class="text-[10px] text-slate-400 block font-medium">Akun</span>
                 </div>
             </div>
 
@@ -261,7 +258,7 @@
                                 </svg>
                             </div>
                             <input type="text" id="usernameInput" name="username" value="{{ old('username') }}"
-                                placeholder="cth. ampedig" required autocomplete="off" spellcheck="false"
+                                placeholder="contoh: azclip" required autocomplete="off" spellcheck="false"
                                 pattern="[^@]+" title="Username TikTok tidak boleh menyertakan simbol @"
                                 oninput="this.value = this.value.replace(/@/g, '')" class="tiktok-input-field">
                         </div>
@@ -273,9 +270,6 @@
                             </div>
                         @else
                             <p class="text-[11px] text-slate-400 font-medium mt-1.5 flex items-center gap-1.5">
-                                <i class="fa-solid fa-circle-info text-[11px] text-slate-400 shrink-0"></i>
-                                <span>Kode verifikasi unik akan digenerate otomatis untuk ditaruh di bio profil TikTok
-                                    Anda.</span>
                             </p>
                         @enderror
                     </div>
@@ -362,7 +356,8 @@
 
                             <!-- Box Kode & Salin -->
                             <div class="flex items-center gap-2">
-                                <div class="tiktok-code-box flex-1 flex items-center justify-center shadow-xs" style="height: 44px;">
+                                <div class="tiktok-code-box flex-1 flex items-center justify-center shadow-xs"
+                                    style="height: 44px;">
                                     <span
                                         class="text-xl font-extrabold text-slate-900 font-mono custom-code-box tracking-widest select-all">
                                         {{ $account->verification_code }}
