@@ -4,11 +4,176 @@
 ])
 
 <style>
-    /* Modern Clean Styles - Soft subtle borders, no shadow */
+    /*
+     * Semua style baru ditulis sebagai custom class karena input.css adalah build Tailwind statis;
+     * utility class yang belum pernah dipakai tidak akan ter-render.
+     */
     .tiktok-card {
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 1.25rem;
+    }
+
+    /* Hero kuota: gradien primary seperti kartu saldo di Home + aksen warna TikTok */
+    .tt-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.5rem;
+        padding: 1.25rem;
+        color: #ffffff;
+        background: linear-gradient(135deg, #ff0019 0%, #e60017 45%, #b80012 100%);
+    }
+
+    .tt-hero-glow {
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        border-radius: 9999px;
+        filter: blur(50px);
+        pointer-events: none;
+    }
+
+    .tt-hero-glow.cyan {
+        background: #25F4EE;
+        top: -70px;
+        right: -60px;
+        opacity: 0.45;
+    }
+
+    .tt-hero-glow.dark {
+        background: #0f172a;
+        bottom: -80px;
+        left: -50px;
+        opacity: 0.35;
+    }
+
+    .tt-hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .tt-glass-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.875rem;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .tt-hero-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .tt-hero-title {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+    }
+
+    .tt-hero-subtitle {
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.85);
+        margin-top: 0.875rem;
+    }
+
+    .tt-hero-count-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 1.125rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .tt-hero-count {
+        font-size: 2.25rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.02em;
+    }
+
+    .tt-hero-count small {
+        font-size: 1rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .tt-hero-percent {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        white-space: nowrap;
+    }
+
+    .tt-progress-track {
+        height: 8px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.22);
+        overflow: hidden;
+    }
+
+    .tt-progress-bar {
+        height: 100%;
+        border-radius: 9999px;
+        background: linear-gradient(90deg, #ffffff 0%, #d6fffe 100%);
+        transition: width 0.6s ease;
+    }
+
+    .tt-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .tt-stat {
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.875rem;
+        padding: 0.625rem 0.375rem;
+        text-align: center;
+    }
+
+    .tt-stat-value {
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .tt-stat-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 2px;
+    }
+
+    /* Form tambah akun */
+    .tt-section-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        background: #fff1f2;
+        color: #ff0019;
+        flex-shrink: 0;
     }
 
     #usernameInput::placeholder {
@@ -20,13 +185,12 @@
         display: flex;
         align-items: stretch;
         border: 1px solid #e2e8f0;
-        border-radius: 0.75rem;
+        border-radius: 0.875rem;
         background-color: #f8fafc;
         overflow: hidden;
         transition: border-color 0.15s ease, background-color 0.15s ease;
     }
 
-    /* Thin crisp outline on focus - no glow or box-shadow */
     .tiktok-input-group:focus-within {
         border-color: #ff0019 !important;
         box-shadow: none !important;
@@ -66,7 +230,6 @@
         flex: 1;
         min-width: 0;
         padding: 1rem 1.25rem;
-        font-size: 1rem;
         background: transparent;
         border: none;
         outline: none;
@@ -76,12 +239,221 @@
         box-shadow: none;
     }
 
-    .tiktok-verify-box {
-        background-color: #fffdf5;
-        border: 1px solid #fef3c7;
-        border-radius: 1rem;
+    .tt-btn-primary,
+    .tt-btn-verify {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border-radius: 0.875rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.15s ease, filter 0.15s ease;
     }
 
+    .tt-btn-primary {
+        background: linear-gradient(135deg, #ff0019 0%, #d90015 100%);
+    }
+
+    .tt-btn-verify {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .tt-btn-primary:hover,
+    .tt-btn-verify:hover {
+        filter: brightness(1.05);
+    }
+
+    .tt-btn-primary:active,
+    .tt-btn-verify:active {
+        transform: scale(0.98);
+    }
+
+    /* Judul section daftar akun */
+    .tt-count-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+        background: #fff1f2;
+        color: #ff0019;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* Kartu akun */
+    .tt-avatar-wrap {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .tt-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 9999px;
+        object-fit: cover;
+        border: 2px solid #ffffff;
+    }
+
+    .tt-avatar.verified {
+        box-shadow: 0 0 0 2px #10b981;
+    }
+
+    .tt-avatar.pending {
+        box-shadow: 0 0 0 2px #f59e0b;
+    }
+
+    .tt-avatar-fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 1.1rem;
+    }
+
+    .tt-status-dot {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        width: 17px;
+        height: 17px;
+        border-radius: 9999px;
+        border: 2px solid #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        color: #ffffff;
+    }
+
+    .tt-status-dot.verified {
+        background: #10b981;
+    }
+
+    .tt-status-dot.pending {
+        background: #f59e0b;
+    }
+
+    .tt-handle {
+        display: inline-block;
+        max-width: 100%;
+        padding: 1px 8px;
+        margin-top: 4px;
+        border-radius: 6px;
+        background: #f1f5f9;
+        color: #475569;
+        font-size: 11px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .tt-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-size: 10px;
+        font-weight: 700;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .tt-badge.verified {
+        background: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+    }
+
+    .tt-badge.pending {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+    }
+
+    /* Stepper verifikasi bio */
+    .tt-steps {
+        background: #fffdf5;
+        border: 1px solid #fef3c7;
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+
+    .tt-step {
+        position: relative;
+        display: flex;
+        gap: 0.75rem;
+        padding-bottom: 1.125rem;
+    }
+
+    .tt-step:last-child {
+        padding-bottom: 0;
+    }
+
+    .tt-step:not(:last-child)::before {
+        content: '';
+        position: absolute;
+        left: 11px;
+        top: 28px;
+        bottom: 4px;
+        width: 2px;
+        border-radius: 2px;
+        background: #fde68a;
+    }
+
+    .tt-step-num {
+        position: relative;
+        z-index: 1;
+        width: 24px;
+        height: 24px;
+        border-radius: 9999px;
+        background: #f59e0b;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .tt-step-body {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .tt-step-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 24px;
+    }
+
+    .tt-step-desc {
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #64748b;
+    }
+
+    .tt-step-action {
+        margin-top: 0.625rem;
+    }
+
+    .tt-inline-link {
+        color: #ff0019;
+        font-weight: 700;
+    }
+
+    /* Tinggi box kode & tombol salin dikunci 44px sesuai kesepakatan sebelumnya */
     .tiktok-code-box {
         background-color: #ffffff;
         border: 1px solid #fde68a;
@@ -94,16 +466,104 @@
         border: 1px solid #e2e8f0;
     }
 
-    .badge-verified {
-        background-color: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
+    .custom-code-box {
+        letter-spacing: 0.15em;
     }
 
-    .badge-pending {
-        background-color: #fffbeb;
-        color: #b45309;
-        border: 1px solid #fde68a;
+    /* Footer kartu */
+    .tt-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .tt-meta {
+        font-size: 10px;
+        font-weight: 500;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .tt-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 600;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .tt-pill-btn:hover {
+        border-color: #cbd5e1;
+        color: #0f172a;
+    }
+
+    .tt-pill-btn.danger:hover {
+        background: #fff1f2;
+        border-color: #fecdd3;
+        color: #e11d48;
+    }
+
+    /* Empty state dengan efek logo TikTok (offset cyan & magenta) */
+    .tt-empty {
+        background: #ffffff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 1.25rem;
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+
+    .tt-empty-icon {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1.125rem;
+    }
+
+    .tt-empty-icon::before,
+    .tt-empty-icon::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 1.125rem;
+        opacity: 0.7;
+    }
+
+    .tt-empty-icon::before {
+        background: #25F4EE;
+        transform: translate(-4px, -4px);
+    }
+
+    .tt-empty-icon::after {
+        background: #FE2C55;
+        transform: translate(4px, 4px);
+    }
+
+    .tt-empty-icon-inner {
+        position: relative;
+        z-index: 1;
+        width: 60px;
+        height: 60px;
+        border-radius: 1.125rem;
+        background: #0f172a;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
     }
 
     /* Custom SweetAlert width alignment so content width matches actions buttons */
@@ -148,11 +608,13 @@
         outline: none !important;
         box-shadow: none !important;
     }
-
-    .custom-code-box {
-        letter-spacing: 0.15em;
-    }
 </style>
+
+@php
+    $pendingAccounts = $totalAccounts - $verifiedAccounts;
+    $remainingSlots = max(0, $maxAccounts - $totalAccounts);
+    $percentage = $maxAccounts > 0 ? min(100, round(($totalAccounts / $maxAccounts) * 100)) : 0;
+@endphp
 
 <div class="min-h-[100dvh] bg-slate-50 relative pb-32">
 
@@ -173,71 +635,70 @@
     <!-- Main Content -->
     <main class="p-4 space-y-4">
 
-        <!-- Info Note Banner -->
-        <div class="bg-indigo-50/70 border border-indigo-100/80 rounded-2xl p-4 flex items-center gap-3">
-            <div
-                class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm shrink-0">
-                <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <div>
-                <h4 class="text-xs font-bold text-slate-800 mb-0.5">Verifikasi Kepemilikan Akun</h4>
-                <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
-                    Daftarkan akun TikTok Anda untuk verifikasi identitas clipper sebelum dapat mengajukan link video
-                    tugas campaign.
-                </p>
-            </div>
-        </div>
+        <!-- Hero Kuota & Info Verifikasi -->
+        <section class="tt-hero">
+            <div class="tt-hero-glow cyan"></div>
+            <div class="tt-hero-glow dark"></div>
 
-        <!-- Banner Kuota Akun (Progress Card) -->
-        <div class="tiktok-card p-4 space-y-3.5">
-            <div class="flex items-center justify-between">
+            <div class="tt-hero-content">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 shadow-xs"
-                        style="background-color: #0f172a; color: #ffffff;">
-                        <i class="fa-brands fa-tiktok text-sm"></i>
+                    <div class="tt-glass-icon">
+                        <i class="fa-brands fa-tiktok"></i>
                     </div>
-                    <div>
-                        <h4 class="text-md font-bold text-slate-800">Kuota Akun TikTok</h4>
+                    <div class="min-w-0">
+                        <p class="tt-hero-label">Verifikasi Kepemilikan</p>
+                        <h2 class="tt-hero-title">Kuota Akun TikTok</h2>
                     </div>
                 </div>
-                <div class="text-right">
-                    <span class="text-xl font-extrabold text-slate-800">{{ $totalAccounts }} <span
-                            class="text-sm font-semibold text-slate-400">/ {{ $maxAccounts }}</span></span>
+
+                <p class="tt-hero-subtitle">
+                    Daftarkan &amp; verifikasi akun TikTok Anda sebelum mengajukan link video tugas campaign.
+                </p>
+
+                <div class="tt-hero-count-row">
+                    <div class="tt-hero-count">
+                        {{ $totalAccounts }} <small>/ {{ $maxAccounts }}</small>
+                    </div>
+                    <span class="tt-hero-percent">{{ $percentage }}% terpakai</span>
+                </div>
+
+                <div class="tt-progress-track">
+                    <div class="tt-progress-bar" style="width: {{ $percentage }}%"></div>
+                </div>
+
+                <div class="tt-stat-grid">
+                    <div class="tt-stat">
+                        <div class="tt-stat-value">{{ $verifiedAccounts }}</div>
+                        <div class="tt-stat-label">Terverifikasi</div>
+                    </div>
+                    <div class="tt-stat">
+                        <div class="tt-stat-value">{{ $pendingAccounts }}</div>
+                        <div class="tt-stat-label">Menunggu</div>
+                    </div>
+                    <div class="tt-stat">
+                        @if ($canAddMore)
+                            <div class="tt-stat-value">{{ $remainingSlots }}</div>
+                            <div class="tt-stat-label">Sisa Slot</div>
+                        @else
+                            <div class="tt-stat-value"><i class="fa-solid fa-lock text-sm"></i></div>
+                            <div class="tt-stat-label">Kuota Penuh</div>
+                        @endif
+                    </div>
                 </div>
             </div>
-
-            <!-- Progress Bar Kuota -->
-            @php
-                $percentage = $maxAccounts > 0 ? min(100, round(($totalAccounts / $maxAccounts) * 100)) : 0;
-            @endphp
-            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500"
-                    style="width: {{ $percentage }}%"></div>
-            </div>
-
-            <div class="flex items-center justify-between text-[11px] font-medium text-slate-500 pt-0.5">
-                <span class="flex items-center gap-1.5 text-emerald-600 font-semibold">
-                    <i class="fa-solid fa-circle-check text-[11px]"></i> {{ $verifiedAccounts }} Terverifikasi
-                </span>
-                <span>
-                    @if ($canAddMore)
-                        Sisa kuota: <strong class="text-slate-700">{{ $maxAccounts - $totalAccounts }} akun</strong>
-                    @else
-                        <span class="text-rose-500 font-bold">Kuota Penuh</span>
-                    @endif
-                </span>
-            </div>
-        </div>
+        </section>
 
         <!-- Form Tambah Akun Baru (Jika Kuota Tersedia) -->
         @if ($canAddMore)
-            <div class="tiktok-card p-5 space-y-4">
-                <div class="flex items-center gap-2.5">
-                    <div
-                        class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs shrink-0">
+            <section class="tiktok-card p-5 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="tt-section-icon">
                         <i class="fa-solid fa-plus"></i>
                     </div>
-                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Tambah Akun TikTok</h3>
+                    <div class="min-w-0">
+                        <h3 class="text-sm font-bold text-slate-900">Tambah Akun TikTok</h3>
+                        <p class="text-[11px] text-slate-400 font-medium mt-0.5">Kode verifikasi bio dibuat otomatis</p>
+                    </div>
                 </div>
 
                 <form action="{{ route('app.tiktok.store') }}" method="POST" class="space-y-3.5">
@@ -248,7 +709,6 @@
                             Username TikTok
                         </label>
 
-                        <!-- Input Group: Perfectly Centered @ Vector Icon + Clean Input -->
                         <div class="tiktok-input-group @error('username') has-error @enderror">
                             <div class="tiktok-input-prefix" aria-hidden="true">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -268,154 +728,163 @@
                                 <i class="fa-solid fa-circle-exclamation text-xs"></i>
                                 <span>{{ $message }}</span>
                             </div>
-                        @else
-                            <p class="text-[11px] text-slate-400 font-medium mt-1.5 flex items-center gap-1.5">
-                            </p>
                         @enderror
                     </div>
 
-                    <button type="submit"
-                        class="w-full py-4 px-4 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
-                        <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
-                        <span>Lanjutkan & Dapatkan Kode Bio</span>
+                    <button type="submit" class="tt-btn-primary">
+                        <span>Lanjutkan &amp; Dapatkan Kode Bio</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
-            </div>
+            </section>
         @endif
 
         <!-- List Akun TikTok Terdaftar -->
-        <div class="space-y-3">
+        <section class="space-y-3">
             <div class="flex items-center justify-between px-1">
-                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Daftar Akun ({{ $totalAccounts }})
-                </h3>
+                <h3 class="text-sm font-bold text-slate-900">Daftar Akun</h3>
+                <span class="tt-count-pill">{{ $totalAccounts }} akun</span>
             </div>
 
             @forelse ($accounts as $account)
-                <div
-                    class="bg-white rounded-[1.25rem] border border-slate-200 p-4 {{ $account->is_verified ? 'space-y-3' : 'space-y-4' }} transition-all">
+                @php
+                    $statusClass = $account->is_verified ? 'verified' : 'pending';
+                @endphp
+                <article class="tiktok-card p-4 space-y-4">
 
                     <!-- Header Kartu Akun -->
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <!-- Avatar -->
-                            @if ($account->avatar_url)
-                                <img src="{{ $account->avatar_url }}" alt="{{ $account->username }}"
-                                    class="w-10 h-10 rounded-full object-cover shrink-0 ring-1 ring-slate-100">
-                            @else
-                                <div
-                                    class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0 ring-1 ring-slate-100">
-                                    <i class="fa-brands fa-tiktok text-slate-800 text-lg"></i>
-                                </div>
-                            @endif
+                            <div class="tt-avatar-wrap">
+                                @if ($account->avatar_url)
+                                    <img src="{{ $account->avatar_url }}" alt="{{ $account->username }}"
+                                        class="tt-avatar {{ $statusClass }}">
+                                @else
+                                    <div class="tt-avatar tt-avatar-fallback {{ $statusClass }}">
+                                        <i class="fa-brands fa-tiktok"></i>
+                                    </div>
+                                @endif
+                                <span class="tt-status-dot {{ $statusClass }}">
+                                    <i class="fa-solid {{ $account->is_verified ? 'fa-check' : 'fa-clock' }}"></i>
+                                </span>
+                            </div>
 
-                            <div class="min-w-0 flex flex-col justify-center">
-                                <h4 class="text-[13px] font-bold text-slate-900 truncate">
+                            <div class="min-w-0 flex flex-col">
+                                <h4 class="text-sm font-bold text-slate-900 truncate">
                                     {{ $account->nickname ?? $account->username }}
                                 </h4>
-                                <p class="text-[11px] font-medium text-slate-500 truncate mt-0.5">
-                                    &#64;{{ $account->username }}
-                                </p>
+                                <span class="tt-handle">&#64;{{ $account->username }}</span>
                             </div>
                         </div>
 
-                        <!-- Status Badge -->
                         @if ($account->is_verified)
-                            <div
-                                class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-emerald-100 text-emerald-600">
-                                <i class="fa-solid fa-check text-[17px]"
-                                    style="-webkit-text-stroke: 0.5px currentColor;"></i>
-                            </div>
+                            <span class="tt-badge verified">
+                                <i class="fa-solid fa-circle-check"></i> Terverifikasi
+                            </span>
                         @else
-                            <div
-                                class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-amber-100 text-amber-600">
-                                <i class="fa-solid fa-clock-rotate-left text-[17px]"
-                                    style="-webkit-text-stroke: 0.5px currentColor;"></i>
-                            </div>
+                            <span class="tt-badge pending">
+                                <i class="fa-solid fa-hourglass-half"></i> Menunggu
+                            </span>
                         @endif
                     </div>
 
-                    <!-- Jika Belum Terverifikasi: Step panduan + Kotak Kode Bio & Tombol Konfirmasi -->
+                    <!-- Stepper Verifikasi (khusus akun yang belum terverifikasi) -->
                     @if (!$account->is_verified)
-                        <div class="tiktok-verify-box p-4 space-y-3.5">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs shrink-0"
-                                    style="background-color: #fef3c7; color: #b45309;">
-                                    <i class="fa-solid fa-key"></i>
+                        <div class="tt-steps">
+                            <div class="tt-step">
+                                <div class="tt-step-num">1</div>
+                                <div class="tt-step-body">
+                                    <p class="tt-step-title">Salin kode verifikasi</p>
+                                    <div class="tt-step-action flex items-center gap-2">
+                                        <div class="tiktok-code-box flex-1 flex items-center justify-center">
+                                            <span
+                                                class="text-xl font-extrabold text-slate-900 font-mono custom-code-box select-all">
+                                                {{ $account->verification_code }}
+                                            </span>
+                                        </div>
+                                        <button type="button"
+                                            onclick="copyToClipboard('{{ $account->verification_code }}', this)"
+                                            class="tiktok-copy-btn px-5 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 cursor-pointer">
+                                            <i class="fa-regular fa-copy text-sm"></i>
+                                            <span>Salin</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <h5 class="text-xs font-bold text-slate-800">Langkah Verifikasi Akun</h5>
                             </div>
 
-                            <ol
-                                class="text-[11px] text-slate-600 font-medium space-y-1.5 list-decimal list-inside leading-relaxed">
-                                <li>Salin <strong>kode verifikasi</strong> di bawah ini.</li>
-                                <li>Buka aplikasi TikTok & tempelkan kode tersebut pada <strong>Bio profil
-                                        &#64;{{ $account->username }}</strong> Anda.</li>
-                                <li>Simpan profil di TikTok, lalu klik tombol <strong>"Cek Sekarang"</strong>.</li>
-                            </ol>
-
-                            <!-- Box Kode & Salin -->
-                            <div class="flex items-center gap-2">
-                                <div class="tiktok-code-box flex-1 flex items-center justify-center shadow-xs"
-                                    style="height: 44px;">
-                                    <span
-                                        class="text-xl font-extrabold text-slate-900 font-mono custom-code-box tracking-widest select-all">
-                                        {{ $account->verification_code }}
-                                    </span>
+                            <div class="tt-step">
+                                <div class="tt-step-num">2</div>
+                                <div class="tt-step-body">
+                                    <p class="tt-step-title">Tempel di bio TikTok</p>
+                                    <p class="tt-step-desc">
+                                        Buka profil
+                                        <a href="https://www.tiktok.com/{{ '@' . $account->username }}" target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="tt-inline-link">&#64;{{ $account->username }}</a>,
+                                        tempel kode di bio, lalu simpan.
+                                    </p>
                                 </div>
-                                <button type="button"
-                                    onclick="copyToClipboard('{{ $account->verification_code }}', this)"
-                                    class="tiktok-copy-btn px-5 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 shrink-0 cursor-pointer shadow-xs"
-                                    style="height: 44px; border: 1px solid #e2e8f0;">
-                                    <i class="fa-regular fa-copy text-sm"></i>
-                                    <span>Salin</span>
-                                </button>
                             </div>
 
-                            <!-- Tombol Trigger Cek Verifikasi Bio -->
-                            <button type="button"
-                                onclick="verifyAccount('{{ route('app.tiktok.verify', $account) }}', '{{ $account->username }}', this)"
-                                class="w-full py-4 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer">
-                                <i class="fa-solid fa-circle-check text-xs"></i>
-                                <span>Sudah Pasang Kode, Cek Sekarang</span>
-                            </button>
+                            <div class="tt-step">
+                                <div class="tt-step-num">3</div>
+                                <div class="tt-step-body">
+                                    <p class="tt-step-title">Cek verifikasi</p>
+                                    <div class="tt-step-action">
+                                        <button type="button"
+                                            onclick="verifyAccount('{{ route('app.tiktok.verify', $account) }}', '{{ $account->username }}', this)"
+                                            class="tt-btn-verify">
+                                            <i class="fa-solid fa-circle-check text-xs"></i>
+                                            <span>Sudah Pasang Kode, Cek Sekarang</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
 
-                    <!-- Footer Kartu: Buka Profil & Tombol Hapus -->
-                    <div class="pt-2 flex items-center justify-between" style="border-top: 1px solid #f1f5f9;">
-                        <a href="https://www.tiktok.com/{{ '@' . $account->username }}" target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-[11px] font-semibold text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-1.5 py-1">
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            <span>Buka TikTok</span>
-                        </a>
+                    <!-- Footer Kartu: Info Tanggal, Buka Profil & Hapus -->
+                    <div class="tt-card-footer">
+                        <span class="tt-meta truncate">
+                            @if ($account->is_verified && $account->verified_at)
+                                <i class="fa-solid fa-shield-halved"></i>
+                                Diverifikasi {{ $account->verified_at->translatedFormat('d M Y') }}
+                            @else
+                                <i class="fa-regular fa-calendar"></i>
+                                Ditambahkan {{ $account->created_at?->translatedFormat('d M Y') }}
+                            @endif
+                        </span>
 
-                        <button type="button"
-                            onclick="deleteAccount('{{ route('app.tiktok.destroy', $account) }}', '{{ $account->username }}')"
-                            class="text-[11px] font-semibold text-slate-400 hover:text-rose-600 transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-rose-50 cursor-pointer">
-                            <i class="fa-regular fa-trash-can text-xs"></i>
-                            <span>Hapus Akun</span>
-                        </button>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <a href="https://www.tiktok.com/{{ '@' . $account->username }}" target="_blank"
+                                rel="noopener noreferrer" class="tt-pill-btn">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                <span>Profil</span>
+                            </a>
+                            <button type="button"
+                                onclick="deleteAccount('{{ route('app.tiktok.destroy', $account) }}', '{{ $account->username }}')"
+                                class="tt-pill-btn danger">
+                                <i class="fa-regular fa-trash-can text-[10px]"></i>
+                                <span>Hapus</span>
+                            </button>
+                        </div>
                     </div>
 
-                </div>
+                </article>
             @empty
-                <!-- Empty State -->
-                <div class="bg-white rounded-2xl p-8 text-center space-y-3" style="border: 1px dashed #cbd5e1;">
-                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mx-auto"
-                        style="border: 1px solid #e0e7ff;">
-                        <i class="fa-brands fa-tiktok"></i>
+                <div class="tt-empty">
+                    <div class="tt-empty-icon">
+                        <div class="tt-empty-icon-inner">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-900">Belum Ada Akun TikTok</h4>
-                        <p class="text-xs text-slate-400 font-medium max-w-[260px] mx-auto mt-1 leading-relaxed">
-                            Daftarkan akun TikTok Anda untuk diverifikasi sebelum mengajukan video clip campaign.
-                        </p>
-                    </div>
+                    <h4 class="text-sm font-bold text-slate-900">Belum Ada Akun TikTok</h4>
+                    <p class="text-xs text-slate-400 font-medium max-w-[260px] mx-auto mt-1 leading-relaxed">
+                        Daftarkan akun TikTok Anda untuk diverifikasi sebelum mengajukan video clip campaign.
+                    </p>
                 </div>
             @endforelse
-        </div>
+        </section>
 
     </main>
 </div>
