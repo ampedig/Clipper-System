@@ -105,7 +105,7 @@ class ClipSubmissionController extends Controller
         $authorUsername = $parsed['username'];
 
         if (! $videoId) {
-            return back()->with('error', 'Gagal memproses link TikTok. Pastikan link video valid.');
+            return back()->with('error', 'Gagal memproses link TikTok. Pastikan link video atau foto valid.');
         }
 
         // Fallback: Jika username pengunggah tidak terdeteksi dari struktur URL, coba ambil lewat scraper
@@ -117,21 +117,21 @@ class ClipSubmissionController extends Controller
         }
 
         if (! $authorUsername) {
-            return back()->with('error', 'Gagal mendeteksi pemilik video TikTok ini. Pastikan video bersifat publik dan link dapat diakses.');
+            return back()->with('error', 'Gagal mendeteksi pemilik konten TikTok ini. Pastikan konten bersifat publik dan link dapat diakses.');
         }
 
-        // 3. Guard: Cek apakah video diunggah oleh salah satu akun TikTok terverifikasi milik user
+        // 3. Guard: Cek apakah konten diunggah oleh salah satu akun TikTok terverifikasi milik user
         if (! in_array(strtolower($authorUsername), $verifiedAccounts, true)) {
             $verifiedList = implode(', ', array_map(fn ($u) => '@'.$u, $verifiedAccounts));
 
-            return back()->with('error', "Video ini diunggah oleh akun @{$authorUsername}, bukan dari akun TikTok terverifikasi milik Anda ({$verifiedList}). Pastikan mengunggah video dari akun yang telah diverifikasi.");
+            return back()->with('error', "Konten ini diunggah oleh akun @{$authorUsername}, bukan dari akun TikTok terverifikasi milik Anda ({$verifiedList}). Pastikan mengunggah konten dari akun yang telah diverifikasi.");
         }
 
-        // 4. Guard: Cek apakah video sudah pernah didaftarkan di sistem
+        // 4. Guard: Cek apakah konten sudah pernah didaftarkan di sistem
         $exists = ClipSubmission::where('video_id', $videoId)->exists();
 
         if ($exists) {
-            return back()->with('error', 'Video ini sudah pernah didaftarkan di sistem kami.');
+            return back()->with('error', 'Konten ini sudah pernah didaftarkan di sistem kami.');
         }
 
         // 5. Simpan ke database
@@ -150,11 +150,11 @@ class ClipSubmissionController extends Controller
                ."👤 <b>User:</b> {$user->name}\n"
                ."📱 <b>Akun TikTok:</b> @{$authorUsername}\n"
                ."🏷 <b>Campaign:</b> {$campaign->title}\n"
-               ."🔗 <b>Link TikTok:</b> <a href=\"{$request->submitted_url}\">Tonton Video</a>\n"
+               ."🔗 <b>Link TikTok:</b> <a href=\"{$request->submitted_url}\">Lihat Konten</a>\n"
                .'⏳ <b>Status:</b> Pending Check';
 
         SendTelegramMessageJob::dispatch($pesan, config('telegram.topics.clip_submit'));
 
-        return redirect()->route('app.submissions.index')->with('success', 'Link video berhasil didaftarkan! Tim kami akan segera meninjau pengajuanmu.');
+        return redirect()->route('app.submissions.index')->with('success', 'Link konten berhasil didaftarkan! Tim kami akan segera meninjau pengajuanmu.');
     }
 }

@@ -377,7 +377,7 @@
     <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto px-5 pb-6 pt-2 z-40 pb-safe">
         <button type="button" onclick="openSubmissionSheet()"
             class="w-full bg-indigo-600 text-white font-bold text-sm py-3.5 rounded-2xl hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-video text-xs"></i> Submit Video
+            <i class="fa-solid fa-photo-film text-xs"></i> Submit Video / Foto
         </button>
     </div>
 @else
@@ -390,7 +390,7 @@
     </div>
 @endif
 
-<!-- Modal Bottom Sheet: Submit Video -->
+<!-- Modal Bottom Sheet: Submit Video / Foto -->
 <div id="submitSheetModal"
     class="fixed inset-0 z-[60] flex items-end justify-center invisible pointer-events-none transition-all duration-300"
     aria-modal="true" role="dialog">
@@ -414,8 +414,8 @@
                 style="background-color: rgba(255, 0, 25, 0.08); color: #ff0019;">
                 <i class="fa-solid fa-link text-xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-slate-900">Submit URL Video</h3>
-            <p class="text-xs text-slate-500 mt-1">Masukkan link video TikTok yang telah Anda unggah.
+            <h3 class="text-lg font-bold text-slate-900">Submit URL Video / Foto</h3>
+            <p class="text-xs text-slate-500 mt-1">Masukkan link video atau slide foto TikTok yang telah Anda unggah.
             </p>
         </div>
 
@@ -428,7 +428,7 @@
                     <div class="flex-1">
                         <h4 class="text-xs font-bold text-amber-900">Akun TikTok Belum Terverifikasi</h4>
                         <p class="text-[11px] text-amber-700/90 mt-0.5 leading-relaxed">
-                            Video yang disubmit harus berasal dari akun TikTok terverifikasi milik Anda untuk mencegah penipuan.
+                            Konten yang disubmit harus berasal dari akun TikTok terverifikasi milik Anda untuk mencegah penipuan.
                         </p>
                         <a href="{{ route('app.tiktok.index') }}" class="inline-flex items-center gap-1.5 font-bold text-xs hover:opacity-80 mt-2.5 transition-opacity"
                             style="color: #ff0019;">
@@ -449,7 +449,7 @@
                 <div class="flex-1">
                     <h4 class="text-xs font-bold text-slate-800 mb-0.5">Ketentuan Akun</h4>
                     <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
-                        Pastikan video yang Anda submit diunggah menggunakan <strong style="color: #ff0019;" class="font-semibold">akun TikTok terverifikasi</strong> milik Anda.
+                        Pastikan video atau foto yang Anda submit diunggah menggunakan <strong style="color: #ff0019;" class="font-semibold">akun TikTok terverifikasi</strong> milik Anda.
                     </p>
                 </div>
             </div>
@@ -460,14 +460,14 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Link
-                        Video TikTok</label>
+                        Video / Foto TikTok</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                             <i class="fa-solid fa-link text-slate-400 text-sm"></i>
                         </div>
                         <input type="url" name="submitted_url" id="videoUrlInput"
                             class="w-full pl-10 pr-4 py-3.5 bg-slate-50 border @error('submitted_url') border-red-400 @else border-slate-200 @enderror rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
-                            placeholder="https://www.tiktok.com/@username/video/..." required>
+                            placeholder="https://www.tiktok.com/@username/video/... atau /photo/..." required>
                     </div>
                     @error('submitted_url')
                         <p class="mt-1.5 text-xs font-medium text-red-500">{{ $message }}</p>
@@ -491,7 +491,7 @@
                     <button type="submit" onclick="showLoadingState(this)"
                         class="flex-1 py-3 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden shadow-xs"
                         style="background: linear-gradient(135deg, #ff0019 0%, #e60017 100%);">
-                        <span class="btn-text">Kirim</span>
+                        <span class="btn-text">Kirim Konten</span>
                     </button>
                 @endif
             </div>

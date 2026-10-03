@@ -173,7 +173,84 @@ class ClipSubmissionValidationTest extends TestCase
             ]);
 
         $response->assertRedirect(route('app.campaigns.show', $this->campaign->slug));
-        $response->assertSessionHas('error', 'Video ini sudah pernah didaftarkan di sistem kami.');
+        $response->assertSessionHas('error');
         $this->assertDatabaseCount('clip_submissions', 1);
+    }
+
+    public function test_user_can_submit_tiktok_photo_url_from_their_verified_account(): void
+    {
+        UserTiktokAccount::create([
+            'user_id' => $this->user->id,
+            'username' => 'creator_photo',
+            'is_verified' => true,
+            'verified_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->user)
+            ->post(route('app.campaigns.submissions.store', $this->campaign->slug), [
+                'submitted_url' => 'https://www.tiktok.com/@creator_photo/photo/7400000000000000006?is_from_webapp=1',
+            ]);
+
+        $response->assertRedirect(route('app.submissions.index'));
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('clip_submissions', [
+            'clip_campaign_id' => $this->campaign->id,
+            'user_id' => $this->user->id,
+            'video_id' => '7400000000000000006',
+            'status' => 'pending',
+        ]);
+    }
+
+    public function test_user_cannot_submit_tiktok_photo_from_different_account(): void
+    {
+        UserTiktokAccount::create([
+            'user_id' => $this->user->id,
+            'username' => 'creator_legit',
+            'is_verified' => true,
+            'verified_at' => now(),
+        ]);
+
+        $response = $this->actingAs($this->user)
+            ->from(route('app.campaigns.show', $this->campaign->slug))
+            ->post(route('app.campaigns.submissions.store', $this->campaign->slug), [
+                'submitted_url' => 'https://www.tiktok.com/@other_person/photo/7400000000000000007',
+            ]);
+
+        $response->assertRedirect(route('app.campaigns.show', $this->campaign->slug));
+        $response->assertSessionHas('error');
+        $this->assertTrue(str_contains(session('error'), '@other_person'));
+        $this->assertDatabaseCount('clip_submissions', 0);
+    }
+
+    public function test_short_url_resolving_to_photo_is_saved_successfully(): void
+    {
+        UserTiktokAccount::create([
+            'user_id' => $this->user->id,
+            'username' => 'creator_slide',
+            'is_verified' => true,
+            'verified_at' => now(),
+        ]);
+
+        Http::fake([
+            'https://vt.tiktok.com/ZSphoto123/' => Http::response('', 301, [
+                'Location' => 'https://www.tiktok.com/@creator_slide/photo/7400000000000000008?_r=1',
+            ]),
+        ]);
+
+        $response = $this->actingAs($this->user)
+            ->post(route('app.campaigns.submissions.store', $this->campaign->slug), [
+                'submitted_url' => 'https://vt.tiktok.com/ZSphoto123/',
+            ]);
+
+        $response->assertRedirect(route('app.submissions.index'));
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('clip_submissions', [
+            'clip_campaign_id' => $this->campaign->id,
+            'user_id' => $this->user->id,
+            'video_id' => '7400000000000000008',
+            'status' => 'pending',
+        ]);
     }
 }

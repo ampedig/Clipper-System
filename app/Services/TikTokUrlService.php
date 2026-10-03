@@ -7,19 +7,14 @@ use Illuminate\Support\Facades\Http;
 class TikTokUrlService
 {
     /**
-     * Resolve short URL and extract TikTok Video ID.
+     * Resolve short URL and extract TikTok Content/Video/Photo ID.
      */
     public function extractVideoId(string $url): ?string
     {
         $resolvedUrl = $this->resolveIfShortUrl($url);
 
-        // Regex to find the video ID (19 or more digits) after /video/
-        if (preg_match('/\/video\/(\d+)/', $resolvedUrl, $matches)) {
-            return $matches[1];
-        }
-
-        // Some mobile shares might use /v/ format
-        if (preg_match('/\/v\/(\d+)/', $resolvedUrl, $matches)) {
+        // Regex to find ID (19 or more digits) after /video/, /photo/, or /v/
+        if (preg_match('/\/(?:video|photo|v)\/(\d+)/', $resolvedUrl, $matches)) {
             return $matches[1];
         }
 
@@ -41,7 +36,7 @@ class TikTokUrlService
     }
 
     /**
-     * Resolve short URL and extract video metadata (canonical URL, video_id, author username).
+     * Resolve short URL and extract content metadata (canonical URL, video_id, author username).
      *
      * @return array{url: string, video_id: ?string, username: ?string}
      */
@@ -50,9 +45,7 @@ class TikTokUrlService
         $resolvedUrl = $this->resolveIfShortUrl($url);
 
         $videoId = null;
-        if (preg_match('/\/video\/(\d+)/', $resolvedUrl, $matches)) {
-            $videoId = $matches[1];
-        } elseif (preg_match('/\/v\/(\d+)/', $resolvedUrl, $matches)) {
+        if (preg_match('/\/(?:video|photo|v)\/(\d+)/', $resolvedUrl, $matches)) {
             $videoId = $matches[1];
         }
 

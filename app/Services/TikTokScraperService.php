@@ -9,9 +9,29 @@ use Symfony\Component\Process\Process;
 class TikTokScraperService
 {
     /**
-     * Get video statistics using yt-dlp.
+     * Get video/photo statistics using yt-dlp with fallback for photo slideshows.
      */
     public function getVideoStats(string $url): ?array
+    {
+        $stats = $this->runYtDlp($url);
+        if ($stats) {
+            return $stats;
+        }
+
+        // Fallback untuk postingan foto TikTok: coba request format /video/ agar yt-dlp mengekstrak audio metadata & view_count
+        if (str_contains($url, '/photo/')) {
+            $videoUrl = str_replace('/photo/', '/video/', $url);
+
+            return $this->runYtDlp($videoUrl);
+        }
+
+        return null;
+    }
+
+    /**
+     * Execute yt-dlp process to extract media metadata.
+     */
+    protected function runYtDlp(string $url): ?array
     {
         // YTDLP_PATH diperlukan di Windows karena PHP menjalankan process dalam konteks CMD
         // yang tidak mewarisi PATH dari bash/PowerShell. Di Linux/VPS cukup set ke 'yt-dlp'.
