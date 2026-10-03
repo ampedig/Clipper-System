@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendTelegramMessageJob;
 use App\Models\Setting;
 use App\Models\UserTiktokAccount;
 use App\Services\TiktokRapidApiService;
@@ -134,6 +135,25 @@ class TiktokAccountController extends Controller
             'avatar_url' => $userData['avatar_url'] ?? null,
         ]);
 
+        // Kirim notifikasi Telegram ke topic verifikasi TikTok
+        $user = auth()->user();
+        $formattedBalance = number_format((int) $user->balance, 0, ',', '.');
+        $nickname = $account->nickname ?: $account->username;
+
+        $msg = "✅ <b>AKUN TIKTOK TERVERIFIKASI</b> ✅\n"
+            ."━━━━━━━━━━━━━━━━━━━━\n"
+            ."👤 <b>DATA CLIPPER</b>\n"
+            ."• <b>Nama:</b> {$user->name}\n"
+            ."• <b>Email:</b> {$user->email}\n"
+            ."• <b>Saldo:</b> Rp {$formattedBalance}\n"
+            ."────────────────────\n"
+            ."📱 <b>DATA TIKTOK</b>\n"
+            ."• <b>Nama:</b> {$nickname}\n"
+            ."• <b>Username:</b> @{$account->username}\n"
+            ."• <b>Profil:</b> <a href=\"https://www.tiktok.com/@{$account->username}\">Buka Profil TikTok</a>";
+
+        SendTelegramMessageJob::dispatch($msg, config('telegram.topics.tiktok_verify'));
+
         $successMsg = "Selamat! Akun TikTok @{$account->username} berhasil diverifikasi.";
 
         return $request->wantsJson()
@@ -156,7 +176,25 @@ class TiktokAccountController extends Controller
         }
 
         $username = $account->username;
+        $nickname = $account->nickname ?: '-';
+        $user = auth()->user();
+        $formattedBalance = number_format((int) $user->balance, 0, ',', '.');
+
         $account->delete();
+
+        // Kirim notifikasi Telegram bahwa akun TikTok dihapus
+        $msg = "🗑️ <b>AKUN TIKTOK DIHAPUS</b> 🗑️\n"
+            ."━━━━━━━━━━━━━━━━━━━━\n"
+            ."👤 <b>DATA CLIPPER</b>\n"
+            ."• <b>Nama:</b> {$user->name}\n"
+            ."• <b>Email:</b> {$user->email}\n"
+            ."• <b>Saldo:</b> Rp {$formattedBalance}\n"
+            ."────────────────────\n"
+            ."📱 <b>DATA TIKTOK</b>\n"
+            ."• <b>Nama:</b> {$nickname}\n"
+            ."• <b>Username:</b> @{$username}";
+
+        SendTelegramMessageJob::dispatch($msg, config('telegram.topics.tiktok_verify'));
 
         $successMsg = "Akun TikTok @{$username} berhasil dihapus dari daftar Anda.";
 

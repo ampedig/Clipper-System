@@ -11,5 +11,6 @@ return [
         'withdraw' => env('TELEGRAM_TOPIC_WITHDRAW', 3),
         'user' => env('TELEGRAM_TOPIC_USER', 2),
         'system' => env('TELEGRAM_TOPIC_SYSTEM', 173),
+        'tiktok_verify' => env('TELEGRAM_TOPIC_VERIF_TIKTOK', 1269),
     ],
 ];
