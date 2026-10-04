@@ -38,6 +38,21 @@
         <!-- Session Status -->
         <x-auth-session-status class="mb-2" :status="session('status')" />
 
+        @if (session('error'))
+            <div class="p-3.5 rounded-xl text-left flex items-start gap-2.5 mb-2"
+                style="background-color: rgba(255, 0, 25, 0.05); border: 1px solid rgba(255, 0, 25, 0.18);">
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center text-xs shrink-0 mt-0.5"
+                    style="background-color: rgba(255, 0, 25, 0.1); color: #ff0019;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-xs font-semibold text-slate-800 leading-snug">
+                        {{ session('error') }}
+                    </p>
+                </div>
+            </div>
+        @endif
+
         <!-- Field 1: Email -->
         <div>
             <label for="email" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">

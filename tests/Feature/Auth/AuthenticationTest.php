@@ -83,4 +83,42 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
         $response->assertRedirect('/');
     }
+
+    public function test_inactive_user_cannot_authenticate_and_sees_suspended_message(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => false,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors(['email']);
+        $this->assertTrue(str_contains(session('errors')->first('email'), 'ditangguhkan'));
+    }
+
+    public function test_active_user_suspended_mid_session_is_forced_to_logout(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => true,
+            'role' => 'clipper',
+        ]);
+
+        // User is currently authenticated
+        $this->actingAs($user);
+
+        // Administrator suspends user
+        $user->update(['is_active' => false]);
+
+        // User makes next request to an authenticated page
+        $response = $this->get('/akun');
+
+        $response->assertRedirect(route('login'));
+        $this->assertGuest();
+        $response->assertSessionHas('error');
+        $this->assertTrue(str_contains(session('error'), 'ditangguhkan'));
+    }
 }

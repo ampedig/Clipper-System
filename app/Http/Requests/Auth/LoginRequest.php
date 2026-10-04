@@ -50,6 +50,20 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Guard: Pastikan akun berstatus aktif dan tidak ditangguhkan
+        if (! Auth::user()->is_active) {
+            Auth::guard('web')->logout();
+
+            $this->session()->invalidate();
+            $this->session()->regenerateToken();
+
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'Akun Anda sedang ditangguhkan. Silakan hubungi admin untuk informasi lebih lanjut.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
