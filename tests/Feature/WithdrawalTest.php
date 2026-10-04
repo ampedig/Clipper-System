@@ -220,7 +220,7 @@ class WithdrawalTest extends TestCase
         $response->assertSee('Halo, Budi Santoso 👋');
         $response->assertSee('Rp350.000');
         $response->assertSee('6 K'); // total views: 3000 + 2000 + 1000 = 6000 -> 6 K
-        $response->assertSee('2 Video'); // approved count: 2
+        $response->assertSeeText('2 Video'); // approved count: 2
         $response->assertSee('/tarik-saldo');
     }
 

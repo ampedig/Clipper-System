@@ -159,9 +159,9 @@
             </a>
         </div>
 
-        <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
             @forelse ($latestCampaigns as $campaign)
-                @include('app.campaign.partials.item', ['campaign' => $campaign])
+                @include('app.campaign.partials.item-grid', ['campaign' => $campaign])
             @empty
                 <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center space-y-2">
                     <p class="text-xs text-slate-500 font-medium">Belum ada campaign aktif saat ini.</p>

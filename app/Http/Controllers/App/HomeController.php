@@ -38,7 +38,7 @@ class HomeController extends Controller
                 $query->whereIn('status', ['approved', 'active', 'completed']);
             }])
             ->latest('id')
-            ->take(5)
+            ->take(6)
             ->get();
 
         return view('app.index', compact('user', 'totalViews', 'approvedClipsCount', 'latestCampaigns'));
