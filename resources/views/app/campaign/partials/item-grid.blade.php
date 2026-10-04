@@ -20,8 +20,8 @@
         </div>
     </div>
 
-    {{-- Konten teks dengan padding proporsional (8px atas-bawah, 10px kiri-kanan) --}}
-    <div class="flex flex-col flex-1 justify-between gap-2" style="padding: 8px 10px;">
+    {{-- Konten teks dengan padding proporsional --}}
+    <div class="flex flex-col flex-1 justify-between gap-2" style="padding: 10px 10px 8px 10px;">
         <div class="space-y-1">
             {{-- Judul campaign (2 baris max) --}}
             <h3 class="font-bold text-slate-900 leading-snug group-hover:text-indigo-600 transition-colors line-clamp-2"
@@ -29,12 +29,14 @@
                 {{ $campaign->title }}
             </h3>
 
-            {{-- Komisi per views di bawah judul --}}
-            <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-100/80 font-bold max-w-full"
-                style="font-size: 9px; line-height: 1.2;">
-                <i class="fa-solid fa-coins text-emerald-500 shrink-0" style="font-size: 8px;"></i>
-                <span class="truncate">
-                    Rp{{ number_format($campaign->commission_amount, 0, ',', '.') }} / {{ $campaign->view_threshold >= 1000 ? number_format($campaign->view_threshold / 1000, 0, ',', '.') . 'K' : $campaign->view_threshold }} views
+            {{-- Komisi per views: rata bawah (baseline) antara komisi dan teks views --}}
+            <div class="flex items-baseline gap-1 min-w-0 pt-1">
+                <span class="font-extrabold shrink-0" style="font-size: 11px; color: #ff0019;">
+                    Rp{{ number_format($campaign->commission_amount, 0, ',', '.') }}
+                </span>
+                <span class="text-slate-300 font-light" style="font-size: 9.5px;">/</span>
+                <span class="font-semibold text-slate-400 truncate" style="font-size: 9.5px;">
+                    {{ $campaign->view_threshold >= 1000 ? number_format($campaign->view_threshold / 1000, 0, ',', '.') . 'K' : $campaign->view_threshold }} views
                 </span>
             </div>
         </div>
