@@ -139,13 +139,11 @@
                                     $verifiedCount = $currentUser->tiktokAccounts()->where('is_verified', true)->count();
                                 @endphp
                                 @if ($verifiedCount > 0)
-                                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200">
-                                        <i class="fa-solid fa-circle-check text-[8px]"></i> {{ $verifiedCount }}
-                                    </span>
+                                    <span class="rounded-full inline-flex items-center justify-center font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 shrink-0"
+                                        style="width: 18px; height: 18px; min-width: 18px; min-height: 18px; border-radius: 50%; font-size: 10px; line-height: 1; padding: 0;">{{ $verifiedCount }}</span>
                                 @elseif ($tiktokCount > 0)
-                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-600 border border-amber-200">
-                                        {{ $tiktokCount }} Pending
-                                    </span>
+                                    <span class="rounded-full inline-flex items-center justify-center font-bold bg-amber-50 text-amber-600 border border-amber-200 shrink-0"
+                                        style="width: 18px; height: 18px; min-width: 18px; min-height: 18px; border-radius: 50%; font-size: 10px; line-height: 1; padding: 0;">{{ $tiktokCount }}</span>
                                 @endif
                             </div>
                             <p class="text-[10px] font-medium text-slate-400 mt-0.5">Kelola & verifikasi kepemilikan akun TikTok</p>
