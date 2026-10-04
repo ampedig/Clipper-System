@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#ff0019">
+    <meta name="theme-color" content="{{ $themeColor ?? '#ff0019' }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="{{ asset('assets/images/site.webmanifest') }}">
@@ -46,6 +46,8 @@
     @stack('styles')
 </head>
 
-<body class="bg-slate-100 text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-700 min-h-screen">
-    <div class="mobile-container {{ $containerClass ?? 'pb-24' }}">
+<body class="{{ $bodyClass ?? 'bg-slate-100 text-slate-800' }} antialiased selection:bg-indigo-100 selection:text-indigo-700 min-h-screen"
+    {!! isset($bodyStyle) ? 'style="' . $bodyStyle . '"' : '' !!}>
+    <div class="mobile-container {{ $containerClass ?? 'pb-24' }}"
+        {!! isset($containerStyle) ? 'style="' . $containerStyle . '"' : '' !!}>
 

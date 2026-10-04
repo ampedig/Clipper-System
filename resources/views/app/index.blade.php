@@ -2,6 +2,9 @@
     'title' => 'Beranda',
     'description' =>
         'Selamat datang di AZCLIP, platform bagi para kreator untuk meraup komisi mudah hanya dari klip TikTok Anda.',
+    'bodyStyle' => 'background-color: #0b0f19; color: #f8fafc;',
+    'containerStyle' => 'background-color: #0b0f19; box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);',
+    'themeColor' => '#0b0f19',
 ])
 
 @php
@@ -12,17 +15,17 @@
     <!-- 1. Header Profil -->
     <header class="flex items-center justify-between">
         <div class="min-w-0 flex-1">
-            <h1
-                class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-800 tracking-tight leading-none">
-                AZCLIP.COM</h1>
-            <p class="text-sm font-semibold text-slate-700 truncate mt-1">
+            <h1 class="text-xl font-black tracking-tight leading-none text-white">
+                AZ<span style="color: #ff0019;">CLIP</span><span style="color: #94a3b8; font-size: 13px; font-weight: 700;">.COM</span>
+            </h1>
+            <p class="text-sm font-semibold text-slate-300 truncate mt-1">
                 Halo, {{ $userName }} 👋</p>
         </div>
     </header>
 
     <!-- 2. Wallet & Earning Banner -->
     <section
-        class="bg-gradient-to-br from-indigo-600 via-indigo-600 to-indigo-800 rounded-3xl p-4 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden">
+        class="bg-gradient-to-br from-indigo-600 via-indigo-600 to-indigo-800 rounded-3xl p-4 text-white border border-white/10 relative overflow-hidden">
         <!-- Ambient Glow Corners -->
         <div class="absolute -left-6 -top-6 w-24 h-24 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -98,63 +101,12 @@
         </div>
     </section>
 
-
-
-    <!-- Quick Actions Panel -->
-    {{-- <section class="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs">
-        <div class="grid grid-cols-4 gap-2 sm:gap-3">
-            <!-- 1. Klip Saya -->
-            <a href="{{ route('app.submissions.index') }}"
-                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
-                    style="background: linear-gradient(135deg, #2563eb, #4f46e5); box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);">
-                    <i class="fa-solid fa-cloud-arrow-up" style="color: #ffffff; font-size: 21px;"></i>
-                </div>
-                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Klip Saya</span>
-            </a>
-
-            <!-- 2. Withdraw -->
-            <a href="{{ route('app.withdrawals.create') }}"
-                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
-                    style="background: linear-gradient(135deg, #10b981, #0d9488); box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.4);">
-                    <i class="fa-solid fa-money-bill-transfer" style="color: #ffffff; font-size: 19px;"></i>
-                </div>
-                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Withdraw</span>
-            </a>
-
-            <!-- 3. Campaign (dengan Badge HOT) -->
-            <a href="{{ route('app.campaigns') }}"
-                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
-                <div class="relative">
-                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
-                        style="background: linear-gradient(135deg, #f59e0b, #e11d48); box-shadow: 0 8px 16px -4px rgba(225, 29, 72, 0.4);">
-                        <i class="fa-solid fa-fire-flame-curved" style="color: #ffffff; font-size: 21px;"></i>
-                    </div>
-                    <span class="absolute uppercase tracking-wider font-black animate-pulse pointer-events-none"
-                        style="top: -5px; right: -7px; font-size: 8px; line-height: 1; padding: 2.5px 5.5px; color: #ffffff; background-color: #e11d48; border-radius: 9999px; box-shadow: 0 2px 6px rgba(225, 29, 72, 0.5); z-index: 10;">HOT</span>
-                </div>
-                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Campaign</span>
-            </a>
-
-            <!-- 4. Saldo -->
-            <a href="{{ route('app.wallet.index') }}"
-                class="flex flex-col items-center justify-center gap-1.5 group active:scale-95 transition-all cursor-pointer">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105"
-                    style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 16px -4px rgba(124, 58, 237, 0.4);">
-                    <i class="fa-solid fa-wallet" style="color: #ffffff; font-size: 19px;"></i>
-                </div>
-                <span class="text-[11px] font-bold text-slate-800 tracking-tight mt-0.5">Saldo</span>
-            </a>
-        </div>
-    </section> --}}
-
     <!-- 3. Klip Campaign Terbaru -->
     <section class="space-y-3">
         <div class="flex items-center justify-between">
-            <h2 class="text-sm font-bold text-slate-900">Klip Campaign Terbaru</h2>
+            <h2 class="text-sm font-bold text-white tracking-wide">Klip Campaign Terbaru</h2>
 
-            <a href="{{ route('app.campaigns') }}" class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
+            <a href="{{ route('app.campaigns') }}" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
                 Lihat Semua
             </a>
         </div>
@@ -163,8 +115,8 @@
             @forelse ($latestCampaigns as $campaign)
                 @include('app.campaign.partials.item-grid', ['campaign' => $campaign])
             @empty
-                <div class="bg-white border border-slate-200 rounded-3xl p-6 text-center space-y-2">
-                    <p class="text-xs text-slate-500 font-medium">Belum ada campaign aktif saat ini.</p>
+                <div class="rounded-3xl p-6 text-center space-y-2" style="background-color: #111827; border: 1px solid rgba(255, 255, 255, 0.08);">
+                    <p class="text-xs text-slate-400 font-medium">Belum ada campaign aktif saat ini.</p>
                 </div>
             @endforelse
         </div>

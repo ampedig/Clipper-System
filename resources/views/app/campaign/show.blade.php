@@ -21,7 +21,7 @@
             box-sizing: border-box;
         }
 
-        .inspirationSwiper .swiper-slide > div {
+        .inspirationSwiper .swiper-slide>div {
             width: 100%;
         }
 
@@ -186,62 +186,87 @@
                     <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Inspirasi Video</h3>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <button class="swiper-button-prev-custom w-8 h-8 rounded-full bg-white border border-slate-200 shadow-xs flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-90 transition cursor-pointer" style="width: 32px; height: 32px; background-color: #ffffff; border: 1px solid #e2e8f0;" aria-label="Sebelumnya">
+                    <button
+                        class="swiper-button-prev-custom w-8 h-8 rounded-full bg-white border border-slate-200 shadow-xs flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-90 transition cursor-pointer"
+                        style="width: 32px; height: 32px; background-color: #ffffff; border: 1px solid #e2e8f0;"
+                        aria-label="Sebelumnya">
                         <i class="fa-solid fa-chevron-left text-xs"></i>
                     </button>
-                    <button class="swiper-button-next-custom w-8 h-8 rounded-full bg-white border border-slate-200 shadow-xs flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-90 transition cursor-pointer" style="width: 32px; height: 32px; background-color: #ffffff; border: 1px solid #e2e8f0;" aria-label="Selanjutnya">
+                    <button
+                        class="swiper-button-next-custom w-8 h-8 rounded-full bg-white border border-slate-200 shadow-xs flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-90 transition cursor-pointer"
+                        style="width: 32px; height: 32px; background-color: #ffffff; border: 1px solid #e2e8f0;"
+                        aria-label="Selanjutnya">
                         <i class="fa-solid fa-chevron-right text-xs"></i>
                     </button>
                 </div>
             </div>
-            
+
             <div class="swiper inspirationSwiper w-full">
                 <div class="swiper-wrapper py-1">
                     @foreach ($referenceSubmissions as $ref)
                         @php
-                            $viewsFormatted = $ref->current_views >= 1000000 
-                                ? round($ref->current_views / 1000000, 1) . 'M' 
-                                : ($ref->current_views >= 1000 ? round($ref->current_views / 1000, 1) . 'K' : number_format($ref->current_views, 0, ',', '.'));
-                            $timeAgo = $ref->submitted_at ? $ref->submitted_at->diffForHumans() : ($ref->created_at ? $ref->created_at->diffForHumans() : '');
+                            $viewsFormatted =
+                                $ref->current_views >= 1000000
+                                    ? round($ref->current_views / 1000000, 1) . 'M'
+                                    : ($ref->current_views >= 1000
+                                        ? round($ref->current_views / 1000, 1) . 'K'
+                                        : number_format($ref->current_views, 0, ',', '.'));
+                            $timeAgo = $ref->submitted_at
+                                ? $ref->submitted_at->diffForHumans()
+                                : ($ref->created_at
+                                    ? $ref->created_at->diffForHumans()
+                                    : '');
                         @endphp
                         <div class="swiper-slide">
-                            <div class="bg-white border border-slate-200 rounded-[1.25rem] p-4 flex flex-col justify-between w-full">
+                            <div
+                                class="bg-white border border-slate-200 rounded-[1.25rem] p-4 flex flex-col justify-between w-full">
                                 <div class="space-y-3">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-slate-100 shrink-0 overflow-hidden ring-2 ring-slate-100">
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($ref->user->name ?? 'Clipper') }}&background=random" class="w-full h-full object-cover" alt="{{ $ref->user->name ?? 'Clipper' }}">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-slate-100 shrink-0 overflow-hidden ring-2 ring-slate-100">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($ref->user->name ?? 'Clipper') }}&background=random"
+                                                class="w-full h-full object-cover"
+                                                alt="{{ $ref->user->name ?? 'Clipper' }}">
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="text-xs font-bold text-slate-900 truncate">{{ $ref->user->name ?? 'Clipper' }}</p>
+                                            <p class="text-xs font-bold text-slate-900 truncate">
+                                                {{ $ref->user->name ?? 'Clipper' }}</p>
                                             <p class="text-[10px] text-slate-500">{{ $timeAgo }}</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center pt-0.5">
                                         <div class="flex-1 flex items-center gap-2">
-                                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                                                 <i class="fa-solid fa-eye text-sm text-slate-500"></i>
                                             </div>
                                             <div>
-                                                <span class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Views</span>
-                                                <span class="text-xs font-bold text-slate-800">{{ $viewsFormatted }}</span>
+                                                <span
+                                                    class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Views</span>
+                                                <span
+                                                    class="text-xs font-bold text-slate-800">{{ $viewsFormatted }}</span>
                                             </div>
                                         </div>
-                                        <div class="h-8 mx-2 shrink-0 self-center" style="width: 1px; background-color: #cbd5e1;"></div>
+                                        <div class="h-8 mx-2 shrink-0 self-center"
+                                            style="width: 1px; background-color: #cbd5e1;"></div>
                                         <div class="flex-1 flex items-center gap-2 pl-3.5" style="padding-left: 14px;">
-                                            <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
                                                 <i class="fa-solid fa-coins text-sm text-emerald-500"></i>
                                             </div>
                                             <div>
-                                                <span class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Komisi</span>
-                                                <span class="text-xs font-bold text-emerald-600">Rp {{ number_format($ref->total_earned, 0, ',', '.') }}</span>
+                                                <span
+                                                    class="block text-[9px] font-semibold text-slate-400 uppercase tracking-wide">Komisi</span>
+                                                <span class="text-xs font-bold text-emerald-600">Rp
+                                                    {{ number_format($ref->total_earned, 0, ',', '.') }}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="pt-3">
-                                    <button type="button" 
+                                    <button type="button"
                                         onclick="openVideoPreview('{{ $ref->video_id }}', '{{ $ref->submitted_url }}')"
-                                        class="w-full py-2.5 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition active:scale-[0.98] hover:opacity-95 cursor-pointer" 
+                                        class="w-full py-2.5 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition active:scale-[0.98] hover:opacity-95 cursor-pointer"
                                         style="background-color: #0f172a; color: #ffffff;">
                                         <i class="fa-solid fa-play text-xs text-white"></i> Tonton Video
                                     </button>
@@ -358,7 +383,8 @@
                 <i class="fa-solid fa-folder-open text-sm"></i>
             </div>
             <div class="flex-1 min-w-0">
-                <h3 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">Buka
+                <h3 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">
+                    Buka
                     Sumber Konten</h3>
                 <p class="text-[10px] text-indigo-500/80 truncate mt-0.5 font-medium">
                     {{ \Illuminate\Support\Str::limit($campaign->source_url, 45) }}</p>
@@ -406,7 +432,8 @@
         </div>
 
         @php
-            $hasVerifiedTiktok = auth()->check() && auth()->user()->tiktokAccounts()->where('is_verified', true)->exists();
+            $hasVerifiedTiktok =
+                auth()->check() && auth()->user()->tiktokAccounts()->where('is_verified', true)->exists();
         @endphp
 
         <div class="text-center mb-5">
@@ -419,18 +446,21 @@
             </p>
         </div>
 
-        @if(! $hasVerifiedTiktok)
+        @if (!$hasVerifiedTiktok)
             <div class="p-4 bg-amber-50/90 border border-amber-200/80 rounded-2xl mb-5 text-left">
                 <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                    <div
+                        class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                         <i class="fa-solid fa-triangle-exclamation text-sm"></i>
                     </div>
                     <div class="flex-1">
                         <h4 class="text-xs font-bold text-amber-900">Akun TikTok Belum Terverifikasi</h4>
                         <p class="text-[11px] text-amber-700/90 mt-0.5 leading-relaxed">
-                            Konten yang disubmit harus berasal dari akun TikTok terverifikasi milik Anda untuk mencegah penipuan.
+                            Konten yang disubmit harus berasal dari akun TikTok terverifikasi milik Anda untuk mencegah
+                            penipuan.
                         </p>
-                        <a href="{{ route('app.tiktok.index') }}" class="inline-flex items-center gap-1.5 font-bold text-xs hover:opacity-80 mt-2.5 transition-opacity"
+                        <a href="{{ route('app.tiktok.index') }}"
+                            class="inline-flex items-center gap-1.5 font-bold text-xs hover:opacity-80 mt-2.5 transition-opacity"
                             style="color: #ff0019;">
                             <span>Verifikasi Akun Sekarang</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -449,7 +479,8 @@
                 <div class="flex-1">
                     <h4 class="text-xs font-bold text-slate-800 mb-0.5">Ketentuan Akun</h4>
                     <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
-                        Pastikan video atau foto yang Anda submit diunggah menggunakan <strong style="color: #ff0019;" class="font-semibold">akun TikTok terverifikasi</strong> milik Anda.
+                        Pastikan video atau foto yang Anda submit diunggah menggunakan <strong style="color: #ff0019;"
+                            class="font-semibold">akun TikTok terverifikasi</strong> milik Anda.
                     </p>
                 </div>
             </div>
@@ -480,7 +511,7 @@
                     class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm active:scale-[0.98] transition-all cursor-pointer">
                     Batal
                 </button>
-                @if(! $hasVerifiedTiktok)
+                @if (!$hasVerifiedTiktok)
                     <a href="{{ route('app.tiktok.index') }}"
                         class="flex-1 py-3 text-white font-bold rounded-xl text-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xs"
                         style="background: linear-gradient(135deg, #ff0019 0%, #e60017 100%);">
@@ -500,44 +531,42 @@
 </div>
 
 <!-- Video Preview Modal (Clean Minimalist Player) -->
-<div id="videoPreviewModal" 
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 invisible pointer-events-none opacity-0 transition-opacity duration-250 ease-out" 
+<div id="videoPreviewModal"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 invisible pointer-events-none opacity-0 transition-opacity duration-250 ease-out"
     style="background-color: rgba(2, 6, 23, 0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
-    
+
     <!-- Backdrop Click to Close Area -->
     <div class="absolute inset-0 cursor-pointer" onclick="closeVideoPreview()"></div>
 
     <!-- Modal Card Container (Dynamic 9:16 Portrait Canvas) -->
-    <div class="video-modal-card relative z-10 flex flex-col items-center justify-center transform scale-95 transition-transform duration-250 ease-out" 
+    <div class="video-modal-card relative z-10 flex flex-col items-center justify-center transform scale-95 transition-transform duration-250 ease-out"
         style="width: min(88vw, calc(76dvh * 9 / 16)); max-width: 380px;">
-        
+
         <!-- Video Player Wrapper (Strict 9:16 Aspect Ratio) -->
-        <div class="relative w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10" 
+        <div class="relative w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10"
             style="aspect-ratio: 9 / 16; width: 100%; border-radius: 14px;">
 
             <!-- Floating Sleek Close Button -->
-            <button type="button" 
-                onclick="closeVideoPreview()" 
+            <button type="button" onclick="closeVideoPreview()"
                 class="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition active:scale-90 cursor-pointer shadow-lg"
                 aria-label="Tutup Video">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
             <!-- Loader Skeleton -->
-            <div id="videoPreviewLoader" class="absolute inset-0 flex flex-col items-center justify-center bg-black text-slate-400 gap-3 z-10">
-                <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
+            <div id="videoPreviewLoader"
+                class="absolute inset-0 flex flex-col items-center justify-center bg-black text-slate-400 gap-3 z-10">
+                <div
+                    class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center">
                     <i class="fa-solid fa-circle-notch fa-spin text-indigo-400 text-base"></i>
                 </div>
                 <p class="text-xs font-medium text-slate-400">Memuat video...</p>
             </div>
 
             <!-- Iframe Player (Strict 9:16 Fill) -->
-            <iframe id="videoPreviewIframe"
-                src=""
-                class="w-full h-full border-0 relative z-20"
+            <iframe id="videoPreviewIframe" src="" class="w-full h-full border-0 relative z-20"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-                onload="document.getElementById('videoPreviewLoader').classList.add('hidden')">
+                allowfullscreen onload="document.getElementById('videoPreviewLoader').classList.add('hidden')">
             </iframe>
         </div>
     </div>
@@ -719,7 +748,8 @@
 
         // Pasang embed TikTok Player dengan parameter pembersih (music_info=0 & description=0)
         if (videoIframe) {
-            videoIframe.src = `https://www.tiktok.com/player/v1/${resolvedId}?autoplay=1&loop=1&music_info=0&description=0`;
+            videoIframe.src =
+                `https://www.tiktok.com/player/v1/${resolvedId}?autoplay=1&loop=1&music_info=0&description=0`;
         }
 
         // Tampilkan modal dengan transisi mulus
