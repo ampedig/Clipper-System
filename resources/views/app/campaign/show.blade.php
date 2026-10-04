@@ -636,7 +636,7 @@
                     icon: 'success',
                     title: 'Berhasil!',
                     text: '{{ session('success') }}',
-                    confirmButtonText: 'Tutup',
+                    confirmButtonText: 'Ok, Selesai',
                     confirmButtonColor: '#4f46e5',
                     customClass: {
                         popup: 'rounded-2xl',
@@ -654,7 +654,7 @@
                         icon: 'error',
                         title: 'Oops!',
                         text: '{{ session('error') }}',
-                        confirmButtonText: 'Mengerti',
+                        confirmButtonText: 'Ok, Mengerti',
                         confirmButtonColor: '#4f46e5',
                         customClass: {
                             popup: 'rounded-2xl',
