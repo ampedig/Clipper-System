@@ -32,7 +32,7 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('Undang & Cuan', false);
+        $response->assertSee('Komunitas');
         $response->assertSee('https://chat.whatsapp.com/testgroup123');
     }
 
@@ -43,7 +43,7 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertDontSee('Undang & Cuan', false);
+        $response->assertDontSee('Komunitas');
     }
 
     public function test_the_akun_page_returns_a_successful_response(): void

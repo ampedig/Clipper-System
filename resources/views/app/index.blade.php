@@ -25,11 +25,11 @@
 
         @if (!empty($linkGrup))
             <a href="{{ $linkGrup }}" target="_blank" rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 shrink-0"
-                style="background: #000000; border: 1px solid rgba(255, 0, 37, 0.55); box-shadow: inset -4px -3px 12px 1px rgba(250, 204, 21, 0.38);"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 shrink-0"
+                style="background: #000000; border: 1px solid rgba(255, 0, 37, 0.55);"
                 aria-label="Gabung Grup Komunitas">
                 <i class="fa-solid fa-users text-xs" style="color: #ff0025;"></i>
-                <span class="tracking-tight" style="color: #facc15;">Undang & Cuan</span>
+                <span class="tracking-tight" style="color: #facc15;">Komunitas</span>
             </a>
         @endif
     </header>
