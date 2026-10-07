@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClipCampaign;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -41,6 +42,8 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        return view('app.index', compact('user', 'totalViews', 'approvedClipsCount', 'latestCampaigns'));
+        $linkGrup = Setting::where('key', 'link_grup')->value('value');
+
+        return view('app.index', compact('user', 'totalViews', 'approvedClipsCount', 'latestCampaigns', 'linkGrup'));
     }
 }

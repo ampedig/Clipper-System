@@ -13,14 +13,25 @@
 
 <div class="px-4 pt-4 space-y-5 pb-28">
     <!-- 1. Header Profil -->
-    <header class="flex items-center justify-between">
+    <header class="flex items-center justify-between gap-3">
         <div class="min-w-0 flex-1">
             <h1 class="text-xl font-black tracking-tight leading-none text-white">
-                AZ<span style="color: #ff0019;">CLIP</span><span style="color: #94a3b8; font-size: 13px; font-weight: 700;">.COM</span>
+                AZ<span style="color: #ff0019;">CLIP</span><span
+                    style="color: #94a3b8; font-size: 13px; font-weight: 700;">.COM</span>
             </h1>
             <p class="text-sm font-semibold text-slate-300 truncate mt-1">
                 Halo, {{ $userName }} 👋</p>
         </div>
+
+        @if (!empty($linkGrup))
+            <a href="{{ $linkGrup }}" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all duration-200 active:scale-95 shrink-0"
+                style="background: #000000; border: 1px solid rgba(255, 0, 37, 0.55); box-shadow: inset -4px -3px 12px 1px rgba(250, 204, 21, 0.38);"
+                aria-label="Gabung Grup Komunitas">
+                <i class="fa-solid fa-users text-xs" style="color: #ff0025;"></i>
+                <span class="tracking-tight" style="color: #facc15;">Undang & Cuan</span>
+            </a>
+        @endif
     </header>
 
     <!-- 2. Wallet & Earning Banner -->
@@ -92,7 +103,8 @@
                     </svg>
                     <div class="relative z-10">
                         <span class="text-[11px] font-medium text-indigo-200/90">Klip Disetujui</span>
-                        <p class="text-base font-bold mt-0.5">{{ number_format($approvedClipsCount ?? 0, 0, ',', '.') }}
+                        <p class="text-base font-bold mt-0.5">
+                            {{ number_format($approvedClipsCount ?? 0, 0, ',', '.') }}
                             <span class="text-xs font-normal text-indigo-200">Video</span>
                         </p>
                     </div>
@@ -106,7 +118,8 @@
         <div class="flex items-center justify-between">
             <h2 class="text-sm font-bold text-white tracking-wide">Klip Campaign Terbaru</h2>
 
-            <a href="{{ route('app.campaigns') }}" class="text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
+            <a href="{{ route('app.campaigns') }}"
+                class="text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
                 Lihat Semua
             </a>
         </div>
@@ -115,7 +128,8 @@
             @forelse ($latestCampaigns as $campaign)
                 @include('app.campaign.partials.item-grid', ['campaign' => $campaign])
             @empty
-                <div class="rounded-3xl p-6 text-center space-y-2" style="background-color: #111827; border: 1px solid rgba(255, 255, 255, 0.08);">
+                <div class="rounded-3xl p-6 text-center space-y-2"
+                    style="background-color: #111827; border: 1px solid rgba(255, 255, 255, 0.08);">
                     <p class="text-xs text-slate-400 font-medium">Belum ada campaign aktif saat ini.</p>
                 </div>
             @endforelse

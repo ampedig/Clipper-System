@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\CampaignStatus;
 use App\Models\ClipCampaign;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,6 +23,27 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
+    }
+
+    public function test_home_displays_join_group_button_when_link_grup_is_configured(): void
+    {
+        Setting::create(['key' => 'link_grup', 'value' => 'https://chat.whatsapp.com/testgroup123']);
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('Undang & Cuan', false);
+        $response->assertSee('https://chat.whatsapp.com/testgroup123');
+    }
+
+    public function test_home_does_not_display_join_group_button_when_link_grup_is_empty(): void
+    {
+        Setting::where('key', 'link_grup')->delete();
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Undang & Cuan', false);
     }
 
     public function test_the_akun_page_returns_a_successful_response(): void
