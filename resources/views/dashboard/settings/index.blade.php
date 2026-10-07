@@ -46,14 +46,14 @@
                         <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">* Kolom wajib diisi</span>
                     </div>
 
-                    <!-- ================= GRUP 1: CUSTOMER SERVICE ================= -->
-                    <div class="space-y-3.5">
+                    <!-- ================= GRUP 1: CUSTOMER SERVICE & KOMUNITAS ================= -->
+                    <div class="space-y-5">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center text-sm shrink-0">
                                 <i class="fa-solid fa-headset"></i>
                             </div>
                             <div>
-                                <h4 class="text-base font-semibold text-slate-900 dark:text-white">Customer Service</h4>
+                                <h4 class="text-base font-semibold text-slate-900 dark:text-white">Customer Service & Komunitas</h4>
                             </div>
                         </div>
 
@@ -106,6 +106,30 @@
                                 @enderror
                             </div>
 
+                        </div>
+
+                        <!-- Link Grup Komunitas -->
+                        <div class="space-y-1.5">
+                            <label for="linkGrup" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                Link Grup Komunitas (WhatsApp / Telegram)
+                            </label>
+                            <div class="flex">
+                                <span class="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 dark:border-[#2e2e2e] bg-slate-100/70 dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-200 text-sm font-semibold select-none">
+                                    <i class="fa-solid fa-users text-sm"></i>
+                                </span>
+                                <input 
+                                    type="text" 
+                                    id="linkGrup" 
+                                    name="link_grup"
+                                    value="{{ old('link_grup', $settings['link_grup'] ?? '') }}"
+                                    placeholder="https://chat.whatsapp.com/... atau https://t.me/..." 
+                                    class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-slate-50 dark:bg-[#161616] border border-slate-200 dark:border-[#2e2e2e] rounded-none rounded-r-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-[#161616] focus:border-brand-500 dark:focus:border-brand-500 outline-none transition-all font-medium focus:z-10 @error('link_grup') border-red-500 @enderror"
+                                >
+                            </div>
+                            <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Tautan grup resmi bagi clipper untuk berdiskusi, berbagi tips, dan menerima pengumuman penting.</p>
+                            @error('link_grup')
+                                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 

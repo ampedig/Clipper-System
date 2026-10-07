@@ -18,6 +18,7 @@ class SettingSeeder extends Seeder
             ['key' => 'cs_telegram', 'value' => '@cstele'],
             ['key' => 'home_announcement', 'value' => 'Jumlah view di refresh setiap jam 12 malem, dan proses pencairan komisi'],
             ['key' => 'max_tiktok_akun', 'value' => '10'],
+            ['key' => 'link_grup', 'value' => 'https://chat.whatsapp.com/example'],
         ];
 
         foreach ($settings as $setting) {
