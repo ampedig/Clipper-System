@@ -216,6 +216,14 @@
         <form id="rekeningForm" action="{{ route('app.rekening.update') }}" method="POST">
             @csrf
             @method('PUT')
+            <input type="hidden" name="otp" id="form_otp_input" value="">
+
+            @error('otp')
+                <div class="mb-4 p-4 bg-rose-50 border border-rose-200/80 rounded-2xl flex items-center gap-2.5 text-xs font-semibold text-rose-600">
+                    <i class="fa-solid fa-circle-exclamation text-sm shrink-0"></i>
+                    <span>{{ $message }}</span>
+                </div>
+            @enderror
 
             <!-- Form Fields Card -->
             <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-5">
@@ -391,7 +399,256 @@
 
                 if (!isValid) return;
 
-                // Tampilkan SweetAlert Konfirmasi Modern
+                const payload = {
+                    withdraw_channel_id: bankVal,
+                    account_number: numberVal,
+                    account_name: nameVal
+                };
+
+                let resendTimerInterval = null;
+
+                // Fungsi kirim permintaan OTP ke server
+                function requestOtp(dataPayload, onSuccess) {
+                    Swal.fire({
+                        html: `
+                            <div class="flex flex-col items-center justify-center py-5">
+                                <div class="w-10 h-10 border-3 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin mb-3"></div>
+                                <h4 class="text-sm font-bold text-slate-800 mb-0.5">Mengirim Kode OTP...</h4>
+                                <p class="text-xs text-slate-500 font-medium">Menghubungi WhatsApp Gateway AZCLIP</p>
+                            </div>
+                        `,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        backdrop: 'rgba(15, 23, 42, 0.65)',
+                        customClass: {
+                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            htmlContainer: '!m-0 !p-0 !w-full'
+                        }
+                    });
+
+                    fetch('{{ route('app.rekening.send-otp') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(dataPayload)
+                    })
+                    .then(async res => {
+                        const data = await res.json();
+                        if (!res.ok) {
+                            throw new Error(data.message || 'Gagal mengirim kode OTP.');
+                        }
+                        return data;
+                    })
+                    .then(data => {
+                        if (typeof onSuccess === 'function') {
+                            onSuccess(data);
+                        } else {
+                            showOtpModal(dataPayload, data.masked_wa, data.cooldown || 60);
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            html: `
+                                <div class="flex flex-col items-center text-center p-1">
+                                    <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-3 border border-rose-100">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight">Gagal Mengirim OTP</h3>
+                                    <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
+                                        ${err.message}
+                                    </p>
+                                </div>
+                            `,
+                            showConfirmButton: true,
+                            confirmButtonText: 'Tutup',
+                            buttonsStyling: false,
+                            backdrop: 'rgba(15, 23, 42, 0.65)',
+                            customClass: {
+                                popup: 'custom-swal-popup !rounded-[2.25rem]',
+                                actions: 'w-full mt-4 px-0',
+                                confirmButton: 'w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-xs transition-all cursor-pointer'
+                            }
+                        });
+                    });
+                }
+
+                // Modal Verifikasi OTP WhatsApp
+                function showOtpModal(dataPayload, maskedWa, cooldownSeconds) {
+                    if (resendTimerInterval) clearInterval(resendTimerInterval);
+
+                    Swal.fire({
+                        html: `
+                            <div class="flex flex-col items-center text-center p-1">
+                                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-3 border border-emerald-100/80">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <h3 class="text-base font-bold text-slate-900 mb-1 tracking-tight">Verifikasi OTP WhatsApp</h3>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[280px]">
+                                    Kode OTP 6-digit telah dikirim ke nomor WhatsApp Anda <strong>${maskedWa || ''}</strong>.
+                                </p>
+
+                                <div class="w-full my-4">
+                                    <input type="tel" id="swal_otp_code" maxlength="6" inputmode="numeric" placeholder="• • • • • •" autocomplete="one-time-code"
+                                        class="w-full text-center tracking-[0.35em] font-mono text-2xl font-black py-3 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:bg-white text-slate-900 placeholder:text-slate-300" />
+                                    <div id="swal_otp_error" class="hidden mt-2 text-xs font-semibold text-rose-500 flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-circle-exclamation text-xs"></i>
+                                        <span id="swal_otp_error_text"></span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                                    <span>Tidak menerima kode?</span>
+                                    <button type="button" id="swal_btn_resend" class="font-bold text-emerald-600 hover:text-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer" disabled>
+                                        Kirim ulang (<span id="swal_resend_timer">${cooldownSeconds}</span>s)
+                                    </button>
+                                </div>
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Verifikasi & Simpan',
+                        cancelButtonText: 'Batal',
+                        buttonsStyling: false,
+                        backdrop: 'rgba(15, 23, 42, 0.65)',
+                        allowOutsideClick: false,
+                        customClass: {
+                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            htmlContainer: '!m-0 !p-0 !w-full',
+                            actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
+                            confirmButton: 'flex-1 py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
+                            cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                        },
+                        didOpen: () => {
+                            const otpInput = document.getElementById('swal_otp_code');
+                            const resendBtn = document.getElementById('swal_btn_resend');
+                            const resendTimerText = document.getElementById('swal_resend_timer');
+                            const errorDiv = document.getElementById('swal_otp_error');
+
+                            if (otpInput) {
+                                otpInput.focus();
+                                otpInput.addEventListener('input', (e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                    if (errorDiv) errorDiv.classList.add('hidden');
+                                });
+                                otpInput.addEventListener('keypress', (e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        Swal.getConfirmButton().click();
+                                    }
+                                });
+                            }
+
+                            // Start Cooldown Timer
+                            let remaining = cooldownSeconds;
+                            resendTimerInterval = setInterval(() => {
+                                remaining--;
+                                if (resendTimerText) resendTimerText.textContent = remaining;
+                                if (remaining <= 0) {
+                                    clearInterval(resendTimerInterval);
+                                    resendTimerInterval = null;
+                                    if (resendBtn) {
+                                        resendBtn.removeAttribute('disabled');
+                                        resendBtn.innerHTML = 'Kirim ulang';
+                                    }
+                                }
+                            }, 1000);
+
+                            if (resendBtn) {
+                                resendBtn.addEventListener('click', () => {
+                                    resendBtn.setAttribute('disabled', 'true');
+                                    resendBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> Mengirim...';
+                                    requestOtp(dataPayload, (newRes) => {
+                                        showOtpModal(dataPayload, newRes.masked_wa || maskedWa, newRes.cooldown || 60);
+                                    });
+                                });
+                            }
+                        },
+                        preConfirm: () => {
+                            const otpInput = document.getElementById('swal_otp_code');
+                            const errorDiv = document.getElementById('swal_otp_error');
+                            const errorText = document.getElementById('swal_otp_error_text');
+                            const otpVal = otpInput ? otpInput.value.trim() : '';
+
+                            if (otpVal.length !== 6) {
+                                if (errorDiv && errorText) {
+                                    errorText.textContent = 'Silakan masukkan 6 digit kode OTP.';
+                                    errorDiv.classList.remove('hidden');
+                                }
+                                return false;
+                            }
+
+                            Swal.showLoading();
+
+                            return fetch('{{ route('app.rekening.update') }}', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    ...dataPayload,
+                                    otp: otpVal
+                                })
+                            })
+                            .then(async res => {
+                                const data = await res.json();
+                                if (!res.ok) {
+                                    throw new Error(data.message || 'Kode OTP tidak valid atau telah kedaluwarsa.');
+                                }
+                                return data;
+                            })
+                            .catch(err => {
+                                Swal.hideLoading();
+                                if (errorDiv && errorText) {
+                                    errorText.textContent = err.message;
+                                    errorDiv.classList.remove('hidden');
+                                }
+                                if (otpInput) {
+                                    otpInput.classList.add('border-rose-400');
+                                    otpInput.focus();
+                                }
+                                return false;
+                            });
+                        }
+                    }).then((result) => {
+                        if (resendTimerInterval) {
+                            clearInterval(resendTimerInterval);
+                            resendTimerInterval = null;
+                        }
+
+                        if (result.isConfirmed && result.value) {
+                            Swal.fire({
+                                html: `
+                                    <div class="flex flex-col items-center text-center pt-2 px-1">
+                                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-3 border border-emerald-100/80">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                        <h3 class="text-base font-extrabold text-slate-900 mb-1 tracking-tight">Berhasil Disimpan!</h3>
+                                        <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
+                                            Rekening pencairan dana Anda telah diverifikasi dan siap digunakan.
+                                        </p>
+                                    </div>
+                                `,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Oke, Mengerti',
+                                buttonsStyling: false,
+                                backdrop: 'rgba(15, 23, 42, 0.65)',
+                                customClass: {
+                                    popup: 'custom-swal-popup !rounded-[2.25rem]',
+                                    actions: 'w-full mt-5 px-0',
+                                    confirmButton: 'w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all cursor-pointer'
+                                }
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    });
+                }
+
+                // Tampilkan SweetAlert Konfirmasi Awal
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
                         html: `
@@ -420,7 +677,7 @@
                             </div>
                         `,
                         showCancelButton: true,
-                        confirmButtonText: 'Ya, Simpan',
+                        confirmButtonText: '<i class="fa-brands fa-whatsapp text-sm mr-1.5"></i> Lanjutkan & Kirim OTP',
                         cancelButtonText: 'Batal',
                         buttonsStyling: false,
                         backdrop: 'rgba(15, 23, 42, 0.65)',
@@ -433,17 +690,10 @@
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            btnSave.disabled = true;
-                            btnSave.innerHTML =
-                                '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Menyimpan...</span>';
-                            btnSave.classList.add('opacity-80', 'cursor-not-allowed');
-                            form.submit();
+                            requestOtp(payload);
                         }
                     });
                 } else {
-                    btnSave.disabled = true;
-                    btnSave.innerHTML =
-                        '<i class="fa-solid fa-circle-notch fa-spin text-xs"></i> <span>Menyimpan...</span>';
                     form.submit();
                 }
             });

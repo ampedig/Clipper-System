@@ -342,4 +342,81 @@ class WhatsAppServiceTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    public function test_whatsapp_service_normalizes_destination_phone_numbers(): void
+    {
+        $service = new WhatsAppService('dummy-key');
+
+        $this->assertSame('6281234567890', $service->normalizeDestinationNumber('081234567890'));
+        $this->assertSame('6281234567890', $service->normalizeDestinationNumber('+6281234567890'));
+        $this->assertSame('6281234567890', $service->normalizeDestinationNumber('81234567890'));
+        $this->assertSame('6281234567890', $service->normalizeDestinationNumber('6281234567890'));
+        $this->assertSame('123456-789@g.us', $service->normalizeDestinationNumber('123456-789@g.us'));
+    }
+
+    public function test_whatsapp_service_can_send_text_message(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/send-message' => Http::response([
+                'success' => true,
+                'message' => 'Pesan WhatsApp berhasil dikirim.',
+                'data' => [
+                    'id' => 99,
+                    'status' => 'sent',
+                ],
+            ], 200),
+        ]);
+
+        $result = WhatsAppService::send('081234567890', 'Halo dari AZCLIP!');
+
+        $this->assertTrue($result['success']);
+        $this->assertSame('sent', $result['status']);
+        $this->assertSame('Pesan WhatsApp berhasil dikirim.', $result['message']);
+        $this->assertNotNull($result['data']);
+    }
+
+    public function test_whatsapp_service_can_send_rekening_otp(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/send-message' => function ($request) {
+                $body = $request->data();
+                $this->assertSame('6281234567890', $body['to']);
+                $this->assertSame('text', $body['type']);
+                $this->assertStringContainsString('123456', $body['message']);
+                $this->assertStringContainsString('Budi', $body['message']);
+
+                return Http::response([
+                    'success' => true,
+                    'message' => 'Pesan OTP berhasil dikirim.',
+                ], 200);
+            },
+        ]);
+
+        $result = WhatsAppService::sendOtpRekening('081234567890', '123456', 'Budi');
+
+        $this->assertTrue($result['success']);
+        $this->assertSame('sent', $result['status']);
+    }
+
+    public function test_whatsapp_service_handles_send_message_error(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/send-message' => Http::response([
+                'success' => false,
+                'message' => 'Nomor tujuan tidak terdaftar di WhatsApp.',
+            ], 400),
+        ]);
+
+        $result = WhatsAppService::send('081234567890', 'Test message');
+
+        $this->assertFalse($result['success']);
+        $this->assertSame('error', $result['status']);
+        $this->assertSame('Nomor tujuan tidak terdaftar di WhatsApp.', $result['message']);
+    }
 }

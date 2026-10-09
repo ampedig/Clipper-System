@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendWhatsAppMessageJob;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -228,5 +229,184 @@ class WhatsAppService
     public static function connect(string $method = 'qr', ?string $phoneNumber = null, ?string $apiKey = null): array
     {
         return (new self($apiKey))->connectDevice($method, $phoneNumber);
+    }
+
+    /**
+     * Normalisasi format nomor tujuan WhatsApp ke standar internasional (awalan 62).
+     */
+    public function normalizeDestinationNumber(string $number): string
+    {
+        $number = trim($number);
+
+        // Jika JID grup, jangan ubah format
+        if (str_ends_with($number, '@g.us') || str_ends_with($number, '@s.whatsapp.net')) {
+            return $number;
+        }
+
+        // Bersihkan karakter non-digit
+        $digits = preg_replace('/\D/', '', $number);
+
+        if (empty($digits)) {
+            return '';
+        }
+
+        if (str_starts_with($digits, '0')) {
+            return '62'.substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, '8')) {
+            return '62'.$digits;
+        }
+
+        return $digits;
+    }
+
+    /**
+     * Kirim pesan teks WhatsApp melalui gateway AMBLAST.
+     *
+     * @param  string  $to  Nomor WhatsApp tujuan (format 62/08) atau JID grup
+     * @param  string  $message  Isi pesan teks
+     * @return array{
+     *     success: bool,
+     *     status: string,
+     *     message: string,
+     *     data?: array<string, mixed>|null
+     * }
+     */
+    public function sendMessage(string $to, string $message): array
+    {
+        if (empty($this->apiKey)) {
+            return [
+                'success' => false,
+                'status' => 'unconfigured',
+                'message' => 'API Key WhatsApp belum dikonfigurasi.',
+                'data' => null,
+            ];
+        }
+
+        $normalizedTo = $this->normalizeDestinationNumber($to);
+        if (empty($normalizedTo)) {
+            return [
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Nomor tujuan WhatsApp tidak valid.',
+                'data' => null,
+            ];
+        }
+
+        $url = self::BASE_URL.'/api/send-message';
+
+        try {
+            $response = Http::timeout(12)
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                    'x-api-key' => $this->apiKey,
+                ])
+                ->post($url, [
+                    'apiKey' => $this->apiKey,
+                    'to' => $normalizedTo,
+                    'type' => 'text',
+                    'message' => trim($message),
+                ]);
+
+            $json = $response->json();
+
+            if ($response->successful() && ! empty($json['success'])) {
+                return [
+                    'success' => true,
+                    'status' => 'sent',
+                    'message' => $json['message'] ?? 'Pesan WhatsApp berhasil dikirim.',
+                    'data' => $json['data'] ?? null,
+                ];
+            }
+
+            $errorMessage = $json['message'] ?? 'Gagal mengirim pesan WhatsApp (HTTP '.$response->status().').';
+
+            return [
+                'success' => false,
+                'status' => 'error',
+                'message' => $errorMessage,
+                'data' => null,
+            ];
+        } catch (Throwable $e) {
+            Log::warning('WhatsAppService: Gagal mengirim pesan ke API gateway AMBLAST.', [
+                'error' => $e->getMessage(),
+                'to' => $normalizedTo,
+                'url' => $url,
+            ]);
+
+            return [
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Gagal terhubung ke server WhatsApp Gateway: '.$e->getMessage(),
+                'data' => null,
+            ];
+        }
+    }
+
+    /**
+     * Format template teks pesan OTP rekening.
+     */
+    public static function formatRekeningOtpMessage(string $otp, string $userName = 'Pengguna'): string
+    {
+        return "*KODE OTP PERUBAHAN REKENING AZCLIP*\n\n"
+            ."Halo {$userName},\n"
+            ."Berikut adalah kode OTP untuk verifikasi perubahan rekening pencairan dana Anda:\n\n"
+            ."🔐 *{$otp}*\n\n"
+            ."Kode ini bersifat RAHASIA dan hanya berlaku selama *5 menit*.\n"
+            .'Jangan bagikan kode ini kepada siapa pun demi keamanan akun Anda.';
+    }
+
+    /**
+     * Kirim pesan OTP untuk verifikasi perubahan rekening ke nomor WhatsApp user secara langsung (synchronous).
+     *
+     * @param  string  $to  Nomor WhatsApp tujuan
+     * @param  string  $otp  Kode OTP (contoh: 6 digit)
+     * @param  string  $userName  Nama pengguna untuk personalisasi pesan
+     * @return array{
+     *     success: bool,
+     *     status: string,
+     *     message: string,
+     *     data?: array<string, mixed>|null
+     * }
+     */
+    public function sendRekeningOtp(string $to, string $otp, string $userName = 'Pengguna'): array
+    {
+        $message = self::formatRekeningOtpMessage($otp, $userName);
+
+        return $this->sendMessage($to, $message);
+    }
+
+    /**
+     * Static shortcut helper untuk mengirim pesan WhatsApp secara instan (synchronous).
+     */
+    public static function send(string $to, string $message, ?string $apiKey = null): array
+    {
+        return (new self($apiKey))->sendMessage($to, $message);
+    }
+
+    /**
+     * Static shortcut helper untuk mengirim pesan OTP rekening secara instan (synchronous).
+     */
+    public static function sendOtpRekening(string $to, string $otp, string $userName = 'Pengguna', ?string $apiKey = null): array
+    {
+        return (new self($apiKey))->sendRekeningOtp($to, $otp, $userName);
+    }
+
+    /**
+     * Kirim pesan WhatsApp melalui antrean latar belakang (asynchronous queue job).
+     */
+    public static function dispatchMessage(string $to, string $message): void
+    {
+        SendWhatsAppMessageJob::dispatch($to, $message);
+    }
+
+    /**
+     * Kirim OTP perubahan rekening melalui antrean latar belakang (asynchronous queue job).
+     */
+    public static function dispatchRekeningOtp(string $to, string $otp, string $userName = 'Pengguna'): void
+    {
+        $message = self::formatRekeningOtpMessage($otp, $userName);
+        SendWhatsAppMessageJob::dispatch($to, $message);
     }
 }

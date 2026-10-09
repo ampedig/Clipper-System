@@ -41,6 +41,7 @@ Route::get('/akun/kata-sandi', [AppPasswordController::class, 'edit'])->middlewa
 Route::put('/akun/kata-sandi', [AppPasswordController::class, 'update'])->middleware('auth')->name('app.password.update');
 Route::get('/akun/rekening', [AppProfileController::class, 'rekening'])->middleware('auth')->name('app.rekening');
 Route::put('/akun/rekening', [AppProfileController::class, 'updateRekening'])->middleware('auth')->name('app.rekening.update');
+Route::post('/akun/rekening/send-otp', [AppProfileController::class, 'sendRekeningOtp'])->middleware('auth')->name('app.rekening.send-otp');
 Route::get('/akun/tiktok', [AppTiktokAccountController::class, 'index'])->middleware('auth')->name('app.tiktok.index');
 Route::post('/akun/tiktok', [AppTiktokAccountController::class, 'store'])->middleware('auth')->name('app.tiktok.store');
 Route::post('/akun/tiktok/{account}/verify', [AppTiktokAccountController::class, 'verify'])->middleware('auth')->name('app.tiktok.verify');
