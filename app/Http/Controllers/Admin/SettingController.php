@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\WhatsAppService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -42,6 +44,16 @@ class SettingController extends Controller
         );
 
         return redirect()->route('admin.settings.whatsapp')->with('success', 'API Key WhatsApp Gateway berhasil disimpan!');
+    }
+
+    /**
+     * Cek status koneksi socket perangkat WhatsApp di AMBLAST.
+     */
+    public function whatsappStatus(): JsonResponse
+    {
+        $status = WhatsAppService::checkDeviceStatus();
+
+        return response()->json($status);
     }
 
     public function update(Request $request)
