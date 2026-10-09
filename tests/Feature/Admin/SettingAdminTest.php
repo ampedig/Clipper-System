@@ -64,4 +64,56 @@ class SettingAdminTest extends TestCase
             'value' => 'https://chat.whatsapp.com/newlink123',
         ]);
     }
+
+    public function test_setting_seeder_creates_apikey_whatsapp(): void
+    {
+        $this->seed(SettingSeeder::class);
+
+        $this->assertDatabaseHas('settings', [
+            'key' => 'apikey_whatsapp',
+        ]);
+    }
+
+    public function test_admin_can_view_whatsapp_setting_page(): void
+    {
+        Setting::create(['key' => 'apikey_whatsapp', 'value' => 'dummy-api-key-test']);
+
+        $response = $this->actingAs($this->admin)->get(route('admin.settings.whatsapp'));
+
+        $response->assertStatus(200);
+        $response->assertSee('WhatsApp Gateway', false);
+        $response->assertSee('dummy-api-key-test', false);
+    }
+
+    public function test_admin_can_update_whatsapp_api_key(): void
+    {
+        $response = $this->actingAs($this->admin)->put(route('admin.settings.whatsapp.update'), [
+            'apikey_whatsapp' => 'secret-wa-token-456',
+        ]);
+
+        $response->assertRedirect(route('admin.settings.whatsapp'));
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('settings', [
+            'key' => 'apikey_whatsapp',
+            'value' => 'secret-wa-token-456',
+        ]);
+    }
+
+    public function test_admin_can_clear_whatsapp_api_key(): void
+    {
+        Setting::create(['key' => 'apikey_whatsapp', 'value' => 'existing-token']);
+
+        $response = $this->actingAs($this->admin)->put(route('admin.settings.whatsapp.update'), [
+            'apikey_whatsapp' => '',
+        ]);
+
+        $response->assertRedirect(route('admin.settings.whatsapp'));
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('settings', [
+            'key' => 'apikey_whatsapp',
+            'value' => null,
+        ]);
+    }
 }

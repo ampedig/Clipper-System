@@ -71,6 +71,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/settings/whatsapp', [SettingController::class, 'whatsapp'])->name('settings.whatsapp');
+    Route::put('/settings/whatsapp', [SettingController::class, 'updateWhatsapp'])->name('settings.whatsapp.update');
 
     Route::get('/riwayat-saldo', [WalletTransactionController::class, 'index'])->name('riwayat-saldo.index');
 

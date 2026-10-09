@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SettingController extends Controller
 {
@@ -13,6 +15,33 @@ class SettingController extends Controller
         $settings = Setting::pluck('value', 'key');
 
         return view('dashboard.settings.index', compact('settings'));
+    }
+
+    /**
+     * Tampilkan halaman pengaturan WhatsApp Gateway.
+     */
+    public function whatsapp(): View
+    {
+        $apiKey = Setting::where('key', 'apikey_whatsapp')->value('value');
+
+        return view('dashboard.settings.whatsapp', compact('apiKey'));
+    }
+
+    /**
+     * Simpan pembaruan API Key WhatsApp Gateway.
+     */
+    public function updateWhatsapp(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'apikey_whatsapp' => 'nullable|string|max:500',
+        ]);
+
+        Setting::updateOrCreate(
+            ['key' => 'apikey_whatsapp'],
+            ['value' => ! empty($validated['apikey_whatsapp']) ? trim($validated['apikey_whatsapp']) : null]
+        );
+
+        return redirect()->route('admin.settings.whatsapp')->with('success', 'API Key WhatsApp Gateway berhasil disimpan!');
     }
 
     public function update(Request $request)

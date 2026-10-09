@@ -74,9 +74,15 @@
             <p class="sb-title sb-title--spaced t-sidebar-title">Pengaturan</p>
 
             <a href="{{ route('admin.settings.index') }}"
-                class="sb-item t-sidebar {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                class="sb-item t-sidebar {{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">
                 <i class="fa-solid fa-sliders sb-icon"></i>
                 <span>Pengaturan</span>
+            </a>
+
+            <a href="{{ route('admin.settings.whatsapp') }}"
+                class="sb-item t-sidebar {{ request()->routeIs('admin.settings.whatsapp*') ? 'active' : '' }}">
+                <i class="fa-brands fa-whatsapp sb-icon"></i>
+                <span>WhatsApp</span>
             </a>
 
 
