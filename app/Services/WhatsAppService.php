@@ -122,10 +122,111 @@ class WhatsAppService
     }
 
     /**
+     * Mulai sesi koneksi socket perangkat WhatsApp di AMBLAST (QR Code atau Pairing Code).
+     *
+     * @param  string  $method  Metode koneksi ('qr' atau 'pairing')
+     * @param  string|null  $phoneNumber  Nomor WhatsApp jika metode pairing
+     * @return array{
+     *     success: bool,
+     *     status: string,
+     *     method?: string,
+     *     qr_code?: string|null,
+     *     qr_raw?: string|null,
+     *     pairing_code?: string|null,
+     *     phone_number?: string|null,
+     *     message: string
+     * }
+     */
+    public function connectDevice(string $method = 'qr', ?string $phoneNumber = null): array
+    {
+        if (empty($this->apiKey)) {
+            return [
+                'success' => false,
+                'status' => 'unconfigured',
+                'message' => 'API Key WhatsApp belum dikonfigurasi.',
+            ];
+        }
+
+        $method = strtolower(trim($method)) === 'pairing' ? 'pairing' : 'qr';
+        $payload = [
+            'apiKey' => $this->apiKey,
+            'method' => $method,
+        ];
+
+        if ($method === 'pairing') {
+            $cleanPhone = preg_replace('/\D/', '', (string) $phoneNumber);
+            if (empty($cleanPhone)) {
+                return [
+                    'success' => false,
+                    'status' => 'error',
+                    'message' => 'Nomor WhatsApp wajib diisi untuk metode pairing code.',
+                ];
+            }
+            $payload['phone_number'] = $cleanPhone;
+        }
+
+        $url = self::BASE_URL.'/api/device/connect';
+
+        try {
+            $response = Http::timeout(12)
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                    'x-api-key' => $this->apiKey,
+                ])
+                ->post($url, $payload);
+
+            $json = $response->json();
+
+            if ($response->successful() && ! empty($json['success'])) {
+                $status = strtolower((string) ($json['status'] ?? 'connecting'));
+
+                return [
+                    'success' => true,
+                    'status' => $status,
+                    'method' => $json['method'] ?? $method,
+                    'message' => $json['message'] ?? 'Sesi koneksi perangkat berhasil diinisialisasi.',
+                    'qr_code' => $json['qr_code'] ?? null,
+                    'qr_raw' => $json['qr_raw'] ?? null,
+                    'pairing_code' => $json['pairing_code'] ?? null,
+                    'phone_number' => $json['phone_number'] ?? ($payload['phone_number'] ?? null),
+                ];
+            }
+
+            $errorMessage = $json['message'] ?? 'Gagal menghubungkan device (HTTP '.$response->status().').';
+
+            return [
+                'success' => false,
+                'status' => 'error',
+                'message' => $errorMessage,
+            ];
+        } catch (Throwable $e) {
+            Log::warning('WhatsAppService: Gagal menghubungkan perangkat ke API gateway AMBLAST.', [
+                'error' => $e->getMessage(),
+                'url' => $url,
+                'method' => $method,
+            ]);
+
+            return [
+                'success' => false,
+                'status' => 'error',
+                'message' => 'Gagal terhubung ke server WhatsApp Gateway: '.$e->getMessage(),
+            ];
+        }
+    }
+
+    /**
      * Static shortcut helper untuk mengecek status device secara instan.
      */
     public static function checkDeviceStatus(?string $apiKey = null): array
     {
         return (new self($apiKey))->checkStatus();
+    }
+
+    /**
+     * Static shortcut helper untuk memulai sesi koneksi device secara instan.
+     */
+    public static function connect(string $method = 'qr', ?string $phoneNumber = null, ?string $apiKey = null): array
+    {
+        return (new self($apiKey))->connectDevice($method, $phoneNumber);
     }
 }

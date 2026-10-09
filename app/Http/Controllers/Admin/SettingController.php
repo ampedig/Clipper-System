@@ -56,6 +56,24 @@ class SettingController extends Controller
         return response()->json($status);
     }
 
+    /**
+     * Mulai sesi koneksi socket perangkat WhatsApp (QR Code / Pairing Code).
+     */
+    public function whatsappConnect(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'method' => 'required|in:qr,pairing',
+            'phone_number' => 'nullable|string|max:30',
+        ]);
+
+        $result = WhatsAppService::connect(
+            method: $validated['method'],
+            phoneNumber: $validated['phone_number'] ?? null
+        );
+
+        return response()->json($result);
+    }
+
     public function update(Request $request)
     {
         $validated = $request->validate([

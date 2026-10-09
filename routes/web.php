@@ -74,6 +74,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::get('/settings/whatsapp', [SettingController::class, 'whatsapp'])->name('settings.whatsapp');
     Route::put('/settings/whatsapp', [SettingController::class, 'updateWhatsapp'])->name('settings.whatsapp.update');
     Route::get('/settings/whatsapp/status', [SettingController::class, 'whatsappStatus'])->name('settings.whatsapp.status');
+    Route::post('/settings/whatsapp/connect', [SettingController::class, 'whatsappConnect'])->name('settings.whatsapp.connect');
 
     Route::get('/riwayat-saldo', [WalletTransactionController::class, 'index'])->name('riwayat-saldo.index');
 

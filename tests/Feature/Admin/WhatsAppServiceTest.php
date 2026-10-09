@@ -184,4 +184,162 @@ class WhatsAppServiceTest extends TestCase
         $serviceWithCustomKey = new WhatsAppService('custom-token-xyz');
         $this->assertSame('custom-token-xyz', $serviceWithCustomKey->getApiKey());
     }
+
+    public function test_whatsapp_service_can_connect_device_via_qr(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => true,
+                'status' => 'connecting',
+                'method' => 'qr',
+                'message' => 'Sesi koneksi QR berhasil dimulai. Silakan scan QR code berikut menggunakan aplikasi WhatsApp Anda.',
+                'qr_code' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...',
+                'qr_raw' => '2@UBQpdS+g0xlnL1T/PwY3CYYUJ+uM...',
+            ], 200),
+        ]);
+
+        $result = WhatsAppService::connect('qr');
+
+        $this->assertTrue($result['success']);
+        $this->assertSame('connecting', $result['status']);
+        $this->assertSame('qr', $result['method']);
+        $this->assertSame('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...', $result['qr_code']);
+    }
+
+    public function test_whatsapp_service_can_connect_device_via_pairing(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => true,
+                'status' => 'connecting',
+                'method' => 'pairing',
+                'message' => 'Kode pairing berhasil digenerate.',
+                'pairing_code' => 'ABCD-1234',
+                'phone_number' => '6281234567890',
+            ], 200),
+        ]);
+
+        $result = WhatsAppService::connect('pairing', '0812-3456-7890');
+
+        $this->assertTrue($result['success']);
+        $this->assertSame('connecting', $result['status']);
+        $this->assertSame('pairing', $result['method']);
+        $this->assertSame('ABCD-1234', $result['pairing_code']);
+        $this->assertSame('6281234567890', $result['phone_number']);
+    }
+
+    public function test_whatsapp_service_connect_requires_phone_for_pairing(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        $result = WhatsAppService::connect('pairing', '');
+
+        $this->assertFalse($result['success']);
+        $this->assertSame('error', $result['status']);
+        $this->assertSame('Nomor WhatsApp wajib diisi untuk metode pairing code.', $result['message']);
+    }
+
+    public function test_whatsapp_service_handles_already_connected_device_on_connect(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => true,
+                'status' => 'connected',
+                'message' => 'Device sudah dalam status terhubung (connected).',
+                'phone_number' => '6281234567890',
+            ], 200),
+        ]);
+
+        $result = WhatsAppService::connect('qr');
+
+        $this->assertTrue($result['success']);
+        $this->assertSame('connected', $result['status']);
+        $this->assertSame('6281234567890', $result['phone_number']);
+    }
+
+    public function test_whatsapp_service_handles_connect_device_error(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => false,
+                'message' => 'Gagal menghubungkan device. Kuota pesan Anda telah habis (0).',
+            ], 400),
+        ]);
+
+        $result = WhatsAppService::connect('qr');
+
+        $this->assertFalse($result['success']);
+        $this->assertSame('error', $result['status']);
+        $this->assertSame('Gagal menghubungkan device. Kuota pesan Anda telah habis (0).', $result['message']);
+    }
+
+    public function test_admin_can_call_connect_endpoint_qr(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => true,
+                'status' => 'connecting',
+                'method' => 'qr',
+                'message' => 'Sesi koneksi QR berhasil dimulai.',
+                'qr_code' => 'data:image/png;base64,abc123qr',
+            ], 200),
+        ]);
+
+        $response = $this->actingAs($this->admin)->postJson(route('admin.settings.whatsapp.connect'), [
+            'method' => 'qr',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'status' => 'connecting',
+            'qr_code' => 'data:image/png;base64,abc123qr',
+        ]);
+    }
+
+    public function test_admin_can_call_connect_endpoint_pairing(): void
+    {
+        Setting::updateOrCreate(['key' => 'apikey_whatsapp'], ['value' => 'test-api-key-123']);
+
+        Http::fake([
+            '*/api/device/connect' => Http::response([
+                'success' => true,
+                'status' => 'connecting',
+                'method' => 'pairing',
+                'message' => 'Kode pairing berhasil digenerate.',
+                'pairing_code' => 'XYZ9-8765',
+            ], 200),
+        ]);
+
+        $response = $this->actingAs($this->admin)->postJson(route('admin.settings.whatsapp.connect'), [
+            'method' => 'pairing',
+            'phone_number' => '081234567890',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'success' => true,
+            'status' => 'connecting',
+            'pairing_code' => 'XYZ9-8765',
+        ]);
+    }
+
+    public function test_guest_cannot_access_whatsapp_connect_endpoint(): void
+    {
+        $response = $this->post(route('admin.settings.whatsapp.connect'), [
+            'method' => 'qr',
+        ]);
+
+        $response->assertRedirect(route('login'));
+    }
 }
