@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Models\WithdrawChannel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -48,7 +49,9 @@ class ExampleTest extends TestCase
 
     public function test_the_akun_page_returns_a_successful_response(): void
     {
-        $response = $this->get('/akun');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/akun');
 
         $response->assertStatus(200);
     }
@@ -71,18 +74,20 @@ class ExampleTest extends TestCase
 
     public function test_user_can_update_profile(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'whatsapp' => '081299998888',
+        ]);
 
         $response = $this->actingAs($user)->put('/akun/edit', [
             'name' => 'Nama Baru',
-            'whatsapp' => '81234567890',
+            'whatsapp' => '081234567890',
         ]);
 
         $response->assertRedirect('/akun');
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'name' => 'Nama Baru',
-            'whatsapp' => '081234567890',
+            'whatsapp' => '081299998888',
         ]);
     }
 
@@ -129,6 +134,9 @@ class ExampleTest extends TestCase
 
     public function test_the_help_page_returns_a_successful_response(): void
     {
+        Setting::updateOrCreate(['key' => 'cs_whatsapp'], ['value' => '08123456789']);
+        Setting::updateOrCreate(['key' => 'cs_telegram'], ['value' => '@cs_telegram']);
+
         $response = $this->get('/bantuan');
 
         $response->assertStatus(200);
@@ -170,10 +178,20 @@ class ExampleTest extends TestCase
             'is_active' => true,
         ]);
 
+        Cache::put("rekening_otp:{$user->id}", [
+            'otp' => '123456',
+            'data' => [
+                'withdraw_channel_id' => (string) $channel->id,
+                'account_number' => '1234567890',
+                'account_name' => 'Budi Santoso',
+            ],
+        ], now()->addMinutes(5));
+
         $response = $this->actingAs($user)->put('/akun/rekening', [
             'withdraw_channel_id' => $channel->id,
             'account_number' => '1234567890',
             'account_name' => 'Budi Santoso',
+            'otp' => '123456',
         ]);
 
         $response->assertRedirect('/akun/rekening');

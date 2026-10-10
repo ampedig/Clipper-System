@@ -57,13 +57,9 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:255'],
-            'whatsapp' => ['required', 'numeric', 'digits_between:8,15'],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
             'name.min' => 'Nama lengkap minimal :min karakter.',
-            'whatsapp.required' => 'Nomor WhatsApp wajib diisi.',
-            'whatsapp.numeric' => 'Nomor WhatsApp harus berupa angka.',
-            'whatsapp.digits_between' => 'Nomor WhatsApp harus antara :min dan :max digit.',
         ]);
 
         $user = $request->user();
@@ -71,13 +67,8 @@ class ProfileController extends Controller
             return redirect()->route('login');
         }
 
-        // Simpan nomor whatsapp dengan standar format awalan 0
-        $cleanWa = preg_replace('/^(?:\+62|62|0)/', '', (string) $validated['whatsapp']);
-        $normalizedWa = '0'.$cleanWa;
-
         $user->update([
             'name' => $validated['name'],
-            'whatsapp' => $normalizedWa,
         ]);
 
         return redirect()->route('app.profile')->with('status', 'profile-updated');
