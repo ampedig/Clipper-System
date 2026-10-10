@@ -128,10 +128,12 @@
         font-weight: 700 !important;
     }
 
-    /* Custom SweetAlert width alignment so content width matches actions buttons */
+    /* Custom SweetAlert modern styling & balanced proportions */
     .swal2-popup.custom-swal-popup {
-        padding: 1.5rem !important;
-        border-radius: 1.75rem !important;
+        padding: 1.35rem 1.25rem !important;
+        border-radius: 1.25rem !important;
+        max-width: 360px !important;
+        width: 90% !important;
     }
 
     .swal2-popup.custom-swal-popup .swal2-icon,
@@ -176,6 +178,43 @@
         background-color: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 1rem !important;
+    }
+
+    /* Modern OTP Input styling inside SweetAlert (Flat clean border, tanpa shadow & tanpa outline hitam) */
+    #swal_otp_code,
+    .swal2-popup.custom-swal-popup input[type="tel"] {
+        outline: none !important;
+        border: 1.5px solid #e2e8f0 !important;
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        -webkit-tap-highlight-color: transparent !important;
+        box-shadow: none !important;
+    }
+
+    #swal_otp_code:hover,
+    .swal2-popup.custom-swal-popup input[type="tel"]:hover {
+        background-color: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        box-shadow: none !important;
+    }
+
+    #swal_otp_code:focus,
+    #swal_otp_code:focus-visible,
+    .swal2-popup.custom-swal-popup input[type="tel"]:focus,
+    .swal2-popup.custom-swal-popup input[type="tel"]:focus-visible {
+        outline: none !important;
+        outline-offset: 0 !important;
+        border-color: #10b981 !important;
+        background-color: #ffffff !important;
+        box-shadow: none !important;
+    }
+
+    #swal_otp_code.border-rose-400,
+    #swal_otp_code.border-rose-400:focus,
+    #swal_otp_code.border-rose-400:focus-visible {
+        border-color: #f43f5e !important;
+        box-shadow: none !important;
     }
 </style>
 
@@ -467,9 +506,9 @@
                             buttonsStyling: false,
                             backdrop: 'rgba(15, 23, 42, 0.65)',
                             customClass: {
-                                popup: 'custom-swal-popup !rounded-[2.25rem]',
+                                popup: 'custom-swal-popup !rounded-2xl',
                                 actions: 'w-full mt-4 px-0',
-                                confirmButton: 'w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-xs transition-all cursor-pointer'
+                                confirmButton: 'w-full h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center'
                             }
                         });
                     });
@@ -481,28 +520,33 @@
 
                     Swal.fire({
                         html: `
-                            <div class="flex flex-col items-center text-center p-1">
-                                <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-3 border border-emerald-100/80">
-                                    <i class="fa-brands fa-whatsapp"></i>
+                            <div class="flex flex-col items-center text-center p-0.5">
+                                <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-3 border border-emerald-100/80 shadow-sm shadow-emerald-500/10">
+                                    <i class="fa-brands fa-whatsapp text-2xl text-emerald-600"></i>
                                 </div>
-                                <h3 class="text-base font-bold text-slate-900 mb-1 tracking-tight">Verifikasi OTP WhatsApp</h3>
-                                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[280px]">
-                                    Kode OTP 6-digit telah dikirim ke nomor WhatsApp Anda <strong>${maskedWa || ''}</strong>.
+                                <h3 class="text-base font-extrabold text-slate-900 mb-1 tracking-tight">Verifikasi OTP WhatsApp</h3>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed max-w-[270px]">
+                                    Masukkan 6 digit kode OTP yang telah dikirim ke nomor WhatsApp Anda:
                                 </p>
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 mt-2 rounded-full bg-slate-100/90 border border-slate-200/80 text-slate-700 text-xs font-semibold">
+                                    <i class="fa-brands fa-whatsapp text-xs text-emerald-600"></i>
+                                    <span class="font-mono tracking-wide">${maskedWa || ''}</span>
+                                </div>
 
-                                <div class="w-full my-4">
+                                <div class="w-full mt-4 mb-3">
                                     <input type="tel" id="swal_otp_code" maxlength="6" inputmode="numeric" placeholder="• • • • • •" autocomplete="one-time-code"
-                                        class="w-full text-center tracking-[0.35em] font-mono text-2xl font-black py-3 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:bg-white text-slate-900 placeholder:text-slate-300" />
-                                    <div id="swal_otp_error" class="hidden mt-2 text-xs font-semibold text-rose-500 flex items-center justify-center gap-1.5">
-                                        <i class="fa-solid fa-circle-exclamation text-xs"></i>
+                                        class="w-full text-center tracking-[0.35em] font-mono text-xl sm:text-2xl font-bold py-2 px-3 rounded-xl transition-all text-slate-900 placeholder:text-slate-300 placeholder:tracking-[0.25em]"
+                                        style="outline: none !important; box-shadow: none !important;" />
+                                    <div id="swal_otp_error" class="hidden mt-2.5 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-100 text-[11px] font-semibold text-rose-600 flex items-center justify-center gap-1.5 transition-all">
+                                        <i class="fa-solid fa-circle-exclamation text-xs shrink-0"></i>
                                         <span id="swal_otp_error_text"></span>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-                                    <span>Tidak menerima kode?</span>
-                                    <button type="button" id="swal_btn_resend" class="font-bold text-emerald-600 hover:text-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer" disabled>
-                                        Kirim ulang (<span id="swal_resend_timer">${cooldownSeconds}</span>s)
+                                <div class="flex items-center justify-center gap-1 text-xs text-slate-500">
+                                    <span>Belum menerima kode?</span>
+                                    <button type="button" id="swal_btn_resend" class="font-semibold text-emerald-600 hover:text-emerald-700 disabled:text-slate-400 disabled:hover:text-slate-400 disabled:cursor-not-allowed cursor-pointer transition-colors inline-flex items-center gap-1" disabled>
+                                        Kirim ulang (<span id="swal_resend_timer" class="font-mono font-bold">${cooldownSeconds}</span>s)
                                     </button>
                                 </div>
                             </div>
@@ -514,11 +558,11 @@
                         backdrop: 'rgba(15, 23, 42, 0.65)',
                         allowOutsideClick: false,
                         customClass: {
-                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            popup: 'custom-swal-popup !rounded-2xl',
                             htmlContainer: '!m-0 !p-0 !w-full',
-                            actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-                            confirmButton: 'flex-1 py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-                            cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                            actions: 'w-full flex flex-row flex-nowrap gap-2.5 mt-4 px-0',
+                            confirmButton: 'flex-1 h-10 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-emerald-600/20',
+                            cancelButton: 'flex-1 h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-600 hover:text-slate-800 font-semibold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all cursor-pointer flex items-center justify-center'
                         },
                         didOpen: () => {
                             const otpInput = document.getElementById('swal_otp_code');
@@ -531,6 +575,7 @@
                                 otpInput.addEventListener('input', (e) => {
                                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
                                     if (errorDiv) errorDiv.classList.add('hidden');
+                                    otpInput.classList.remove('border-rose-400');
                                 });
                                 otpInput.addEventListener('keypress', (e) => {
                                     if (e.key === 'Enter') {
@@ -575,6 +620,10 @@
                                 if (errorDiv && errorText) {
                                     errorText.textContent = 'Silakan masukkan 6 digit kode OTP.';
                                     errorDiv.classList.remove('hidden');
+                                }
+                                if (otpInput) {
+                                    otpInput.classList.add('border-rose-400');
+                                    otpInput.focus();
                                 }
                                 return false;
                             }
@@ -637,9 +686,9 @@
                                 buttonsStyling: false,
                                 backdrop: 'rgba(15, 23, 42, 0.65)',
                                 customClass: {
-                                    popup: 'custom-swal-popup !rounded-[2.25rem]',
-                                    actions: 'w-full mt-5 px-0',
-                                    confirmButton: 'w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all cursor-pointer'
+                                    popup: 'custom-swal-popup !rounded-2xl',
+                                    actions: 'w-full mt-4 px-0',
+                                    confirmButton: 'w-full h-10 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-emerald-600/20'
                                 }
                             }).then(() => {
                                 window.location.reload();
@@ -677,16 +726,16 @@
                             </div>
                         `,
                         showCancelButton: true,
-                        confirmButtonText: '<i class="fa-brands fa-whatsapp text-sm mr-1.5"></i> Lanjutkan & Kirim OTP',
+                        confirmButtonText: 'Kirim OTP',
                         cancelButtonText: 'Batal',
                         buttonsStyling: false,
                         backdrop: 'rgba(15, 23, 42, 0.65)',
                         customClass: {
-                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            popup: 'custom-swal-popup !rounded-2xl',
                             htmlContainer: '!m-0 !p-0 !w-full',
-                            actions: 'w-full flex flex-row flex-nowrap gap-3 mt-6 px-0',
-                            confirmButton: 'flex-1 py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer',
-                            cancelButton: 'flex-1 py-3.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer'
+                            actions: 'w-full flex flex-row flex-nowrap gap-2.5 mt-4 px-0',
+                            confirmButton: 'flex-1 h-10 py-2 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center shadow-sm shadow-indigo-600/20',
+                            cancelButton: 'flex-1 h-10 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800 font-semibold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center'
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -723,10 +772,10 @@
                         buttonsStyling: false,
                         backdrop: 'rgba(15, 23, 42, 0.65)',
                         customClass: {
-                            popup: 'custom-swal-popup !rounded-[2.25rem]',
+                            popup: 'custom-swal-popup !rounded-2xl',
                             htmlContainer: '!m-0 !p-0 !w-full',
-                            actions: 'w-full mt-5 px-0',
-                            confirmButton: 'w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer outline-none focus:outline-none focus:ring-0 shadow-none'
+                            actions: 'w-full mt-4 px-0',
+                            confirmButton: 'w-full h-10 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs sm:text-sm whitespace-nowrap text-center transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center shadow-sm shadow-emerald-600/20'
                         }
                     });
                 }
